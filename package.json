@@ -1,0 +1,99 @@
+{
+  "name": "ts-pg-model",
+  "version": "0.0.0-development",
+  "description": "Generates Typescript type definitions from live Postgres server.",
+  "keywords": [
+    "pg",
+    "postgres",
+    "postgresql",
+    "typescript"
+  ],
+  "repository": "https://github.com/hoonoh/ts-pg-model",
+  "bugs": {
+    "url": "https://github.com/hoonoh/ts-pg-model/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "hoonoh"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "lint": "eslint \"./src/**/*.ts\"",
+    "test": "ava",
+    "test:types": "tsc --noEmit",
+    "test:db:migrate": "DATABASE_URL=postgresql://postgres:secretpassword@localhost:54321/postgres yarn node-pg-migrate -m ./src/test/migrations --tsconfig ./tsconfig.json",
+    "test:db:migrate:up": "yarn test:db:migrate up",
+    "test:db:migrate:down": "yarn test:db:migrate down",
+    "test:db:up": "docker run -d --rm --name ts-pg-model -p 54321:5432 -e POSTGRES_PASSWORD=secretpassword postgres:alpine",
+    "test:db:wait": "node ./src/test/ci/wait-for-pg.js",
+    "test:db:down": "docker stop ts-pg-model",
+    "test:pre": "yarn test:db:up && yarn test:db:wait && yarn test:db:migrate:up",
+    "test:ci": "yarn test:db:wait && yarn test:db:migrate:up && yarn test"
+  },
+  "ava": {
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register/transpile-only"
+    ]
+  },
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/changelog",
+        {
+          "changelogTitle": "# changelog"
+        }
+      ],
+      "@semantic-release/github",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "package.json",
+            "CHANGELOG.md"
+          ],
+          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ]
+    ]
+  },
+  "dependencies": {
+    "slonik": "26.0.0"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "6.0.1",
+    "@semantic-release/git": "10.0.1",
+    "@types/node": "16.11.9",
+    "@typescript-eslint/eslint-plugin": "5.4.0",
+    "@typescript-eslint/parser": "5.4.0",
+    "ava": "3.15.0",
+    "dotenv": "10.0.0",
+    "eslint": "8.3.0",
+    "eslint-config-airbnb-base": "15.0.0",
+    "eslint-config-airbnb-typescript": "16.0.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-import-resolver-typescript": "2.5.0",
+    "eslint-plugin-import": "2.25.3",
+    "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-simple-import-sort": "7.0.0",
+    "eslint-plugin-unused-imports": "2.0.0",
+    "lerna": "4.0.0",
+    "node-pg-migrate": "6.0.0",
+    "prettier": "2.4.1",
+    "semantic-release": "18.0.0",
+    "ts-node": "10.4.0",
+    "typescript": "4.5.2"
+  }
+}

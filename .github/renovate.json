@@ -1,0 +1,6 @@
+{
+  "extends": ["config:base", ":automergeAll", "group:allNonMajor"],
+  "schedule": ["after 3pm on Friday"],
+  "suppressNotifications": ["prIgnoreNotification"],
+  "packageRules": []
+}
