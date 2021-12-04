@@ -33,7 +33,7 @@
     "test:db:wait": "node ./src/test/ci/wait-for-pg.js",
     "test:db:down": "docker stop ts-pg-model",
     "test:pre": "yarn test:db:up && yarn test:db:wait && yarn test:db:migrate:up",
-    "test:ci": "yarn test:db:wait && yarn test:db:migrate:up && yarn test"
+    "test:ci": "yarn test:pre && yarn test"
   },
   "ava": {
     "extensions": [
