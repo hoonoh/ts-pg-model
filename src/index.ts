@@ -1,2 +1,2 @@
 console.log('init');
-export { Config } from './config';
+export { UserConfig as Config } from './config';
