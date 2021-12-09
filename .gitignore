@@ -4,6 +4,7 @@
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+.env
 coverage
 dist
 node_modules

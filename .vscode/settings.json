@@ -33,5 +33,9 @@
     "yarn-error.log": true
   },
 
-  "typescript.tsdk": "@monorepo-root/node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+
+  "slonikLiveServer.pg.uri": "postgresql://postgres:secretpassword@localhost:54321/postgres",
+  "slonikLiveServer.cost.threshold.warning": 500,
+  "slonikLiveServer.cost.threshold.error": 500
 }
