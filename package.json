@@ -33,51 +33,18 @@
     "test:db:wait": "node ./src/test/ci/wait-for-pg.js",
     "test:db:down": "docker stop ts-pg-model",
     "test:pre": "yarn test:db:up && yarn test:db:wait && yarn test:db:migrate:up",
-    "test:ci": "yarn test:pre && yarn test"
-  },
-  "ava": {
-    "extensions": [
-      "ts"
-    ],
-    "require": [
-      "ts-node/register/transpile-only"
-    ],
-    "files": [
-      "src/**/*.spec.ts"
-    ]
-  },
-  "release": {
-    "branches": [
-      "main"
-    ],
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      [
-        "@semantic-release/changelog",
-        {
-          "changelogTitle": "# changelog"
-        }
-      ],
-      "@semantic-release/github",
-      [
-        "@semantic-release/git",
-        {
-          "assets": [
-            "package.json",
-            "CHANGELOG.md"
-          ],
-          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-        }
-      ]
-    ]
+    "test:ci": "yarn test:pre && yarn test",
+    "release": "semantic-release"
   },
   "dependencies": {
     "slonik": "26.0.0"
   },
   "devDependencies": {
     "@semantic-release/changelog": "6.0.1",
+    "@semantic-release/commit-analyzer": "9.0.2",
     "@semantic-release/git": "10.0.1",
+    "@semantic-release/github": "8.0.2",
+    "@semantic-release/release-notes-generator": "10.0.3",
     "@types/node": "16.11.11",
     "@typescript-eslint/eslint-plugin": "5.5.0",
     "@typescript-eslint/parser": "5.5.0",
