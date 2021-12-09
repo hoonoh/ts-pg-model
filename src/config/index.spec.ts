@@ -1,14 +1,13 @@
 import test from 'ava';
-import mockFs from 'mock-fs';
-import { resolve } from 'path';
 
+import { MockFs } from '../test/mock-fs-helper';
 import { TitleHelper } from '../test/title-helper';
 import { assertConfig } from '.';
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY;
 
 test.serial.afterEach(() => {
-  mockFs.restore();
+  MockFs.restore();
   delete process.env.PG_CONNECTION_URI;
 });
 
@@ -22,9 +21,11 @@ const dotEnvPath = '/foo/bar/.env';
 //
 titleHelper.group('assertConfig()');
 
-test.serial(titleHelper.should('should parse dotEnv file'), async t => {
-  mockFs({
-    node_modules: mockFs.load(resolve(__dirname, '../../node_modules'), { recursive: true }),
+//
+// connectionURI
+//
+test.serial(titleHelper.should('parse dotEnv file'), async t => {
+  MockFs.mockString({
     [dotEnvPath]: `PG_CONNECTION_URI=${connectionURI}`,
   });
   const p = assertConfig({
@@ -32,7 +33,13 @@ test.serial(titleHelper.should('should parse dotEnv file'), async t => {
   });
   t.notThrowsAsync(p);
   t.is((await p).connectionURI, connectionURI);
-  // mockFs.restore();
+});
+
+test.serial(titleHelper.throwsWhen('dotEnv PG_CONNECTION_URI is invalid'), async t => {
+  MockFs.mockString({
+    [dotEnvPath]: `PG_CONNECTION_URI=invalid`,
+  });
+  await t.throwsAsync(assertConfig({ dotEnvPath }));
 });
 
 test(titleHelper.throwsWhen('dotEnv file not found'), async t => {
@@ -45,6 +52,10 @@ test(titleHelper.should('validate empty config'), async t => {
 
 test(titleHelper.throwsWhen('uri is invalid'), async t => {
   await t.throwsAsync(assertConfig({ connectionURI: `${connectionURI}FooBar` }));
+});
+
+test(titleHelper.throwsWhen('connectionURI is invalid'), async t => {
+  await t.throwsAsync(assertConfig({ connectionURI: `invalid` as `postgres://${string}` }));
 });
 
 //

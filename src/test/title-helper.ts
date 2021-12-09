@@ -22,7 +22,7 @@ export class TitleHelper {
   private nextSymbol = '↔️';
 
   should(description: string) {
-    return this.composeTitle(description, '🧪');
+    return this.composeTitle(`should ${description}`, '🧪');
   }
 
   throwsWhen(description: string) {
