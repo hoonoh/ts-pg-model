@@ -6,15 +6,15 @@ export const validateColumnNames = ({
   names,
   tableAndColumns,
 }: {
-  names: string[];
+  names?: string[];
   tableAndColumns: readonly AllTablesAndColumnsRes[];
 }) => {
   //
   const rtn: Column[] = [];
 
-  names.forEach(name => {
+  names?.forEach(name => {
     const splitName = name.split('.');
-    if (splitName.length >= 4) throwInvalid('column', name);
+    if (splitName.length >= 4) throwInvalid('columns', name);
 
     let schema: string | undefined;
     let tableName: string | undefined;
@@ -41,7 +41,7 @@ export const validateColumnNames = ({
       }
     });
 
-    if (!rtnSub.length) throwInvalid('column', name);
+    if (!rtnSub.length) throwInvalid('columns', name);
     rtn.push(...rtnSub);
   });
 

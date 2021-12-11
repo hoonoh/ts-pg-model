@@ -1,4 +1,6 @@
-export type ConfigKey = 'schema' | 'table' | 'column';
+import { AllTablesAndColumnsRes } from './querries';
+
+export type ConfigKey = 'schemas' | 'tables' | 'columns';
 
 export type ConnectionURI = `${'postgres' | 'postgresql'}://${string}`;
 
@@ -15,12 +17,23 @@ export type ChangeCase =
   | 'sentenceCase'
   | 'snakeCase';
 
+type NonEmptyArray<T> = [T, ...T[]];
+
+export type TargetSelector =
+  | (Partial<Record<Extract<ConfigKey, 'columns'>, NonEmptyArray<string>>> &
+      Record<Extract<ConfigKey, 'tables'>, NonEmptyArray<string>>)
+  | (Partial<Record<Extract<ConfigKey, 'tables'>, NonEmptyArray<string>>> &
+      Record<Extract<ConfigKey, 'columns'>, NonEmptyArray<string>>);
+
+export type IncludeTargets = { include: TargetSelector };
+export type ExcludeTargets = { exclude: TargetSelector };
+
 export type UserConfig = {
   connectionURI?: ConnectionURI;
   dotEnvPath?: string;
   namingConvention?: Partial<Record<ConfigKey, ChangeCase>>;
-  include?: Partial<Record<ConfigKey, string[]>>;
-  exclude?: Partial<Record<ConfigKey, string[]>>;
+  schemas?: string[];
+  targetSelectors?: (IncludeTargets | ExcludeTargets)[];
 };
 
 export type Table = {
@@ -34,15 +47,16 @@ export type Column = {
   name: string;
 };
 
-export type IncludeExcludeRule = {
-  schema?: string[];
-  table?: Table[];
-  column?: Column[];
+export type TableColumns = Table & {
+  columns: Map<string, Column>;
 };
 
-export type Config = {
-  connectionURI: ConnectionURI;
-  namingConvention?: Partial<Record<ConfigKey, ChangeCase>>;
-  include?: IncludeExcludeRule;
-  exclude?: IncludeExcludeRule;
-};
+// nested map: schemas -> tables -> columns
+// export type RenderTargets = Map<string, Map<string, TableColumns>>;
+export type RenderTargets = Record<
+  string,
+  Record<string, Table & { columns: Record<string, AllTablesAndColumnsRes> }>
+>;
+
+export type Config = Required<Pick<UserConfig, 'connectionURI' | 'schemas'>> &
+  Omit<UserConfig, 'dotEnvPath' | 'targetSelectors'> & { renderTargets: RenderTargets };

@@ -42,7 +42,6 @@
     "change-case": "4.1.2",
     "reflect-metadata": "0.1.13",
     "slonik": "26.0.0",
-    "slonik-sql-tag-raw": "1.1.3",
     "typedi": "0.10.0"
   },
   "devDependencies": {

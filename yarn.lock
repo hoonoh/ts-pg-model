@@ -8941,19 +8941,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"slonik-sql-tag-raw@npm:1.1.3":
-  version: 1.1.3
-  resolution: "slonik-sql-tag-raw@npm:1.1.3"
-  dependencies:
-    lodash: ^4.17.20
-    serialize-error: ^8.0.0
-  peerDependencies:
-    roarr: ">=7.0.3"
-    slonik: ">=24.1.0"
-  checksum: ac91652bfe5ba4055a4477a910dba8a55bc86d97a9083eafb279c28b85f152b9ddd3a8359fb4d24cda70700bc5ea53673f90b0405a2e1fb9725b334778ff5a98
-  languageName: node
-  linkType: hard
-
 "slonik@npm:26.0.0":
   version: 26.0.0
   resolution: "slonik@npm:26.0.0"
@@ -9762,7 +9749,6 @@ __metadata:
     reflect-metadata: 0.1.13
     semantic-release: 18.0.1
     slonik: 26.0.0
-    slonik-sql-tag-raw: 1.1.3
     ts-node: 10.4.0
     typedi: 0.10.0
     typescript: 4.5.3

@@ -63,13 +63,22 @@ titleHelper.ungroup();
 //
 titleHelper.group('schema');
 
+test(titleHelper.should('load default schemas'), async t => {
+  const res = await assertConfig({
+    connectionURI,
+  });
+  t.deepEqual(res.schemas, ['public']);
+  t.deepEqual(Object.keys(res.renderTargets), ['public']);
+});
+
 test(titleHelper.should('handle schema'), async t => {
   const schema = 'users';
   const res = await assertConfig({
     connectionURI,
-    include: { schema: [schema] },
+    schemas: [schema],
   });
-  t.deepEqual(res.include, { schema: [schema] });
+  t.deepEqual(res.schemas, [schema]);
+  t.deepEqual(Object.keys(res.renderTargets), [schema]);
 });
 
 test(titleHelper.throwsWhen('invalid schema is given'), async t => {
@@ -77,9 +86,7 @@ test(titleHelper.throwsWhen('invalid schema is given'), async t => {
   const error = await t.throwsAsync(
     assertConfig({
       connectionURI,
-      include: {
-        schema: [`${invalidSchema}`],
-      },
+      schemas: [`${invalidSchema}`],
     }),
   );
   t.is(error.message, `invalid schema name: "${invalidSchema}"`);
@@ -97,18 +104,28 @@ test(titleHelper.should('handle table name with schema'), async t => {
   const [schema, name] = tableName.split('.');
   const res = await assertConfig({
     connectionURI,
-    include: { table: [tableName] },
+    schemas: [],
+    targetSelectors: [
+      {
+        include: { tables: [tableName] },
+      },
+    ],
   });
-  t.deepEqual(res.include, { table: [{ schema, name }] });
+  t.deepEqual(res.schemas, []);
+  t.deepEqual(Object.keys(res.renderTargets), [schema]);
+  t.deepEqual(Object.keys(res.renderTargets[schema]), [name]);
 });
 
 test(titleHelper.should('handle table name without schema'), async t => {
   const name = 'users';
   const res = await assertConfig({
     connectionURI,
-    include: { table: [name] },
+    schemas: [],
+    targetSelectors: [{ include: { tables: [name] } }],
   });
-  t.deepEqual(res.include, { table: [{ schema: 'users', name }] });
+  t.deepEqual(res.schemas, []);
+  t.deepEqual(Object.keys(res.renderTargets), ['users']);
+  t.deepEqual(Object.keys(res.renderTargets.users), [name]);
 });
 
 test(titleHelper.throwsWhen('invalid table name format is given'), async t => {
@@ -116,9 +133,8 @@ test(titleHelper.throwsWhen('invalid table name format is given'), async t => {
   const error = await t.throwsAsync(
     assertConfig({
       connectionURI,
-      include: {
-        table: [invalidTableName],
-      },
+      schemas: [],
+      targetSelectors: [{ include: { tables: [invalidTableName] } }],
     }),
   );
   t.is(error.message, `invalid table name: "${invalidTableName}"`);
@@ -129,9 +145,8 @@ test(titleHelper.throwsWhen('invalid schema in table name is given'), async t =>
   const error = await t.throwsAsync(
     assertConfig({
       connectionURI,
-      include: {
-        table: [invalidTableName],
-      },
+      schemas: [],
+      targetSelectors: [{ include: { tables: [invalidTableName] } }],
     }),
   );
   t.is(error.message, `invalid table name: "${invalidTableName}"`);
@@ -142,9 +157,8 @@ test(titleHelper.throwsWhen('invalid table name without schema is given'), async
   const error = await t.throwsAsync(
     assertConfig({
       connectionURI,
-      include: {
-        table: [invalidTableName],
-      },
+      schemas: [],
+      targetSelectors: [{ include: { tables: [invalidTableName] } }],
     }),
   );
   t.is(error.message, `invalid table name: "${invalidTableName}"`);
@@ -155,9 +169,8 @@ test(titleHelper.throwsWhen('invalid table name with valid schema is given'), as
   const error = await t.throwsAsync(
     assertConfig({
       connectionURI,
-      include: {
-        table: [invalidTableName],
-      },
+      schemas: [],
+      targetSelectors: [{ include: { tables: [invalidTableName] } }],
     }),
   );
   t.is(error.message, `invalid table name: "${invalidTableName}"`);
@@ -172,50 +185,35 @@ titleHelper.group('column');
 
 test(titleHelper.should('handle column name with schema & table name'), async t => {
   const columnName = 'users.users.id';
-  const [schema, table, name] = columnName.split('.');
-  const res = await assertConfig({
-    connectionURI,
-    include: { column: [columnName] },
-  });
-  t.deepEqual(res.include, { column: [{ schema, table, name }] });
+  await t.notThrowsAsync(
+    assertConfig({
+      connectionURI,
+      schemas: [],
+      targetSelectors: [{ include: { columns: [columnName] } }],
+    }),
+  );
 });
 
 test(titleHelper.should('handle column name with table name'), async t => {
   const columnName = 'users.id';
-  const schema = 'users';
-  const [table, name] = columnName.split('.');
-  const res = await assertConfig({
-    connectionURI,
-    include: { column: [columnName] },
-  });
-  t.deepEqual(res.include, { column: [{ schema, table, name }] });
+  await t.notThrowsAsync(
+    assertConfig({
+      connectionURI,
+      schemas: [],
+      targetSelectors: [{ include: { columns: [columnName] } }],
+    }),
+  );
 });
 
 test(titleHelper.should('handle column name only'), async t => {
   const columnName = 'id';
-  const res = await assertConfig({
-    connectionURI,
-    include: { column: [columnName] },
-  });
-  t.deepEqual(res.include, {
-    column: [
-      {
-        schema: 'media',
-        table: 'images',
-        name: 'id',
-      },
-      {
-        schema: 'public',
-        table: 'pgmigrations',
-        name: 'id',
-      },
-      {
-        schema: 'users',
-        table: 'users',
-        name: 'id',
-      },
-    ],
-  });
+  await t.notThrowsAsync(
+    assertConfig({
+      connectionURI,
+      schemas: [],
+      targetSelectors: [{ include: { columns: [columnName] } }],
+    }),
+  );
 });
 
 test(titleHelper.throwsWhen('invalid column name format is given'), async t => {
@@ -223,9 +221,8 @@ test(titleHelper.throwsWhen('invalid column name format is given'), async t => {
   const error = await t.throwsAsync(
     assertConfig({
       connectionURI,
-      include: {
-        column: [invalidColumnName],
-      },
+      schemas: [],
+      targetSelectors: [{ include: { columns: [invalidColumnName] } }],
     }),
   );
   t.is(error.message, `invalid column name: "${invalidColumnName}"`);
@@ -236,9 +233,8 @@ test(titleHelper.throwsWhen('column name with invalid schema is given'), async t
   const error = await t.throwsAsync(
     assertConfig({
       connectionURI,
-      include: {
-        column: [invalidColumnName],
-      },
+      schemas: [],
+      targetSelectors: [{ include: { columns: [invalidColumnName] } }],
     }),
   );
   t.is(error.message, `invalid column name: "${invalidColumnName}"`);
@@ -249,9 +245,8 @@ test(titleHelper.throwsWhen('column name with invalid table is given'), async t 
   const error = await t.throwsAsync(
     assertConfig({
       connectionURI,
-      include: {
-        column: [invalidColumnName],
-      },
+      schemas: [],
+      targetSelectors: [{ include: { columns: [invalidColumnName] } }],
     }),
   );
   t.is(error.message, `invalid column name: "${invalidColumnName}"`);
@@ -262,9 +257,8 @@ test(titleHelper.throwsWhen('invalid column name given'), async t => {
   const error = await t.throwsAsync(
     assertConfig({
       connectionURI,
-      include: {
-        column: [invalidColumnName],
-      },
+      schemas: [],
+      targetSelectors: [{ include: { columns: [invalidColumnName] } }],
     }),
   );
   t.is(error.message, `invalid column name: "${invalidColumnName}"`);

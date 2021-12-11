@@ -8,7 +8,7 @@ export const validateSchema = ({
   allSchemas: string[];
 }) => {
   names.forEach(name => {
-    if (!allSchemas.includes(name)) throwInvalid('schema', name);
+    if (!allSchemas.includes(name)) throwInvalid('schemas', name);
   });
 
   return names;

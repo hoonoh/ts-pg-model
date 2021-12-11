@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 import { stat } from 'fs/promises';
 import { ConnectionError, createPool, DatabasePoolType, sql } from 'slonik';
-import { raw } from 'slonik-sql-tag-raw';
 
+import { IncludeTargets, RenderTargets } from '..';
 import {
   allTablesAndColumns,
   AllTablesAndColumnsRes,
@@ -10,7 +10,9 @@ import {
   ShowSearchPathRes,
 } from '../querries';
 import { Config, ConnectionURI, UserConfig } from '../types';
-import { validateIncludeExcludePaths } from './include-exclude-paths';
+import { validateColumnNames } from './column';
+import { validateSchema } from './schema';
+import { validateTableNames } from './table';
 
 const isConnectionURI = (str: string): str is ConnectionURI => {
   return str.startsWith('postgres://') || str.startsWith('postgresql://');
@@ -20,8 +22,8 @@ export const assertConfig = async ({
   connectionURI,
   dotEnvPath,
   namingConvention,
-  include,
-  exclude,
+  schemas,
+  targetSelectors,
   pool,
 }: UserConfig & { pool?: DatabasePoolType }) => {
   if (!connectionURI) {
@@ -46,18 +48,13 @@ export const assertConfig = async ({
     throw new Error(`connectionURI value "${connectionURI}" is invalid`);
   }
 
-  const rtn: Config = {
-    connectionURI,
-    namingConvention,
-  };
-
   // generate pool if undefined
   pool ??= createPool(connectionURI);
 
   // test connection & get search paths
   const searchPaths: string[] = [];
   try {
-    (await pool.one(sql<ShowSearchPathRes>`${raw(showSearchPath)}`)).search_path
+    (await pool.one(sql<ShowSearchPathRes>`${showSearchPath}`)).search_path
       .split(',')
       .forEach(path => {
         const pathTrim = path.trim();
@@ -67,8 +64,11 @@ export const assertConfig = async ({
     throw new Error((error as ConnectionError).message);
   }
 
+  // in case schemas definition is undefined, use searchPaths as schema targets
+  schemas ??= searchPaths;
+
   // list all table & columns
-  const tableAndColumns = await pool.many(sql<AllTablesAndColumnsRes>`${raw(allTablesAndColumns)}`);
+  const tableAndColumns = await pool.many(sql<AllTablesAndColumnsRes>`${allTablesAndColumns}`);
 
   // list all available schemas
   const allSchemas = tableAndColumns.reduce((list, cur) => {
@@ -76,11 +76,69 @@ export const assertConfig = async ({
     return list;
   }, [] as string[]);
 
-  // validate include & exclude paths
-  rtn.include = validateIncludeExcludePaths({ allSchemas, tableAndColumns, input: include });
-  rtn.exclude = validateIncludeExcludePaths({ allSchemas, tableAndColumns, input: exclude });
+  // validate schemas
+  validateSchema({ names: schemas, allSchemas });
 
-  // todo: resolve result table / columns to render as TS model
+  const isIncludeTargets = (target: any): target is IncludeTargets => {
+    return Object.keys(target).includes('include');
+  };
+
+  // compose all render targets first
+  const allRenderTargets = tableAndColumns.reduce((rtn, cur) => {
+    const { schema, tableName, columnName } = cur;
+    if (!rtn[schema]) rtn[schema] = {};
+    if (!rtn[schema][tableName]) {
+      rtn[schema][tableName] = {
+        schema,
+        name: tableName,
+        columns: {},
+      };
+    }
+    rtn[schema][tableName].columns[columnName] = cur;
+    return rtn;
+  }, {} as RenderTargets);
+
+  const renderTargets: RenderTargets = {};
+
+  // add schemas
+  schemas.forEach(schema => {
+    renderTargets[schema] = { ...allRenderTargets[schema] };
+  });
+
+  // run targetSelectors
+  targetSelectors?.forEach(selector => {
+    const isInclude = isIncludeTargets(selector);
+    const targets = isInclude ? selector.include : selector.exclude;
+    const tables = validateTableNames({ names: targets.tables, tableAndColumns });
+    const columns = validateColumnNames({ names: targets.columns, tableAndColumns });
+
+    if (isInclude) {
+      tables?.forEach(table => {
+        // copy from allRenderTargets if undefined
+        const { schema, name } = table;
+        if (!renderTargets[schema]) renderTargets[schema] = {};
+        if (!renderTargets[schema][name] && allRenderTargets[schema]?.[name]) {
+          renderTargets[schema][name] = allRenderTargets[schema][name];
+        }
+      });
+      columns?.forEach(column => {
+        const { schema, table: tableName, name: columnName } = column;
+        const table = renderTargets[schema]?.[tableName];
+        if (table && allRenderTargets[schema]?.[tableName]?.columns[columnName]) {
+          table.columns[columnName] = allRenderTargets[schema]?.[tableName]?.columns[columnName];
+        }
+      });
+    }
+
+    // todo: handle excludes
+  });
+
+  const rtn: Config = {
+    connectionURI,
+    namingConvention,
+    schemas,
+    renderTargets,
+  };
 
   return rtn;
 };
