@@ -37,5 +37,18 @@
 
   "slonikLiveServer.pg.uri": "postgresql://postgres:secretpassword@localhost:54321/postgres",
   "slonikLiveServer.cost.threshold.warning": 500,
-  "slonikLiveServer.cost.threshold.error": 500
+  "slonikLiveServer.cost.threshold.error": 500,
+
+  "launch": {
+    "configurations": [
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "ava tests",
+        "program": "node_modules/ava/cli.js",
+        "internalConsoleOptions": "openOnSessionStart"
+      }
+    ],
+    "compounds": []
+  }
 }

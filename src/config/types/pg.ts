@@ -1,4 +1,4 @@
-import { TsType } from './pg-map';
+import { TsType } from './type-map';
 
 export type PgEnumTypeBare = {
   schema: string;
@@ -10,6 +10,17 @@ export type PgEnumType = Omit<PgEnumTypeBare, 'label'> & {
   labels: string[];
 };
 
+/**
+ * {
+ *  [schema name]: {
+ *    [enum type name]: {
+ *      labels: string[]
+ *    }
+ *  }
+ * }
+ */
+export type PgEnumTypes = Record<string, Record<string, PgEnumType>>;
+
 export type PgCompositeTypeBare = {
   schema: string;
   name: string;
@@ -18,5 +29,18 @@ export type PgCompositeTypeBare = {
 };
 
 export type PgCompositeType = Pick<PgCompositeTypeBare, 'schema' | 'name'> & {
-  attributes: Record<string, TsType | PgEnumType>;
+  attributes: Record<string, TsType | PgEnumType | PgCompositeType>;
 };
+
+/**
+ * {
+ *  [schema name]: {
+ *    [composite type name]: {
+ *      attributes: {
+ *        [attribute name]: TsType | PgEnumType
+ *      }
+ *    }
+ *  }
+ * }
+ */
+export type PgCompositeTypes = Record<string, Record<string, PgCompositeType>>;

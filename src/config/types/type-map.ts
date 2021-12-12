@@ -10,71 +10,78 @@ export type TsType =
   | 'Timestamp'
   | 'unhandled';
 
-export type KnownPgType =
-  | 'bigint'
-  | 'int8'
-  | 'bigserial'
-  | 'serial8'
-  | 'double precision'
-  | 'float8'
-  | 'integer'
-  | 'int'
-  | 'int4'
-  | 'money'
-  | 'numeric'
-  | 'decimal'
-  | 'real'
-  | 'float4'
-  | 'smallint'
-  | 'int2'
-  | 'smallserial'
-  | 'serial2'
-  | 'serial'
-  | 'serial4'
-  | 'bit'
-  | 'bit varying'
-  | 'varbit'
-  | 'character'
-  | 'char'
-  | 'character varying'
-  | 'varchar'
-  | 'cidr'
-  | 'inet'
-  | 'macaddr'
-  | 'macaddr8'
-  | 'text'
-  | 'uuid'
-  | 'boolean'
-  | 'bool'
-  | 'bytea'
-  | 'date'
-  | 'interval'
-  | 'time'
-  | 'time without time zone'
-  | 'timetz'
-  | 'time with time zone'
-  | 'timestamp'
-  | 'timestamp without time zone'
-  | 'timestamptz'
-  | 'timestamp with time zone'
-  | 'json'
-  | 'jsonb'
-  | 'box'
-  | 'circle'
-  | 'line'
-  | 'lseg'
-  | 'path'
-  | 'pg_lsn'
-  | 'pg_snapshot'
-  | 'point'
-  | 'polygon'
-  | 'tsquery'
-  | 'tsvector'
-  | 'txid_snapshot'
-  | 'citext'
-  | 'xml';
+export const knownPgTypes = [
+  'bigint',
+  'int8',
+  'bigserial',
+  'serial8',
+  'double precision',
+  'float8',
+  'integer',
+  'int',
+  'int4',
+  'money',
+  'numeric',
+  'decimal',
+  'real',
+  'float4',
+  'smallint',
+  'int2',
+  'smallserial',
+  'serial2',
+  'serial',
+  'serial4',
+  'bit',
+  'bit varying',
+  'varbit',
+  'character',
+  'char',
+  'character varying',
+  'varchar',
+  'cidr',
+  'inet',
+  'macaddr',
+  'macaddr8',
+  'text',
+  'uuid',
+  'boolean',
+  'bool',
+  'bytea',
+  'date',
+  'interval',
+  'time',
+  'time without time zone',
+  'timetz',
+  'time with time zone',
+  'timestamp',
+  'timestamp without time zone',
+  'timestamptz',
+  'timestamp with time zone',
+  'json',
+  'jsonb',
+  'box',
+  'circle',
+  'line',
+  'lseg',
+  'path',
+  'pg_lsn',
+  'pg_snapshot',
+  'point',
+  'polygon',
+  'tsquery',
+  'tsvector',
+  'txid_snapshot',
+  'citext',
+  'xml',
+] as const;
 
-export const typeMap: Readonly<Record<KnownPgType, TsType>> = {
+export type KnownPgType = typeof knownPgTypes[number];
+
+export const isKnownPgType = (name: any): name is KnownPgType => {
+  return knownPgTypes.includes(name);
+};
+
+export const knownPgTypeToTsTypesMap: Readonly<Record<KnownPgType, TsType>> = {
   // numbers
   bigint: 'number',
   int8: 'number',

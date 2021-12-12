@@ -1,8 +1,10 @@
 import dotenv from 'dotenv';
 import { stat } from 'fs/promises';
+import { clone } from 'lodash';
 import { ConnectionError, createPool, DatabasePoolType, sql } from 'slonik';
 
 import { Column } from '..';
+import { getPgTypes } from '../pg-type';
 import { Config, ConnectionURI, IncludeTargets, RenderTargets, UserConfig } from '../types/config';
 import { validateColumnNames } from './column';
 import { validateSchema } from './schema';
@@ -18,6 +20,7 @@ export const assertConfig = async ({
   namingConvention,
   schemas,
   targetSelectors,
+  typeMap, // todo: handle user defined typeMap
   pool,
 }: UserConfig & { pool?: DatabasePoolType }) => {
   if (!connectionURI) {
@@ -111,14 +114,9 @@ export const assertConfig = async ({
 
   const renderTargets: RenderTargets = {};
 
-  const objectClone = <T>(input: T) => {
-    return JSON.parse(JSON.stringify(input)) as T;
-  };
-
   // add each enabled schema's tables
   schemas.forEach(schema => {
-    // renderTargets[schema] = Object.assign({}, allRenderTargets[schema]);
-    renderTargets[schema] = objectClone(allRenderTargets[schema]);
+    renderTargets[schema] = clone(allRenderTargets[schema]);
   });
 
   // run targetSelectors
@@ -136,8 +134,7 @@ export const assertConfig = async ({
         // handle table includes
         if (!renderTargets[schema]) renderTargets[schema] = {};
         if (!renderTargets[schema][name] && allRenderTargets[schema]?.[name]) {
-          // renderTargets[schema][name] = Object.assign({}, allRenderTargets[schema][name]);
-          renderTargets[schema][name] = objectClone(allRenderTargets[schema][name]);
+          renderTargets[schema][name] = clone(allRenderTargets[schema][name]);
         }
       } else {
         // handle table excludes
@@ -150,7 +147,7 @@ export const assertConfig = async ({
       if (isInclude) {
         // handle column includes
         if (table && allRenderTargets[schema]?.[tableName]?.columns[columnName]) {
-          table.columns[columnName] = objectClone(
+          table.columns[columnName] = clone(
             allRenderTargets[schema]?.[tableName]?.columns[columnName],
           );
         }
@@ -161,11 +158,15 @@ export const assertConfig = async ({
     });
   });
 
+  const { enumTypes, compositeTypes } = await getPgTypes(pool);
+
   const rtn: Config = {
     connectionURI,
     namingConvention,
     schemas: Object.keys(renderTargets),
     renderTargets,
+    enumTypes,
+    compositeTypes,
   };
 
   return rtn;

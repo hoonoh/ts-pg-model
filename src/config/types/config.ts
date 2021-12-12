@@ -1,3 +1,6 @@
+import { PgCompositeTypes, PgEnumTypes } from './pg';
+import { TsType } from './type-map';
+
 export type ConfigKey = 'schemas' | 'tables' | 'columns';
 
 export type ConnectionURI = `${'postgres' | 'postgresql'}://${string}`;
@@ -32,6 +35,7 @@ export type UserConfig = {
   namingConvention?: Partial<Record<ConfigKey, ChangeCase>>;
   schemas?: string[];
   targetSelectors?: (IncludeTargets | ExcludeTargets)[];
+  typeMap?: Record<string, TsType>;
 };
 
 export type Table = {
@@ -59,4 +63,8 @@ export type ColumnBare = Pick<Column, 'schema' | 'tableName' | 'columnName'>;
 export type RenderTargets = Record<string, Record<string, Table>>;
 
 export type Config = Required<Pick<UserConfig, 'connectionURI' | 'schemas'>> &
-  Omit<UserConfig, 'dotEnvPath' | 'targetSelectors'> & { renderTargets: RenderTargets };
+  Omit<UserConfig, 'dotEnvPath' | 'targetSelectors'> & {
+    renderTargets: RenderTargets;
+    enumTypes: PgEnumTypes;
+    compositeTypes: PgCompositeTypes;
+  };

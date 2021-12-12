@@ -40,8 +40,10 @@
   },
   "dependencies": {
     "change-case": "4.1.2",
+    "lodash": "4.17.21",
     "reflect-metadata": "0.1.13",
     "slonik": "26.0.0",
+    "ts-morph": "13.0.2",
     "typedi": "0.10.0"
   },
   "devDependencies": {
@@ -50,6 +52,7 @@
     "@semantic-release/git": "10.0.1",
     "@semantic-release/github": "8.0.2",
     "@semantic-release/release-notes-generator": "10.0.3",
+    "@types/lodash": "4.14.178",
     "@types/mock-fs": "4.13.1",
     "@types/node": "16.11.12",
     "@typescript-eslint/eslint-plugin": "5.6.0",

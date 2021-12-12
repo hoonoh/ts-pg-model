@@ -264,10 +264,12 @@ test(titleHelper.throwsWhen('invalid column name given'), async t => {
   t.is(error.message, `invalid column name: "${invalidColumnName}"`);
 });
 
+titleHelper.ungroup();
+
 //
-// renderTargets
+// renderTargets & getPgTypes()
 //
-test(titleHelper.should('retun expected renderTargets'), async t => {
+test(titleHelper.should('return expected renderTargets, enumTypes & compositeTypes'), async t => {
   const res = await assertConfig({
     connectionURI,
     schemas: ['users'],
@@ -293,7 +295,5 @@ test(titleHelper.should('retun expected renderTargets'), async t => {
   });
   t.snapshot(res);
 });
-
-titleHelper.ungroup();
 
 titleHelper.ungroup();
