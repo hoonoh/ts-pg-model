@@ -1,0 +1,3 @@
+{
+  "exclude": ["*.cjs", "src/test/**", "**/*.spec.ts"]
+}
