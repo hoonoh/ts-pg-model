@@ -3,7 +3,7 @@ import { stat } from 'fs/promises';
 import { ConnectionError, createPool, DatabasePoolType, sql } from 'slonik';
 
 import { Column } from '..';
-import { Config, ConnectionURI, IncludeTargets, RenderTargets, UserConfig } from '../types';
+import { Config, ConnectionURI, IncludeTargets, RenderTargets, UserConfig } from '../types/config';
 import { validateColumnNames } from './column';
 import { validateSchema } from './schema';
 import { validateTableNames } from './table';

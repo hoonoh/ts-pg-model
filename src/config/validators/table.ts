@@ -1,4 +1,4 @@
-import { Column, TableBare } from '../types';
+import { Column, TableBare } from '../types/config';
 import { throwInvalid } from './error';
 
 export const validateTableNames = ({

@@ -1,4 +1,4 @@
-import { Column, ColumnBare } from '../types';
+import { Column, ColumnBare } from '../types/config';
 import { throwInvalid } from './error';
 
 export const validateColumnNames = ({
