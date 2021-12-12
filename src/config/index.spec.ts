@@ -111,7 +111,7 @@ test(titleHelper.should('handle table name with schema'), async t => {
       },
     ],
   });
-  t.deepEqual(res.schemas, []);
+  t.deepEqual(res.schemas, [schema]);
   t.deepEqual(Object.keys(res.renderTargets), [schema]);
   t.deepEqual(Object.keys(res.renderTargets[schema]), [name]);
 });
@@ -123,7 +123,7 @@ test(titleHelper.should('handle table name without schema'), async t => {
     schemas: [],
     targetSelectors: [{ include: { tables: [name] } }],
   });
-  t.deepEqual(res.schemas, []);
+  t.deepEqual(res.schemas, ['users']); // schema from users.users table
   t.deepEqual(Object.keys(res.renderTargets), ['users']);
   t.deepEqual(Object.keys(res.renderTargets.users), [name]);
 });
@@ -262,6 +262,36 @@ test(titleHelper.throwsWhen('invalid column name given'), async t => {
     }),
   );
   t.is(error.message, `invalid column name: "${invalidColumnName}"`);
+});
+
+//
+// renderTargets
+//
+test(titleHelper.should('retun expected renderTargets'), async t => {
+  const res = await assertConfig({
+    connectionURI,
+    schemas: ['users'],
+    targetSelectors: [
+      {
+        include: {
+          tables: ['media.images'],
+        },
+      },
+      {
+        exclude: {
+          tables: ['sessions'],
+          columns: ['created_at', 'updated_at'],
+        },
+      },
+      {
+        include: {
+          tables: ['sessions'],
+          columns: ['media.images.updated_at'],
+        },
+      },
+    ],
+  });
+  t.snapshot(res);
 });
 
 titleHelper.ungroup();

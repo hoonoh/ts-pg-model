@@ -100,9 +100,14 @@ export const assertConfig = async ({
 
   const renderTargets: RenderTargets = {};
 
-  // add schemas
+  const objectClone = <T>(input: T) => {
+    return JSON.parse(JSON.stringify(input)) as T;
+  };
+
+  // add each enabled schema's tables
   schemas.forEach(schema => {
-    renderTargets[schema] = { ...allRenderTargets[schema] };
+    // renderTargets[schema] = Object.assign({}, allRenderTargets[schema]);
+    renderTargets[schema] = objectClone(allRenderTargets[schema]);
   });
 
   // run targetSelectors
@@ -112,31 +117,43 @@ export const assertConfig = async ({
     const tables = validateTableNames({ names: targets.tables, tableAndColumns });
     const columns = validateColumnNames({ names: targets.columns, tableAndColumns });
 
-    if (isInclude) {
-      tables?.forEach(table => {
-        // copy from allRenderTargets if undefined
-        const { schema, name } = table;
+    // handle includes
+    tables?.forEach(table => {
+      // copy from allRenderTargets if undefined
+      const { schema, name } = table;
+      if (isInclude) {
+        // handle table includes
         if (!renderTargets[schema]) renderTargets[schema] = {};
         if (!renderTargets[schema][name] && allRenderTargets[schema]?.[name]) {
-          renderTargets[schema][name] = allRenderTargets[schema][name];
+          // renderTargets[schema][name] = Object.assign({}, allRenderTargets[schema][name]);
+          renderTargets[schema][name] = objectClone(allRenderTargets[schema][name]);
         }
-      });
-      columns?.forEach(column => {
-        const { schema, table: tableName, name: columnName } = column;
-        const table = renderTargets[schema]?.[tableName];
+      } else {
+        // handle table excludes
+        delete renderTargets[schema]?.[name];
+      }
+    });
+    columns?.forEach(column => {
+      const { schema, table: tableName, name: columnName } = column;
+      const table = renderTargets[schema]?.[tableName];
+      if (isInclude) {
+        // handle column includes
         if (table && allRenderTargets[schema]?.[tableName]?.columns[columnName]) {
-          table.columns[columnName] = allRenderTargets[schema]?.[tableName]?.columns[columnName];
+          table.columns[columnName] = objectClone(
+            allRenderTargets[schema]?.[tableName]?.columns[columnName],
+          );
         }
-      });
-    }
-
-    // todo: handle excludes
+      } else {
+        // handle column excludes
+        delete renderTargets[schema]?.[tableName]?.columns[columnName];
+      }
+    });
   });
 
   const rtn: Config = {
     connectionURI,
     namingConvention,
-    schemas,
+    schemas: Object.keys(renderTargets),
     renderTargets,
   };
 

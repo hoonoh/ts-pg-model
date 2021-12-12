@@ -53,10 +53,10 @@ const config: UserConfig = {
     },
     {
       exclude: {
-        // excludes `users.sessions` table.
+        // excludes all tables with name `sessions`, in this case `users.sessions` table.
         tables: ['sessions'],
-        // excludes `created_at`, `updated_at` columns in all
-        columns: ['created_at', 'updated_at'],tables.
+        // excludes `created_at`, `updated_at` columns in all tables
+        columns: ['created_at', 'updated_at'],
       },
     },
     {
@@ -65,7 +65,7 @@ const config: UserConfig = {
         // be noted that all columns including `created_at` column in this table will be included
         // despite all columns with name `created_at` was removed in previous exclude rule.
         tables: ['sessions'],
-        // includes `media.images.updated_at` column, despite `updated_at` column was excluded.
+        // includes `media.images.updated_at` column, despite all `updated_at` columns were excluded.
         columns: ['media.images.updated_at'],
       },
     },
