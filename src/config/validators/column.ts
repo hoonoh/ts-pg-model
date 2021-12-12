@@ -1,5 +1,4 @@
-import { Column } from '..';
-import { AllTablesAndColumnsRes } from '../querries';
+import { Column, ColumnBare } from '../types';
 import { throwInvalid } from './error';
 
 export const validateColumnNames = ({
@@ -7,10 +6,10 @@ export const validateColumnNames = ({
   tableAndColumns,
 }: {
   names?: string[];
-  tableAndColumns: readonly AllTablesAndColumnsRes[];
+  tableAndColumns: readonly Column[];
 }) => {
   //
-  const rtn: Column[] = [];
+  const rtn: ColumnBare[] = [];
 
   names?.forEach(name => {
     const splitName = name.split('.');
@@ -28,16 +27,20 @@ export const validateColumnNames = ({
       [columnName] = splitName;
     }
 
-    const rtnSub: Column[] = [];
+    const rtnSub: ColumnBare[] = [];
     tableAndColumns.forEach(cur => {
       if (
         (!schema || cur.schema === schema) &&
         (!tableName || cur.tableName === tableName) &&
         cur.columnName === columnName &&
-        !rtn.find(l => l.schema === cur.schema && l.table === tableName && l.name === columnName) &&
-        !rtnSub.find(l => l.schema === cur.schema && l.table === tableName && l.name === columnName)
+        !rtn.find(
+          l => l.schema === cur.schema && l.tableName === tableName && l.columnName === columnName,
+        ) &&
+        !rtnSub.find(
+          l => l.schema === cur.schema && l.tableName === tableName && l.columnName === columnName,
+        )
       ) {
-        rtnSub.push({ schema: cur.schema, table: cur.tableName, name: cur.columnName });
+        rtnSub.push({ schema: cur.schema, tableName: cur.tableName, columnName: cur.columnName });
       }
     });
 

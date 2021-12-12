@@ -1,5 +1,3 @@
-import { AllTablesAndColumnsRes } from './querries';
-
 export type ConfigKey = 'schemas' | 'tables' | 'columns';
 
 export type ConnectionURI = `${'postgres' | 'postgresql'}://${string}`;
@@ -38,25 +36,27 @@ export type UserConfig = {
 
 export type Table = {
   schema: string;
-  name: string;
+  tableName: string;
+  columns: Record<string, Column>;
 };
+
+export type TableBare = Omit<Table, 'columns'>;
 
 export type Column = {
   schema: string;
-  table: string;
-  name: string;
+  tableName: string;
+  columnName: string;
+  dataType: string;
+  userDefinedUdtSchema?: string | null;
+  udtName: string;
+  isNullable: boolean;
+  tableComment?: string | null;
+  default?: string | null;
 };
 
-export type TableColumns = Table & {
-  columns: Map<string, Column>;
-};
+export type ColumnBare = Pick<Column, 'schema' | 'tableName' | 'columnName'>;
 
-// nested map: schemas -> tables -> columns
-// export type RenderTargets = Map<string, Map<string, TableColumns>>;
-export type RenderTargets = Record<
-  string,
-  Record<string, Table & { columns: Record<string, AllTablesAndColumnsRes> }>
->;
+export type RenderTargets = Record<string, Record<string, Table>>;
 
 export type Config = Required<Pick<UserConfig, 'connectionURI' | 'schemas'>> &
   Omit<UserConfig, 'dotEnvPath' | 'targetSelectors'> & { renderTargets: RenderTargets };

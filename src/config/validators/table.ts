@@ -1,5 +1,4 @@
-import { Table } from '..';
-import { AllTablesAndColumnsRes } from '../querries';
+import { Column, TableBare } from '../types';
 import { throwInvalid } from './error';
 
 export const validateTableNames = ({
@@ -7,10 +6,10 @@ export const validateTableNames = ({
   tableAndColumns,
 }: {
   names?: string[];
-  tableAndColumns: readonly AllTablesAndColumnsRes[];
+  tableAndColumns: readonly Column[];
 }) => {
   //
-  const rtn: Table[] = [];
+  const rtn: TableBare[] = [];
 
   names?.forEach(name => {
     const splitName = name.split('.');
@@ -25,15 +24,15 @@ export const validateTableNames = ({
       [tableName] = splitName;
     }
 
-    const rtnSub: Table[] = [];
+    const rtnSub: TableBare[] = [];
     tableAndColumns.forEach(cur => {
       if (
         (!schema || cur.schema === schema) &&
         cur.tableName === tableName &&
-        !rtn.find(l => l.schema === cur.schema && l.name === tableName) &&
-        !rtnSub.find(l => l.schema === cur.schema && l.name === tableName)
+        !rtn.find(l => l.schema === cur.schema && l.tableName === tableName) &&
+        !rtnSub.find(l => l.schema === cur.schema && l.tableName === tableName)
       ) {
-        rtnSub.push({ schema: cur.schema, name: cur.tableName });
+        rtnSub.push({ schema: cur.schema, tableName: cur.tableName });
       }
     });
 

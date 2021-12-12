@@ -2,14 +2,8 @@ import dotenv from 'dotenv';
 import { stat } from 'fs/promises';
 import { ConnectionError, createPool, DatabasePoolType, sql } from 'slonik';
 
-import { IncludeTargets, RenderTargets } from '..';
-import {
-  allTablesAndColumns,
-  AllTablesAndColumnsRes,
-  showSearchPath,
-  ShowSearchPathRes,
-} from '../querries';
-import { Config, ConnectionURI, UserConfig } from '../types';
+import { Column } from '..';
+import { Config, ConnectionURI, IncludeTargets, RenderTargets, UserConfig } from '../types';
 import { validateColumnNames } from './column';
 import { validateSchema } from './schema';
 import { validateTableNames } from './table';
@@ -54,7 +48,7 @@ export const assertConfig = async ({
   // test connection & get search paths
   const searchPaths: string[] = [];
   try {
-    (await pool.one(sql<ShowSearchPathRes>`${showSearchPath}`)).search_path
+    (await pool.one(sql<{ search_path: string }>`show search_path`)).search_path
       .split(',')
       .forEach(path => {
         const pathTrim = path.trim();
@@ -68,7 +62,24 @@ export const assertConfig = async ({
   schemas ??= searchPaths;
 
   // list all table & columns
-  const tableAndColumns = await pool.many(sql<AllTablesAndColumnsRes>`${allTablesAndColumns}`);
+  const tableAndColumns = await pool.many(sql<Column>`
+    select
+      table_schema "schema",
+      table_name "tableName",
+      column_name "columnName",
+      c.data_type "dataType",
+      case when udt_schema = 'pg_catalog' then null else udt_schema end "userDefinedUdtSchema",
+      udt_name "udtName",
+      is_nullable::bool "isNullable",
+      pg_catalog.obj_description(oid, 'pg_class') "tableComment",
+      column_default "default"
+    from information_schema.columns c
+    join pg_catalog.pg_class pc on pc.relname = c.table_name
+    where true
+    and table_schema not in ('pg_catalog', 'information_schema', 'pg_toast')
+    group by table_schema, table_name, column_name, data_type, udt_schema, udt_name, is_nullable, pg_catalog.obj_description(oid, 'pg_class'), ordinal_position, column_default
+    order by table_schema, table_name, ordinal_position;
+  `);
 
   // list all available schemas
   const allSchemas = tableAndColumns.reduce((list, cur) => {
@@ -90,7 +101,7 @@ export const assertConfig = async ({
     if (!rtn[schema][tableName]) {
       rtn[schema][tableName] = {
         schema,
-        name: tableName,
+        tableName,
         columns: {},
       };
     }
@@ -120,7 +131,7 @@ export const assertConfig = async ({
     // handle includes
     tables?.forEach(table => {
       // copy from allRenderTargets if undefined
-      const { schema, name } = table;
+      const { schema, tableName: name } = table;
       if (isInclude) {
         // handle table includes
         if (!renderTargets[schema]) renderTargets[schema] = {};
@@ -134,7 +145,7 @@ export const assertConfig = async ({
       }
     });
     columns?.forEach(column => {
-      const { schema, table: tableName, name: columnName } = column;
+      const { schema, tableName: tableName, columnName: columnName } = column;
       const table = renderTargets[schema]?.[tableName];
       if (isInclude) {
         // handle column includes
