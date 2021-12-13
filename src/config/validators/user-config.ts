@@ -7,14 +7,16 @@ import { ConnectionError, createPool, DatabasePoolType, sql } from 'slonik';
 
 import { Column } from '..';
 import { getPgTypes } from '../pg-type';
-import { Config, ConnectionURI, IncludeTargets, RenderTargets, UserConfig } from '../types/config';
+import {
+  Config,
+  isConnectionURI,
+  isIncludeTargets,
+  RenderTargets,
+  UserConfig,
+} from '../types/config';
 import { validateColumnNames } from './column';
 import { validateSchema } from './schema';
 import { validateTableNames } from './table';
-
-const isConnectionURI = (str: string): str is ConnectionURI => {
-  return str.startsWith('postgres://') || str.startsWith('postgresql://');
-};
 
 const defaultConfig: Pick<Config, 'output'> = {
   output: {
@@ -23,7 +25,10 @@ const defaultConfig: Pick<Config, 'output'> = {
   },
 };
 
-export const assertConfig = async ({
+/**
+ * Validates `UserConfig` and returns `Config`
+ */
+export const validateUserConfig = async ({
   connectionURI,
   dotEnvPath,
   namingConvention,
@@ -102,10 +107,6 @@ export const assertConfig = async ({
 
   // validate schemas
   validateSchema({ names: schemas, allSchemas });
-
-  const isIncludeTargets = (target: any): target is IncludeTargets => {
-    return Object.keys(target).includes('include');
-  };
 
   // compose all render targets first
   const allRenderTargets = tableAndColumns.reduce((rtn, cur) => {

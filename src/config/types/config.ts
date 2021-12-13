@@ -7,6 +7,10 @@ export type ConfigKey = 'schemas' | 'tables' | 'columns';
 
 export type ConnectionURI = `${'postgres' | 'postgresql'}://${string}`;
 
+export const isConnectionURI = (str: string): str is ConnectionURI => {
+  return str.startsWith('postgres://') || str.startsWith('postgresql://');
+};
+
 export type ChangeCase =
   | 'camelCase'
   | 'capitalCase'
@@ -30,6 +34,10 @@ export type TargetSelector =
 
 export type IncludeTargets = { include: TargetSelector };
 export type ExcludeTargets = { exclude: TargetSelector };
+
+export const isIncludeTargets = (target: any): target is IncludeTargets => {
+  return Object.keys(target).includes('include');
+};
 
 export type UserConfig = {
   connectionURI?: ConnectionURI;

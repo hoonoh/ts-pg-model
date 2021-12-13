@@ -2,7 +2,7 @@ import test from 'ava';
 import { lstatSync, readdirSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 
-import { assertConfig } from '../config';
+import { validateUserConfig } from '../config';
 import { connectionURI } from '../test/constants';
 import { MockFs } from '../test/mock-fs-helper';
 import { TitleHelper } from '../test/title-helper';
@@ -22,7 +22,7 @@ test.serial(titleHelper.should('generate enum files as expected'), async t => {
 
   const schemas = ['media', 'users'];
 
-  const config = await assertConfig({
+  const config = await validateUserConfig({
     connectionURI,
     schemas,
     output: { root: generateRoot },

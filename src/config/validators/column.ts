@@ -34,10 +34,16 @@ export const validateColumnNames = ({
         (!tableName || cur.tableName === tableName) &&
         cur.columnName === columnName &&
         !rtn.find(
-          l => l.schema === cur.schema && l.tableName === tableName && l.columnName === columnName,
+          l =>
+            l.schema === cur.schema &&
+            l.tableName === cur.tableName &&
+            l.columnName === cur.columnName,
         ) &&
         !rtnSub.find(
-          l => l.schema === cur.schema && l.tableName === tableName && l.columnName === columnName,
+          l =>
+            l.schema === cur.schema &&
+            l.tableName === cur.tableName &&
+            l.columnName === cur.columnName,
         )
       ) {
         rtnSub.push({ schema: cur.schema, tableName: cur.tableName, columnName: cur.columnName });

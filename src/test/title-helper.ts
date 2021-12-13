@@ -15,11 +15,12 @@ export class TitleHelper {
     return (
       `${emoji} ` +
       (this.titleInit ? `${this.titleInit} ${this.nextSymbol} ` : '') +
-      `${this.groups.join(` ${this.nextSymbol} `)} ${this.nextSymbol} ${description}`
+      (this.groups.length ? `[${this.groups.join(`/`)}] ${this.nextSymbol} ` : '') +
+      description
     );
   }
 
-  private nextSymbol = '↔️';
+  private nextSymbol = '›';
 
   should(description: string) {
     return this.composeTitle(`should ${description}`, '🧪');

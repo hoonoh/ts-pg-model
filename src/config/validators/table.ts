@@ -29,8 +29,8 @@ export const validateTableNames = ({
       if (
         (!schema || cur.schema === schema) &&
         cur.tableName === tableName &&
-        !rtn.find(l => l.schema === cur.schema && l.tableName === tableName) &&
-        !rtnSub.find(l => l.schema === cur.schema && l.tableName === tableName)
+        !rtn.find(l => l.schema === cur.schema && l.tableName === cur.tableName) &&
+        !rtnSub.find(l => l.schema === cur.schema && l.tableName === cur.tableName)
       ) {
         rtnSub.push({ schema: cur.schema, tableName: cur.tableName });
       }

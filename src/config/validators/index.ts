@@ -1,1 +1,1 @@
-export * from './assert-config';
+export * from './user-config';
