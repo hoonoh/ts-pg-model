@@ -1,6 +1,8 @@
 import dotenv from 'dotenv';
 import { stat } from 'fs/promises';
 import { clone } from 'lodash';
+import { resolve } from 'path';
+import { cwd } from 'process';
 import { ConnectionError, createPool, DatabasePoolType, sql } from 'slonik';
 
 import { Column } from '..';
@@ -14,6 +16,13 @@ const isConnectionURI = (str: string): str is ConnectionURI => {
   return str.startsWith('postgres://') || str.startsWith('postgresql://');
 };
 
+const defaultConfig: Pick<Config, 'output'> = {
+  output: {
+    includeSchemaPath: false,
+    root: resolve(cwd(), 'generated'),
+  },
+};
+
 export const assertConfig = async ({
   connectionURI,
   dotEnvPath,
@@ -21,8 +30,9 @@ export const assertConfig = async ({
   schemas,
   targetSelectors,
   typeMap, // todo: handle user defined typeMap
+  output,
   pool,
-}: UserConfig & { pool?: DatabasePoolType }) => {
+}: UserConfig & { pool?: DatabasePoolType } = {}) => {
   if (!connectionURI) {
     if (dotEnvPath) {
       try {
@@ -167,6 +177,10 @@ export const assertConfig = async ({
     renderTargets,
     enumTypes,
     compositeTypes,
+    output: {
+      root: output?.root || defaultConfig.output.root,
+      includeSchemaPath: output?.includeSchemaPath || defaultConfig.output.includeSchemaPath,
+    },
   };
 
   return rtn;

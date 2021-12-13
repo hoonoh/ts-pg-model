@@ -9715,6 +9715,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ts-essentials@npm:9.0.0":
+  version: 9.0.0
+  resolution: "ts-essentials@npm:9.0.0"
+  peerDependencies:
+    typescript: ">=4.1.0"
+  checksum: 7122715b96dd5a93ca9e234e764ead870d11be8171b4ce1c97dad72d93f3213dac92c7e32ff198d16f44f4c27d4d9a35671f3f57ec3c18e8a215675c604326ad
+  languageName: node
+  linkType: hard
+
 "ts-morph@npm:13.0.2":
   version: 13.0.2
   resolution: "ts-morph@npm:13.0.2"
@@ -9796,6 +9805,7 @@ __metadata:
     reflect-metadata: 0.1.13
     semantic-release: 18.0.1
     slonik: 26.0.0
+    ts-essentials: 9.0.0
     ts-morph: 13.0.2
     ts-node: 10.4.0
     typedi: 0.10.0

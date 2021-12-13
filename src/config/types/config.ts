@@ -1,3 +1,5 @@
+import { DeepRequired } from 'ts-essentials';
+
 import { PgCompositeTypes, PgEnumTypes } from './pg';
 import { TsType } from './type-map';
 
@@ -36,6 +38,10 @@ export type UserConfig = {
   schemas?: string[];
   targetSelectors?: (IncludeTargets | ExcludeTargets)[];
   typeMap?: Record<string, TsType>;
+  output?: {
+    root?: string;
+    includeSchemaPath?: boolean;
+  };
 };
 
 export type Table = {
@@ -63,6 +69,7 @@ export type ColumnBare = Pick<Column, 'schema' | 'tableName' | 'columnName'>;
 export type RenderTargets = Record<string, Record<string, Table>>;
 
 export type Config = Required<Pick<UserConfig, 'connectionURI' | 'schemas'>> &
+  DeepRequired<Pick<UserConfig, 'output'>> &
   Omit<UserConfig, 'dotEnvPath' | 'targetSelectors'> & {
     renderTargets: RenderTargets;
     enumTypes: PgEnumTypes;

@@ -7,5 +7,6 @@
 .env
 coverage
 dist
+generated
 node_modules
 yarn-error.log

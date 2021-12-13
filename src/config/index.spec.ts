@@ -1,5 +1,6 @@
 import test from 'ava';
 
+import { connectionURI } from '../test/constants';
 import { MockFs } from '../test/mock-fs-helper';
 import { TitleHelper } from '../test/title-helper';
 import { assertConfig } from '.';
@@ -13,7 +14,6 @@ test.serial.afterEach(() => {
 
 const titleHelper = new TitleHelper();
 
-const connectionURI = 'postgresql://postgres:secretpassword@localhost:54321/postgres';
 const dotEnvPath = '/foo/bar/.env';
 
 //
@@ -292,6 +292,9 @@ test(titleHelper.should('return expected renderTargets, enumTypes & compositeTyp
         },
       },
     ],
+    output: {
+      root: '/generated',
+    },
   });
   t.snapshot(res);
 });
