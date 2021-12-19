@@ -3,10 +3,10 @@ import { stat } from 'fs/promises';
 import { clone } from 'lodash';
 import { resolve } from 'path';
 import { cwd } from 'process';
-import { ConnectionError, createPool, DatabasePoolType, sql } from 'slonik';
+import { ConnectionError, createPool, DatabasePoolType } from 'slonik';
 
-import { Column } from '..';
 import { getPgTypes } from '../pg-type';
+import { searchPathQuery, tableAndColumnsQuery } from '../querries';
 import {
   Config,
   isConnectionURI,
@@ -66,12 +66,10 @@ export const validateUserConfig = async ({
   // test connection & get search paths
   const searchPaths: string[] = [];
   try {
-    (await pool.one(sql<{ search_path: string }>`show search_path`)).search_path
-      .split(',')
-      .forEach(path => {
-        const pathTrim = path.trim();
-        if (pathTrim !== '"$user"') searchPaths.push(pathTrim);
-      });
+    (await pool.one(searchPathQuery)).search_path.split(',').forEach(path => {
+      const pathTrim = path.trim();
+      if (pathTrim !== '"$user"') searchPaths.push(pathTrim);
+    });
   } catch (error) {
     throw new Error((error as ConnectionError).message);
   }
@@ -80,24 +78,7 @@ export const validateUserConfig = async ({
   schemas ??= searchPaths;
 
   // list all table & columns
-  const tableAndColumns = await pool.many(sql<Column>`
-    select
-      table_schema "schema",
-      table_name "tableName",
-      column_name "columnName",
-      c.data_type "dataType",
-      case when udt_schema = 'pg_catalog' then null else udt_schema end "userDefinedUdtSchema",
-      udt_name "udtName",
-      is_nullable::bool "isNullable",
-      pg_catalog.obj_description(oid, 'pg_class') "tableComment",
-      column_default "default"
-    from information_schema.columns c
-    join pg_catalog.pg_class pc on pc.relname = c.table_name
-    where true
-    and table_schema not in ('pg_catalog', 'information_schema', 'pg_toast')
-    group by table_schema, table_name, column_name, data_type, udt_schema, udt_name, is_nullable, pg_catalog.obj_description(oid, 'pg_class'), ordinal_position, column_default
-    order by table_schema, table_name, ordinal_position;
-  `);
+  const tableAndColumns = await pool.any(tableAndColumnsQuery);
 
   // list all available schemas
   const allSchemas = tableAndColumns.reduce((list, cur) => {
