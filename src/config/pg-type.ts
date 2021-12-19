@@ -9,19 +9,20 @@ export const getPgTypes = async (pool: DatabasePoolType) => {
     select
     n.nspname "schema",
     t.typname "name",
-    e.enumlabel "label"
+    e.enumlabel "label",
+    enumsortorder "sortOrder"
     from pg_type t
     join pg_enum e on e.enumtypid = t.oid
     join pg_catalog.pg_namespace n on n.oid = t.typnamespace
     where true
     and n.nspname not in ('pg_catalog', 'information_schema')
-    order by "schema", "name"
+    order by "schema", "name", enumsortorder
   `);
 
   const enumTypes = enumTypesBare.reduce((rtn, cur) => {
     const { schema, name, label } = cur;
     if (!rtn[schema]) rtn[schema] = {};
-    if (!rtn[schema][name]) rtn[schema][name] = { schema, name, labels: [] };
+    if (!rtn[schema][name]) rtn[schema][name] = { schema, name, labels: [], sortOrder: 0 };
     rtn[schema][name].labels.push(label);
     return rtn;
   }, {} as PgEnumTypes);
@@ -51,7 +52,8 @@ export const getPgTypes = async (pool: DatabasePoolType) => {
       n.nspname::text "schema",
       t.typname "name",
       a.attname::text "attributeName",
-      pg_catalog.format_type (a.atttypid, a.atttypmod) "type"
+      pg_catalog.format_type (a.atttypid, a.atttypmod) "type",
+      a.attnum "sortOrder"
     from pg_catalog.pg_attribute a
     join pg_catalog.pg_type t on a.attrelid = t.typrelid
     join pg_catalog.pg_namespace n on n.oid = t.typnamespace

@@ -4,6 +4,7 @@ export type PgEnumTypeBare = {
   schema: string;
   name: string;
   label: string;
+  sortOrder: number;
 };
 
 export type PgEnumType = Omit<PgEnumTypeBare, 'label'> & {
@@ -26,6 +27,7 @@ export type PgCompositeTypeBare = {
   name: string;
   attributeName: string;
   type: string;
+  sortOrder: number;
 };
 
 export type PgCompositeType = Pick<PgCompositeTypeBare, 'schema' | 'name'> & {
