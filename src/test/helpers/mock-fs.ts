@@ -4,7 +4,7 @@ import { cwd } from 'process';
 
 export class MockFs {
   private static default = {
-    node_modules: mockFs.load(resolve(__dirname, '../../node_modules'), {
+    node_modules: mockFs.load(resolve(__dirname, '../../../node_modules'), {
       recursive: true,
     }),
     [resolve(cwd(), 'tsconfig.json')]: mockFs.load(resolve(cwd(), 'tsconfig.json'), {

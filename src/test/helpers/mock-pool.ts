@@ -1,7 +1,7 @@
 import { createMockPool, createMockQueryResult, QueryResultRowType, QueryResultType } from 'slonik';
 
-import { Column, Table } from '../config';
-import { searchPathQuery, tableAndColumnsQuery } from '../config/querries';
+import { Column, Table } from '../../config';
+import { searchPathQuery, tableAndColumnsQuery } from '../../config/querries';
 
 const defaultTableAndColumns: Column[] = [
   {

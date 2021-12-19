@@ -1,6 +1,6 @@
 import test from 'ava';
 
-import { TitleHelper } from '../../test/title-helper';
+import { TitleHelper } from '../../test/helpers/title';
 import { validateTableNames } from './table';
 
 const tableAndColumns = [

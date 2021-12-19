@@ -1,8 +1,8 @@
 import test from 'ava';
 
 import { connectionURI } from '../../test/constants';
-import { MockFs } from '../../test/mock-fs-helper';
-import { TitleHelper } from '../../test/title-helper';
+import { MockFs } from '../../test/helpers/mock-fs';
+import { TitleHelper } from '../../test/helpers/title';
 import { validateUserConfig } from '.';
 
 const titleHelper = new TitleHelper();

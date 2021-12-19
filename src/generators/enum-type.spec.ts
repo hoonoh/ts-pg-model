@@ -7,9 +7,9 @@ import { validateUserConfig } from '../config';
 import { enumTypesBareQuery } from '../config/querries';
 import { PgEnumTypeBare } from '../config/types/pg';
 import { connectionURI } from '../test/constants';
-import { MockFs } from '../test/mock-fs-helper';
-import { defaultMockPool, mockPool } from '../test/mock-pool-helper';
-import { TitleHelper } from '../test/title-helper';
+import { MockFs } from '../test/helpers/mock-fs';
+import { defaultMockPool, mockPool } from '../test/helpers/mock-pool';
+import { TitleHelper } from '../test/helpers/title';
 import { generateEnumFiles } from './enum-type';
 
 const generateRoot = resolve('/test', 'generated');

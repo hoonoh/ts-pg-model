@@ -1,6 +1,6 @@
 import test from 'ava';
 
-import { MockFs } from './mock-fs-helper';
+import { MockFs } from './helpers/mock-fs';
 
 test.serial.afterEach(() => {
   MockFs.restore();
