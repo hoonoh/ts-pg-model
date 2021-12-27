@@ -49,28 +49,28 @@ type Override = {
 export const mockPool = (overrides?: Override[]) =>
   createMockPool({
     query: async (sql /*, values*/) => {
-      // trim whitespace & linebreaks
-      const trim = (query: string) =>
+      // trim line whitespaces
+      const normalize = (query: string) =>
         query
           .split('\n')
           .map(line => line.trim())
-          .join(' ')
+          .join('\n')
           .trim();
 
       let overriden: QueryResult<QueryResultRow> | undefined;
       if (overrides) {
         overrides.forEach(({ sql: sqlOverride, rows }) => {
-          if (sql === trim(sqlOverride)) {
+          if (normalize(sql) === normalize(sqlOverride)) {
             overriden = createMockQueryResult(rows);
           }
         });
       }
       if (overriden) return overriden;
 
-      if (sql === trim(searchPathQuery.sql)) {
+      if (normalize(sql) === normalize(searchPathQuery.sql)) {
         return createMockQueryResult([{ search_path: 'foo,bar' }]);
       }
-      if (sql === trim(tableAndColumnsQuery.sql)) {
+      if (normalize(sql) === normalize(tableAndColumnsQuery.sql)) {
         return createMockQueryResult(defaultTableAndColumns);
       }
       return createMockQueryResult([]);
