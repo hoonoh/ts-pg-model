@@ -3,8 +3,8 @@ import { lstatSync, readdirSync, readFileSync } from 'fs';
 import { pascalCase } from 'pascal-case';
 import { resolve } from 'path';
 
-import { validateUserConfig } from '../config';
-import { enumTypesBareQuery } from '../config/querries';
+import { Column, validateUserConfig } from '../config';
+import { enumTypesBareQuery, tableAndColumnsQuery } from '../config/querries';
 import { PgEnumTypeBare } from '../config/types/pg';
 import { connectionURI } from '../test/constants';
 import { MockFs } from '../test/helpers/mock-fs';
@@ -72,6 +72,27 @@ test.serial(titleHelper.should('generate enum files as expected'), async t => {
     {
       sql: enumTypesBareQuery.sql,
       rows: enums,
+    },
+    {
+      sql: tableAndColumnsQuery.sql,
+      rows: [
+        {
+          schema: 'foo',
+          tableName: 'bar',
+          columnName: 'baz',
+          dataType: 'foo.bar',
+          isNullable: false,
+          udtName: 'foo.bar',
+        },
+        {
+          schema: 'bar',
+          tableName: 'baz',
+          columnName: 'bazzz',
+          dataType: 'foo.bar',
+          isNullable: false,
+          udtName: 'foo.bar',
+        },
+      ] as Column[],
     },
   ]);
 

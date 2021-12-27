@@ -1,11 +1,11 @@
 import { merge } from 'lodash';
-import { DatabasePoolType } from 'slonik';
+import { DatabasePool } from 'slonik';
 
 import { compositeTypesBareQuery, enumTypesBareQuery } from './querries';
 import { PgCompositeTypeBare, PgCompositeTypes, PgEnumTypes } from './types/pg';
 import { isKnownPgType, knownPgTypeToTsTypesMap } from './types/type-map';
 
-export const getPgTypes = async (pool: DatabasePoolType) => {
+export const getPgTypes = async (pool: DatabasePool) => {
   const enumTypesBare = await pool.any(enumTypesBareQuery);
 
   const enumTypes = enumTypesBare.reduce((rtn, cur) => {

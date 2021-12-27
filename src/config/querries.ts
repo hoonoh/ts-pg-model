@@ -3,9 +3,13 @@ import { sql } from 'slonik';
 import { Column } from './types/config';
 import { PgCompositeTypeBare, PgEnumTypeBare } from './types/pg';
 
-export const searchPathQuery = sql<{ search_path: string }>`show search_path`;
+export const searchPathQuery = sql<{ search_path: string }>`
+  /* searchPathQuery */
+  show search_path
+`;
 
 export const tableAndColumnsQuery = sql<Column>`
+  /* tableAndColumnsQuery */
   select
     table_schema "schema",
     table_name "tableName",
@@ -24,6 +28,7 @@ export const tableAndColumnsQuery = sql<Column>`
 `;
 
 export const enumTypesBareQuery = sql<PgEnumTypeBare>`
+  /* enumTypesBareQuery */
   select
     n.nspname "schema",
     t.typname "name",
@@ -37,6 +42,7 @@ export const enumTypesBareQuery = sql<PgEnumTypeBare>`
 `;
 
 export const compositeTypesBareQuery = sql<PgCompositeTypeBare>`
+  /* compositeTypesBareQuery */
   with types as (
     select
       n.nspname,

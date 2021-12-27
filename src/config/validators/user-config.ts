@@ -3,7 +3,7 @@ import { stat } from 'fs/promises';
 import { clone } from 'lodash';
 import { resolve } from 'path';
 import { cwd } from 'process';
-import { ConnectionError, createPool, DatabasePoolType } from 'slonik';
+import { ConnectionError, createPool, DatabasePool } from 'slonik';
 
 import { getPgTypes } from '../pg-type';
 import { searchPathQuery, tableAndColumnsQuery } from '../querries';
@@ -37,7 +37,7 @@ export const validateUserConfig = async ({
   typeMap, // todo: handle user defined typeMap
   output,
   pool,
-}: UserConfig & { pool?: DatabasePoolType } = {}) => {
+}: UserConfig & { pool?: DatabasePool } = {}) => {
   if (!connectionURI) {
     if (dotEnvPath) {
       try {
