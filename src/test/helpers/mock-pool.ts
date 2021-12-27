@@ -1,4 +1,4 @@
-import { createMockPool, createMockQueryResult, QueryResultRowType, QueryResultType } from 'slonik';
+import { createMockPool, createMockQueryResult, QueryResult, QueryResultRow } from 'slonik';
 
 import { Column, Table } from '../../config';
 import { searchPathQuery, tableAndColumnsQuery } from '../../config/querries';
@@ -40,7 +40,7 @@ export const defaultMockPool = {
 
 type Override = {
   sql: string;
-  rows: QueryResultRowType[];
+  rows: QueryResultRow[];
 };
 
 /**
@@ -57,7 +57,7 @@ export const mockPool = (overrides?: Override[]) =>
           .join(' ')
           .trim();
 
-      let overriden: QueryResultType<QueryResultRowType> | undefined;
+      let overriden: QueryResult<QueryResultRow> | undefined;
       if (overrides) {
         overrides.forEach(({ sql: sqlOverride, rows }) => {
           if (sql === trim(sqlOverride)) {
