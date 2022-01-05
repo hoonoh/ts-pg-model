@@ -38,6 +38,12 @@ You can define table / columns names with dot notation, including schema / table
 If schema / tables names are not defined using dot notation, all matching targets will be
 included / excluded.
 
+### Type mapping
+
+Most of known Postgres types should be mapped automatically. If there is an unknown data type that
+needs casting into a primitive type, use `typeMap` settings. Array type (e.g. `_text`, with
+underscore prefix in `udt_name`) should be automatically handled.
+
 #### Example
 
 ```ts

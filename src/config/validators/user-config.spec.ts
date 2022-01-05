@@ -81,6 +81,48 @@ test(titleHelper.throwsWhen('invalid schema is given'), async t => {
 
 titleHelper.ungroup();
 //
+// typeMap
+//
+titleHelper.group('typeMap');
+
+test(titleHelper.should('handle user defined typeMap'), async t => {
+  const res = await validateUserConfig({
+    connectionURI,
+    schemas: ['media'],
+    typeMap: {
+      uuid: 'Buffer',
+    },
+  });
+  t.is(res.renderTargets.media.images.columns.id.type.ts, 'Buffer');
+});
+
+test(titleHelper.should('handle user defined enum type'), async t => {
+  const res = await validateUserConfig({
+    connectionURI,
+    schemas: ['media'],
+  });
+  t.deepEqual(res.renderTargets.media.images.columns.type.type.enum, {
+    labels: ['jpg', 'gif', 'webp'],
+    name: 'image_type',
+    schema: 'media',
+    sortOrder: 0,
+  });
+});
+
+test(titleHelper.should('handle user defined composite type'), async t => {
+  const res = await validateUserConfig({
+    connectionURI,
+    schemas: ['media'],
+  });
+  t.deepEqual(res.renderTargets.media.images.columns.domain.type.composite, {
+    schema: 'public',
+    name: 'domain',
+    attributes: { host: 'string', version: 'number' },
+  });
+});
+
+titleHelper.ungroup();
+//
 // snapshot
 //
 titleHelper.group('snapshot');

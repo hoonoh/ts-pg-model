@@ -8,7 +8,7 @@ export type TsType =
   | 'Date'
   | 'JSONType'
   | 'Timestamp'
-  | 'unhandled';
+  | 'unknown';
 
 export const knownPgTypes = [
   'bigint',
@@ -144,17 +144,17 @@ export const knownPgTypeToTsTypesMap: Readonly<Record<KnownPgType, TsType>> = {
   jsonb: 'JSONType',
 
   // unhandled
-  box: 'unhandled',
-  circle: 'unhandled',
-  line: 'unhandled',
-  lseg: 'unhandled',
-  path: 'unhandled',
-  pg_lsn: 'unhandled',
-  pg_snapshot: 'unhandled',
-  point: 'unhandled',
-  polygon: 'unhandled',
-  tsquery: 'unhandled',
-  tsvector: 'unhandled',
-  txid_snapshot: 'unhandled',
-  xml: 'unhandled',
+  box: 'unknown',
+  circle: 'unknown',
+  line: 'unknown',
+  lseg: 'unknown',
+  path: 'unknown',
+  pg_lsn: 'unknown',
+  pg_snapshot: 'unknown',
+  point: 'unknown',
+  polygon: 'unknown',
+  tsquery: 'unknown',
+  tsvector: 'unknown',
+  txid_snapshot: 'unknown',
+  xml: 'unknown',
 } as const;

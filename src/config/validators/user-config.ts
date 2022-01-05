@@ -1,3 +1,4 @@
+import assert from 'assert';
 import dotenv from 'dotenv';
 import { stat } from 'fs/promises';
 import { clone } from 'lodash';
@@ -8,12 +9,14 @@ import { ConnectionError, createPool, DatabasePool } from 'slonik';
 import { getPgTypes } from '../pg-type';
 import { searchPathQuery, tableAndColumnsQuery } from '../querries';
 import {
+  ColumnTypeMap,
   Config,
   isConnectionURI,
   isIncludeTargets,
   RenderTargets,
   UserConfig,
 } from '../types/config';
+import { isKnownPgType, knownPgTypeToTsTypesMap } from '../types/type-map';
 import { validateColumnNames } from './column';
 import { validateSchema } from './schema';
 import { validateTableNames } from './table';
@@ -34,7 +37,7 @@ export const validateUserConfig = async ({
   namingConvention,
   schemas,
   targetSelectors,
-  typeMap, // todo: handle user defined typeMap
+  typeMap,
   output,
   pool,
 }: UserConfig & { pool?: DatabasePool } = {}) => {
@@ -89,6 +92,9 @@ export const validateUserConfig = async ({
   // validate schemas
   validateSchema({ names: schemas, allSchemas });
 
+  // get pg types
+  const { enumTypes, compositeTypes } = await getPgTypes(pool);
+
   // compose all render targets first
   const allRenderTargets = tableAndColumns.reduce((rtn, cur) => {
     const { schema, tableName, columnName } = cur;
@@ -100,7 +106,39 @@ export const validateUserConfig = async ({
         columns: {},
       };
     }
-    rtn[schema][tableName].columns[columnName] = cur;
+    // type mapping
+    let type: ColumnTypeMap['type'] | undefined;
+    if (typeMap && Object.keys(typeMap).includes(cur.udtName)) {
+      // user defined type map
+      type = { ts: typeMap[cur.udtName] };
+    } else if (
+      cur.userDefinedUdtSchema &&
+      enumTypes[cur.userDefinedUdtSchema] &&
+      enumTypes[cur.userDefinedUdtSchema][cur.udtName]
+    ) {
+      // user defined pg enum type
+      type = { enum: enumTypes[cur.userDefinedUdtSchema][cur.udtName] };
+    } else if (
+      cur.userDefinedUdtSchema &&
+      compositeTypes[cur.userDefinedUdtSchema] &&
+      compositeTypes[cur.userDefinedUdtSchema][cur.udtName]
+    ) {
+      // user defined pg composite type
+      type = { composite: compositeTypes[cur.userDefinedUdtSchema][cur.udtName] };
+    } else if (isKnownPgType(cur.udtName)) {
+      // known pg types
+      type = { ts: knownPgTypeToTsTypesMap[cur.udtName] };
+    } else {
+      // fallback as unknown
+      type = { ts: 'unknown' };
+    }
+
+    assert(!!type, 'column type should always be defined');
+
+    rtn[schema][tableName].columns[columnName] = {
+      ...cur,
+      type,
+    };
     return rtn;
   }, {} as RenderTargets);
 
@@ -149,8 +187,6 @@ export const validateUserConfig = async ({
       }
     });
   });
-
-  const { enumTypes, compositeTypes } = await getPgTypes(pool);
 
   const rtn: Config = {
     connectionURI,
