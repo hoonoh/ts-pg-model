@@ -1,9 +1,9 @@
-export type JSONType =
+export type JsonType =
   | number
   | string
   | boolean
   | null
-  | readonly JSONType[]
+  | readonly JsonType[]
   | {
-      [key: string]: JSONType | undefined;
+      [key: string]: JsonType | undefined;
     };

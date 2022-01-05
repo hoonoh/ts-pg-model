@@ -6,7 +6,7 @@ export type TsType =
   | 'boolean'
   | 'Buffer'
   | 'Date'
-  | 'JSONType'
+  | 'JsonType'
   | 'Timestamp'
   | 'unknown';
 
@@ -139,9 +139,9 @@ export const knownPgTypeToTsTypesMap: Readonly<Record<KnownPgType, TsType>> = {
   timestamptz: 'Timestamp',
   'timestamp with time zone': 'Timestamp',
 
-  // JSONType
-  json: 'JSONType',
-  jsonb: 'JSONType',
+  // JsonType
+  json: 'JsonType',
+  jsonb: 'JsonType',
 
   // unhandled
   box: 'unknown',
