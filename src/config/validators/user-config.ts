@@ -37,7 +37,7 @@ export const validateUserConfig = async ({
   namingConvention,
   schemas,
   targetSelectors,
-  udtTypeMap,
+  typeMap,
   output,
   pool,
 }: UserConfig & { pool?: DatabasePool } = {}) => {
@@ -108,25 +108,43 @@ export const validateUserConfig = async ({
     }
     // type mapping
     let type: ColumnTypeMap['type'] | undefined;
-    if (udtTypeMap && Object.keys(udtTypeMap).includes(cur.udtName)) {
+    const jsonTypeMap = typeMap?.json
+      ?.filter(
+        j =>
+          j.schema === cur.schema &&
+          j.tableName === cur.tableName &&
+          j.columnName === cur.columnName,
+      )
+      .pop();
+    if (
       // user defined type map
-      type = { ts: udtTypeMap[cur.udtName] };
+      typeMap?.udt &&
+      Object.keys(typeMap.udt).includes(cur.udtName)
+    ) {
+      type = { ts: typeMap.udt[cur.udtName] };
     } else if (
+      // user defined json type map
+      jsonTypeMap
+    ) {
+      type = { json: jsonTypeMap };
+    } else if (
+      // user defined pg enum type
       cur.userDefinedUdtSchema &&
       enumTypes[cur.userDefinedUdtSchema] &&
       enumTypes[cur.userDefinedUdtSchema][cur.udtName]
     ) {
-      // user defined pg enum type
       type = { enum: enumTypes[cur.userDefinedUdtSchema][cur.udtName] };
     } else if (
+      // user defined pg composite type
       cur.userDefinedUdtSchema &&
       compositeTypes[cur.userDefinedUdtSchema] &&
       compositeTypes[cur.userDefinedUdtSchema][cur.udtName]
     ) {
-      // user defined pg composite type
       type = { composite: compositeTypes[cur.userDefinedUdtSchema][cur.udtName] };
-    } else if (isKnownPgType(cur.udtName)) {
+    } else if (
       // known pg types
+      isKnownPgType(cur.udtName)
+    ) {
       type = { ts: knownPgTypeToTsTypesMap[cur.udtName] };
     } else {
       // fallback as unknown

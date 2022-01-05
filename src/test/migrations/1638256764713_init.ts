@@ -94,6 +94,7 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
       filesize: { type: 'int', notNull: true },
       dimension: { type: 'media.dimension', notNull: true },
       owner: { type: 'serial', references: { schema: 'users', name: 'users' } },
+      metadata: { type: 'jsonb' },
       created_at: { type: 'timestamptz', notNull: true, default: pgm.func('CURRENT_TIMESTAMP') },
       updated_at: { type: 'timestamptz', notNull: true, default: pgm.func('CURRENT_TIMESTAMP') },
     },

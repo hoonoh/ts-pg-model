@@ -89,8 +89,10 @@ test(titleHelper.should('handle user defined typeMap'), async t => {
   const res = await validateUserConfig({
     connectionURI,
     schemas: ['media'],
-    udtTypeMap: {
-      uuid: 'Buffer',
+    typeMap: {
+      udt: {
+        uuid: 'Buffer',
+      },
     },
   });
   t.is(res.renderTargets.media.images.columns.id.type.ts, 'Buffer');
@@ -150,6 +152,16 @@ test(titleHelper.should('validate `UserConfig` and return expected `Config`'), a
         },
       },
     ],
+    typeMap: {
+      json: [
+        {
+          schema: 'media',
+          tableName: 'images',
+          columnName: 'metadata',
+          name: 'ImageMetadata',
+        },
+      ],
+    },
     output: {
       root: '/generated',
     },

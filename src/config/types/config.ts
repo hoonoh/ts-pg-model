@@ -1,5 +1,6 @@
 import { DeepRequired } from 'ts-essentials';
 
+import { JsonType } from '../../pg-types/json';
 import { PgCompositeType, PgCompositeTypes, PgEnumType, PgEnumTypes } from './pg';
 import { TsType } from './type-map';
 
@@ -39,13 +40,36 @@ export const isIncludeTargets = (target: any): target is IncludeTargets => {
   return Object.keys(target).includes('include');
 };
 
-export type UserConfig = {
+/**
+ * {
+ *  [udt_name]: TsType
+ * }
+ */
+export type UdtTypeMap = Record<string, TsType>;
+
+/**
+ * the record key will be used as generated type name
+ *
+ * {
+ *  [type name]: JsonType
+ * }
+ */
+export type JsonTypeDefinitionMap = Record<string, JsonType>;
+
+export type JsonTypeMap<JsonTypeDefinition> = ColumnBare & {
+  name: keyof JsonTypeDefinition;
+};
+
+export type UserConfig<JsonTypeDefinitions = JsonTypeDefinitionMap> = {
   connectionURI?: ConnectionURI;
   dotEnvPath?: string;
   namingConvention?: Partial<Record<ConfigKey, ChangeCase>>;
   schemas?: string[];
   targetSelectors?: (IncludeTargets | ExcludeTargets)[];
-  udtTypeMap?: Record<string, TsType>;
+  typeMap?: {
+    udt?: UdtTypeMap;
+    json?: JsonTypeMap<JsonTypeDefinitions>[];
+  };
   output?: {
     root?: string;
     includeSchemaPath?: boolean;
@@ -76,16 +100,25 @@ export type ColumnTypeMap = Column & {
   type:
     | {
         ts: TsType;
+        json?: undefined;
         enum?: undefined;
         composite?: undefined;
       }
     | {
         ts?: undefined;
+        json: JsonType;
+        enum?: undefined;
+        composite?: undefined;
+      }
+    | {
+        ts?: undefined;
+        json?: undefined;
         enum: PgEnumType;
         composite?: undefined;
       }
     | {
         ts?: undefined;
+        json?: undefined;
         enum?: undefined;
         composite: PgCompositeType;
       };
