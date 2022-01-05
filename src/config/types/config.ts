@@ -45,7 +45,7 @@ export type UserConfig = {
   namingConvention?: Partial<Record<ConfigKey, ChangeCase>>;
   schemas?: string[];
   targetSelectors?: (IncludeTargets | ExcludeTargets)[];
-  typeMap?: Record<string, TsType>;
+  udtTypeMap?: Record<string, TsType>;
   output?: {
     root?: string;
     includeSchemaPath?: boolean;

@@ -37,7 +37,7 @@ export const validateUserConfig = async ({
   namingConvention,
   schemas,
   targetSelectors,
-  typeMap,
+  udtTypeMap,
   output,
   pool,
 }: UserConfig & { pool?: DatabasePool } = {}) => {
@@ -108,9 +108,9 @@ export const validateUserConfig = async ({
     }
     // type mapping
     let type: ColumnTypeMap['type'] | undefined;
-    if (typeMap && Object.keys(typeMap).includes(cur.udtName)) {
+    if (udtTypeMap && Object.keys(udtTypeMap).includes(cur.udtName)) {
       // user defined type map
-      type = { ts: typeMap[cur.udtName] };
+      type = { ts: udtTypeMap[cur.udtName] };
     } else if (
       cur.userDefinedUdtSchema &&
       enumTypes[cur.userDefinedUdtSchema] &&

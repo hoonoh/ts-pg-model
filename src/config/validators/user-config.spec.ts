@@ -89,7 +89,7 @@ test(titleHelper.should('handle user defined typeMap'), async t => {
   const res = await validateUserConfig({
     connectionURI,
     schemas: ['media'],
-    typeMap: {
+    udtTypeMap: {
       uuid: 'Buffer',
     },
   });
