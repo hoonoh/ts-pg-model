@@ -40,14 +40,30 @@ included / excluded.
 
 ### Type mapping
 
+#### User defined types (UDT)
+
 Most of known Postgres types should be mapped automatically. If there is an unknown data type that
-needs casting into a primitive type, use `typeMap` settings. Array type (e.g. `_text`, with
+needs casting into a primitive type, use `typeMap.udt` settings. Array type (e.g. `_text`, with
 underscore prefix in `udt_name`) should be automatically handled.
+
+#### JSON(B) definitions
+
+User defined JSON(B) types can be achived via `typeMap.json` settings & type definitions in the
+settings file. When `typeMap.json` is defined, this will require JSON type definitions as
+`UserConfig` arguments (`UserConfig<JsonTypeMap>`).
 
 #### Example
 
 ```ts
-const config: UserConfig = {
+export interface JsonTypeMap extends Record<string, JsonType> {
+  MediaMetadata: {
+    width: number;
+    height: number;
+  };
+}
+
+// `UserConfig` variable has to be either exported via named export (with name `userConfig`) or default export
+export const userConfig: UserConfig<JsonTypeMap> = {
   // includes `users` schema only.
   schemas: ['users'],
   targetSelectors: [
@@ -76,6 +92,16 @@ const config: UserConfig = {
       },
     },
   ],
+  typeMap: {
+    json: [
+      {
+        schema: 'media',
+        tableName: 'images',
+        columnName: 'metadata',
+        name: 'MediaMetadata',
+      },
+    ],
+  },
 };
 ```
 
