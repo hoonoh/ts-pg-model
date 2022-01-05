@@ -1,6 +1,6 @@
 import { DeepRequired } from 'ts-essentials';
 
-import { PgCompositeTypes, PgEnumTypes } from './pg';
+import { PgCompositeType, PgCompositeTypes, PgEnumType, PgEnumTypes } from './pg';
 import { TsType } from './type-map';
 
 export type ConfigKey = 'schemas' | 'tables' | 'columns';
@@ -72,9 +72,31 @@ export type Column = {
   default?: string | null;
 };
 
+export type ColumnTypeMap = Column & {
+  type:
+    | {
+        ts: TsType;
+        enum?: undefined;
+        composite?: undefined;
+      }
+    | {
+        ts?: undefined;
+        enum: PgEnumType;
+        composite?: undefined;
+      }
+    | {
+        ts?: undefined;
+        enum?: undefined;
+        composite: PgCompositeType;
+      };
+};
+
 export type ColumnBare = Pick<Column, 'schema' | 'tableName' | 'columnName'>;
 
-export type RenderTargets = Record<string, Record<string, Table>>;
+export type RenderTargets = Record<
+  string,
+  Record<string, Table & { columns: Record<string, ColumnTypeMap> }>
+>;
 
 export type Config = Required<Pick<UserConfig, 'connectionURI' | 'schemas'>> &
   DeepRequired<Pick<UserConfig, 'output'>> &
