@@ -46,7 +46,10 @@ type Override = {
 /**
  * by default mocks schemas `foo` & `bar` & tables `foo.bar` & `bar.baz`
  */
-export const mockPool = (overrides?: Override[]) =>
+export const mockPool = (
+  overrides?: Override[],
+  tableAndColumns: Column[] = defaultTableAndColumns,
+) =>
   createMockPool({
     query: async (sql /*, values*/) => {
       // trim line whitespaces
@@ -68,10 +71,14 @@ export const mockPool = (overrides?: Override[]) =>
       if (overriden) return overriden;
 
       if (normalize(sql) === normalize(searchPathQuery.sql)) {
-        return createMockQueryResult([{ search_path: 'foo,bar' }]);
+        const searchPaths = tableAndColumns.reduce((acc, cur) => {
+          if (!acc.includes(cur.schema)) acc.push(cur.schema);
+          return acc;
+        }, [] as string[]);
+        return createMockQueryResult([{ search_path: searchPaths.join(',') }]);
       }
       if (normalize(sql) === normalize(tableAndColumnsQuery.sql)) {
-        return createMockQueryResult(defaultTableAndColumns);
+        return createMockQueryResult(tableAndColumns);
       }
       return createMockQueryResult([]);
     },
