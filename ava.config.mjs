@@ -1,11 +1,11 @@
-const { resolve } = require('path');
+import { resolve } from 'path';
 
-module.exports = ({ projectDir }) => {
+export default ({ projectDir }) => {
   return {
     extensions: ['ts'],
     require: ['ts-node/register/transpile-only'],
     files: ['src/**/*.spec.ts'],
-    snapshotDir: resolve(__dirname, './src/test/snapshots'),
+    snapshotDir: resolve('./src/test/snapshots'),
     require: ['ts-node/register', './src/test/init.ts'],
   };
 };
