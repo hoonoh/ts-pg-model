@@ -45,7 +45,7 @@ export const userConfig: UserConfig<JsonTypeMap> = {
 };
 `;
 
-const commonExpect = [
+const commonExpect: [name: string, definition: string][] = [
   ['FooType', '{\nfoo: string;\nbar: number;\nbaz: {\nfoobar: number;\nbarbaz: string;\n};\n};'],
   ['BarType', '{\nbar: number;\nbaz: string;\n};'],
 ];

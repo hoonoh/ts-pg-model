@@ -40,23 +40,27 @@ test(titleHelper.should('return undefined if no names are supplied'), async t =>
 test(titleHelper.throwsWhen('invalid table name format is given'), async t => {
   const invalidTableName = 'foo.bar.baz';
   const error = t.throws(() => validateTableNames({ tableAndColumns, names: [invalidTableName] }));
-  t.is(error.message, `invalid table name: "${invalidTableName}"`);
+  t.not(error, undefined);
+  if (error) t.is(error.message, `invalid table name: "${invalidTableName}"`);
 });
 
 test(titleHelper.throwsWhen('invalid schema in table name is given'), async t => {
   const invalidTableName = 'foo.bar';
   const error = t.throws(() => validateTableNames({ tableAndColumns, names: [invalidTableName] }));
-  t.is(error.message, `invalid table name: "${invalidTableName}"`);
+  t.not(error, undefined);
+  if (error) t.is(error.message, `invalid table name: "${invalidTableName}"`);
 });
 
 test(titleHelper.throwsWhen('invalid table name without schema is given'), async t => {
   const invalidTableName = 'bar';
   const error = t.throws(() => validateTableNames({ tableAndColumns, names: [invalidTableName] }));
-  t.is(error.message, `invalid table name: "${invalidTableName}"`);
+  t.not(error, undefined);
+  if (error) t.is(error.message, `invalid table name: "${invalidTableName}"`);
 });
 
 test(titleHelper.throwsWhen('invalid table name with valid schema is given'), async t => {
   const invalidTableName = 'users.foo';
   const error = t.throws(() => validateTableNames({ tableAndColumns, names: [invalidTableName] }));
-  t.is(error.message, `invalid table name: "${invalidTableName}"`);
+  t.not(error, undefined);
+  if (error) t.is(error.message, `invalid table name: "${invalidTableName}"`);
 });

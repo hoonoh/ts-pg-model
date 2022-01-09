@@ -61,7 +61,8 @@ test(titleHelper.throwsWhen('invalid column name format is given'), async t => {
   const error = t.throws(() =>
     validateColumnNames({ tableAndColumns, names: [invalidColumnName] }),
   );
-  t.is(error.message, `invalid column name: "${invalidColumnName}"`);
+  t.not(error, undefined);
+  if (error) t.is(error.message, `invalid column name: "${invalidColumnName}"`);
 });
 
 test(titleHelper.throwsWhen('column name with invalid schema is given'), async t => {
@@ -69,7 +70,8 @@ test(titleHelper.throwsWhen('column name with invalid schema is given'), async t
   const error = t.throws(() =>
     validateColumnNames({ tableAndColumns, names: [invalidColumnName] }),
   );
-  t.is(error.message, `invalid column name: "${invalidColumnName}"`);
+  t.not(error, undefined);
+  if (error) t.is(error.message, `invalid column name: "${invalidColumnName}"`);
 });
 
 test(titleHelper.throwsWhen('column name with invalid table is given'), async t => {
@@ -77,7 +79,8 @@ test(titleHelper.throwsWhen('column name with invalid table is given'), async t 
   const error = t.throws(() =>
     validateColumnNames({ tableAndColumns, names: [invalidColumnName] }),
   );
-  t.is(error.message, `invalid column name: "${invalidColumnName}"`);
+  t.not(error, undefined);
+  if (error) t.is(error.message, `invalid column name: "${invalidColumnName}"`);
 });
 
 test(titleHelper.throwsWhen('invalid column name given'), async t => {
@@ -85,5 +88,6 @@ test(titleHelper.throwsWhen('invalid column name given'), async t => {
   const error = t.throws(() =>
     validateColumnNames({ tableAndColumns, names: [invalidColumnName] }),
   );
-  t.is(error.message, `invalid column name: "${invalidColumnName}"`);
+  t.not(error, undefined);
+  if (error) t.is(error.message, `invalid column name: "${invalidColumnName}"`);
 });

@@ -76,7 +76,8 @@ test(titleHelper.throwsWhen('invalid schema is given'), async t => {
       schemas: [`${invalidSchema}`],
     }),
   );
-  t.is(error.message, `invalid schema name: "${invalidSchema}"`);
+  t.not(error, undefined);
+  if (error) t.is(error.message, `invalid schema name: "${invalidSchema}"`);
 });
 
 titleHelper.ungroup();
