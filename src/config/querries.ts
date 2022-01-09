@@ -41,6 +41,7 @@ export const enumTypesBareQuery = sql<PgEnumTypeBare>`
   order by "schema", "name", enumsortorder
 `;
 
+// slonik-live-server-disable-cost-errors
 export const compositeTypesBareQuery = sql<PgCompositeTypeBare>`
   /* compositeTypesBareQuery */
   with types as (

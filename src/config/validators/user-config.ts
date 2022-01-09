@@ -9,6 +9,7 @@ import { ConnectionError, createPool, DatabasePool } from 'slonik';
 import { getPgTypes } from '../pg-type';
 import { searchPathQuery, tableAndColumnsQuery } from '../querries';
 import {
+  changeCaseMap,
   ColumnTypeMap,
   Config,
   isConnectionURI,
@@ -34,7 +35,7 @@ const defaultConfig: Pick<Config, 'output'> = {
 export const validateUserConfig = async ({
   connectionURI,
   dotEnvPath,
-  namingConvention,
+  conventions,
   schemas,
   targetSelectors,
   typeMap,
@@ -208,7 +209,12 @@ export const validateUserConfig = async ({
 
   const rtn: Config = {
     connectionURI,
-    namingConvention,
+    conventions: {
+      schemas: changeCaseMap[conventions?.schemas || 'camelCase'],
+      columns: changeCaseMap[conventions?.columns || 'keep'],
+      types: changeCaseMap[conventions?.types || 'camelCase'],
+      paths: changeCaseMap[conventions?.paths || 'paramCase'],
+    },
     schemas: Object.keys(renderTargets),
     renderTargets,
     enumTypes,

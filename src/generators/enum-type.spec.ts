@@ -1,6 +1,6 @@
 import test from 'ava';
+import { pascalCase } from 'change-case';
 import { lstatSync, readdirSync, readFileSync } from 'fs';
-import { pascalCase } from 'pascal-case';
 import { resolve } from 'path';
 
 import { Column, validateUserConfig } from '../config';
@@ -13,12 +13,6 @@ import { TitleHelper } from '../test/helpers/title';
 import { generateEnumFiles } from './enum-type';
 
 const generateRoot = resolve('/test', 'generated');
-// const generateRoot = resolve('/', 'generated');
-
-test.serial.afterEach(() => {
-  MockFs.restore();
-});
-
 const titleHelper = new TitleHelper();
 
 test.serial(titleHelper.should('generate enum files as expected'), async t => {
@@ -26,19 +20,19 @@ test.serial(titleHelper.should('generate enum files as expected'), async t => {
     {
       schema: 'foo',
       name: 'bar',
-      label: 'fooBarLabel1',
+      label: 'foo_bar_label1',
       sortOrder: 1,
     },
     {
       schema: 'foo',
       name: 'bar',
-      label: 'fooBarLabel2',
+      label: 'foo_bar_label2',
       sortOrder: 2,
     },
     {
       schema: 'foo',
       name: 'bar',
-      label: 'fooBarLabel3',
+      label: 'foo_bar_label3',
       sortOrder: 3,
     },
   ];
@@ -47,19 +41,19 @@ test.serial(titleHelper.should('generate enum files as expected'), async t => {
     {
       schema: 'bar',
       name: 'baz',
-      label: 'barBazLabel1',
+      label: 'bar_baz_label1',
       sortOrder: 1,
     },
     {
       schema: 'bar',
       name: 'baz',
-      label: 'barBazLabel2',
+      label: 'bar_baz_label2',
       sortOrder: 2,
     },
     {
       schema: 'bar',
       name: 'baz',
-      label: 'barBazLabel3',
+      label: 'bar_baz_label3',
       sortOrder: 3,
     },
   ];
@@ -100,13 +94,14 @@ test.serial(titleHelper.should('generate enum files as expected'), async t => {
     connectionURI,
     output: { root: generateRoot, includeSchemaPath: true },
     pool,
+    conventions: {
+      types: 'camelCase',
+    },
   });
 
   await generateEnumFiles(config);
 
   // check each schema directories created
-  const enumFiles = readdirSync(generateRoot);
-  t.true(enumFiles.length === defaultMockPool.schemas.length);
   readdirSync(generateRoot).forEach(p => t.true(defaultMockPool.schemas.includes(p)));
 
   defaultMockPool.schemas.forEach(s => {
@@ -115,12 +110,13 @@ test.serial(titleHelper.should('generate enum files as expected'), async t => {
     // check each enum files
     const enumFilePath = resolve(generateRoot, s, 'enum-types.ts');
     t.notThrows(() => readFileSync(enumFilePath).toString());
+    const enumCase = config.conventions.types;
     const enumFile = readFileSync(enumFilePath).toString();
     if (s === 'foo') {
-      enumFoo.forEach(e => t.true(enumFile.includes(`${e.label} = "${e.label}"`)));
+      enumFoo.forEach(e => t.true(enumFile.includes(`${enumCase(e.label)} = "${e.label}"`)));
       t.true(enumFile.includes(`export enum ${pascalCase(enumFoo[0].name)}`));
     } else {
-      enumBar.forEach(e => t.true(enumFile.includes(`${e.label} = "${e.label}"`)));
+      enumBar.forEach(e => t.true(enumFile.includes(`${enumCase(e.label)} = "${e.label}"`)));
       t.true(enumFile.includes(`export enum ${pascalCase(enumBar[0].name)}`));
     }
   });

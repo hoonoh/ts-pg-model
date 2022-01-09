@@ -14,10 +14,52 @@ location with `dotEnvPath` in configuration.
 
 ### Naming convensions
 
-You can choose naming convensions of schemas, tables and columns. Choices are open to all
-methods provided by [`change-case`](https://www.npmjs.com/package/change-case).
+```ts
+export type ChangeCase =
+  | 'camelCase'
+  | 'capitalCase'
+  | 'constantCase'
+  | 'dotCase'
+  | 'headerCase'
+  | 'noCase'
+  | 'paramCase'
+  | 'pascalCase'
+  | 'pathCase'
+  | 'sentenceCase'
+  | 'snakeCase'
+  | 'keep';
 
-e.g. Transform column name `created_at` to camel cased `createdAt`;
+const config: UserConfig = {
+  conventions: {
+    schemas: 'camelCase',
+    columns: 'keep',
+    types: 'camelCase',
+    paths: 'paramCase',
+  },
+};
+```
+
+#### Code convensions
+
+You can choose code convensions of schemas, columns and types. Choices are open to all methods
+provided by [`change-case`](https://www.npmjs.com/package/change-case) or `keep` (no transform).
+
+##### Schema names
+
+Schema code convensions are applied to namespaces. Defaults to `camelCase`.
+
+##### Column names
+
+Column code conventions are applied to column names. Defaults to `keep`. Can be useful if you prefer
+automatic column name transformation to `camelCase`, etc.
+
+##### Enum Types
+
+Enum type code conventions are applied to Enum member names. Defaults to `camelCase`.
+
+#### Paths and filename conventions
+
+Generated file paths and filename conventions. Defaults to `paramCase`.
 
 ### Selecting targets
 
@@ -101,6 +143,9 @@ export const userConfig: UserConfig<JsonTypeMap> = {
         name: 'MediaMetadata',
       },
     ],
+  },
+  conventions: {
+    columns: 'camelCase',
   },
 };
 ```

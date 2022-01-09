@@ -1,10 +1,22 @@
+import {
+  capitalCase,
+  constantCase,
+  dotCase,
+  headerCase,
+  noCase,
+  paramCase,
+  pascalCase,
+  pathCase,
+  sentenceCase,
+} from 'change-case';
+import { camelCase, snakeCase } from 'lodash';
 import { DeepRequired } from 'ts-essentials';
 
 import { JsonType } from '../../pg-types/json';
 import { PgCompositeType, PgCompositeTypes, PgEnumType, PgEnumTypes } from './pg';
 import { TsType } from './type-map';
 
-export type ConfigKey = 'schemas' | 'tables' | 'columns';
+export type ConfigKey = 'schemas' | 'tables' | 'columns' | 'types';
 
 export type ConnectionURI = `${'postgres' | 'postgresql'}://${string}`;
 
@@ -23,7 +35,23 @@ export type ChangeCase =
   | 'pascalCase'
   | 'pathCase'
   | 'sentenceCase'
-  | 'snakeCase';
+  | 'snakeCase'
+  | 'keep';
+
+export const changeCaseMap: Record<ChangeCase, (input: string) => string> = {
+  camelCase: camelCase,
+  capitalCase: capitalCase,
+  constantCase: constantCase,
+  dotCase: dotCase,
+  headerCase: headerCase,
+  noCase: noCase,
+  paramCase: paramCase,
+  pascalCase: pascalCase,
+  pathCase: pathCase,
+  sentenceCase: sentenceCase,
+  snakeCase: snakeCase,
+  keep: (input: string) => input,
+} as const;
 
 type NonEmptyArray<T> = [T, ...T[]];
 
@@ -63,7 +91,7 @@ export type JsonTypeMap<JsonTypeDefinition> = ColumnBare & {
 export type UserConfig<JsonTypeDefinitions = JsonTypeDefinitionMap> = {
   connectionURI?: ConnectionURI;
   dotEnvPath?: string;
-  namingConvention?: Partial<Record<ConfigKey, ChangeCase>>;
+  conventions?: Partial<Record<Exclude<ConfigKey, 'tables'> | 'paths', ChangeCase>>;
   schemas?: string[];
   targetSelectors?: (IncludeTargets | ExcludeTargets)[];
   typeMap?: {
@@ -133,8 +161,10 @@ export type RenderTargets = Record<
 
 export type Config = Required<Pick<UserConfig, 'connectionURI' | 'schemas'>> &
   DeepRequired<Pick<UserConfig, 'output'>> &
-  Omit<UserConfig, 'dotEnvPath' | 'targetSelectors'> & {
+  Omit<UserConfig, 'dotEnvPath' | 'targetSelectors' | 'conventions'> & {
     renderTargets: RenderTargets;
     enumTypes: PgEnumTypes;
     compositeTypes: PgCompositeTypes;
+  } & {
+    conventions: Record<Exclude<ConfigKey, 'tables'> | 'paths', (input: string) => string>;
   };

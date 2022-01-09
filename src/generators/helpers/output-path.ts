@@ -20,7 +20,7 @@ export const resolveOutputPath = ({
   return resolve(
     config.output.root,
     ...(config.output.includeSchemaPath || config.schemas.length > 1
-      ? [schema, filename]
+      ? [config.conventions.paths(schema), filename]
       : [filename]),
   );
 };
