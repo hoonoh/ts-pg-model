@@ -19,6 +19,7 @@ export const tableAndColumnsQuery = sql<Column>`
     udt_name "udtName",
     is_nullable::bool "isNullable",
     pg_catalog.obj_description(oid, 'pg_class') "tableComment",
+    pg_catalog.col_description(oid, ordinal_position) "columnComment",
     column_default "default"
   from information_schema.columns c
   join pg_catalog.pg_class pc on pc.relname = c.table_name

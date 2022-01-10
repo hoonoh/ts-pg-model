@@ -121,6 +121,7 @@ export type Column = {
   udtName: string;
   isNullable: boolean;
   tableComment?: string | null;
+  columnComment?: string | null;
   defaults?: string | null;
 };
 

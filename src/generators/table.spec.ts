@@ -28,7 +28,7 @@ test(titleHelper.should('render tables'), async t => {
           pgColumns: [
             {
               columnName: 'baz_qux',
-              type: 'text',
+              pgType: 'text',
               isNullable: true,
             },
           ],
@@ -54,7 +54,7 @@ test(titleHelper.should('render tables'), async t => {
           pgColumns: [
             {
               columnName: 'qux',
-              type: 'text',
+              pgType: 'text',
             },
           ],
           enumColumns: [

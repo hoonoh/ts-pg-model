@@ -49,6 +49,7 @@ export const mockEnumColumn = ({
   enumLabels,
   isNullable,
   defaults,
+  columnComment,
 }: {
   schema: string;
   udtSchema?: string;
@@ -58,6 +59,7 @@ export const mockEnumColumn = ({
   enumLabels: string[];
   isNullable?: boolean;
   defaults?: string | null;
+  columnComment?: string;
 }) => {
   const column: Record<string, ColumnTypeMap> = {
     [columnName]: {
@@ -76,6 +78,7 @@ export const mockEnumColumn = ({
           labels: enumLabels,
         },
       },
+      columnComment,
     },
   };
   return column;
@@ -88,6 +91,7 @@ export const mockColumn = ({
   pgType,
   isNullable,
   defaults,
+  columnComment,
 }: {
   schema: string;
   tableName: string;
@@ -95,6 +99,7 @@ export const mockColumn = ({
   pgType: KnownPgType;
   isNullable?: boolean;
   defaults?: string | null;
+  columnComment?: string;
 }) => {
   const column: Record<string, ColumnTypeMap> = {
     [columnName]: {
@@ -108,6 +113,7 @@ export const mockColumn = ({
       type: {
         ts: knownPgTypeToTsTypesMap[pgType],
       },
+      columnComment,
     },
   };
   return column;
@@ -121,20 +127,8 @@ export const mockTable = ({
 }: {
   schema: string;
   tableName: string;
-  pgColumns?: {
-    columnName: string;
-    type: KnownPgType;
-    isNullable?: boolean;
-    defaults?: string | null;
-  }[];
-  enumColumns?: {
-    columnName: string;
-    udtSchema?: string;
-    enumName: string;
-    enumLabels: string[];
-    isNullable?: boolean;
-    defaults?: string | null;
-  }[];
+  pgColumns?: Omit<Parameters<typeof mockColumn>[0], 'schema' | 'tableName'>[];
+  enumColumns?: Omit<Parameters<typeof mockEnumColumn>[0], 'schema' | 'tableName'>[];
   // todo: add json types
 }) => {
   const columns = pgColumns?.reduce((acc, c) => {
@@ -144,7 +138,7 @@ export const mockTable = ({
         schema,
         tableName,
         columnName: c.columnName,
-        pgType: c.type,
+        pgType: c.pgType,
         defaults: c.defaults,
         isNullable: c.isNullable,
       }),
@@ -187,20 +181,8 @@ export const mockSchema = ({
   schema: string;
   tableSpecs: {
     tableName: string;
-    pgColumns?: {
-      columnName: string;
-      type: KnownPgType;
-      isNullable?: boolean;
-      defaults?: string | null;
-    }[];
-    enumColumns?: {
-      columnName: string;
-      udtSchema?: string;
-      enumName: string;
-      enumLabels: string[];
-      isNullable?: boolean;
-      defaults?: string | null;
-    }[];
+    pgColumns?: Omit<Parameters<typeof mockColumn>[0], 'schema' | 'tableName'>[];
+    enumColumns?: Omit<Parameters<typeof mockEnumColumn>[0], 'schema' | 'tableName'>[];
     // todo: add json types
   }[];
 }) => {
