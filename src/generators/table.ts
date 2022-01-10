@@ -45,10 +45,11 @@ export const generateTableFile = async (config: Config) => {
       });
 
       const tableDocs = [
-        `- schema: \`${tableSpec.schema}\``,
-        `- table name: \`${tableSpec.tableName}\``,
-        // `table comment: ${}` // todo: add table comment to tableSpec table type
+        `@table ${tableSpec.schema}.${tableSpec.tableName}`,
+        `@schema ${tableSpec.schema}`,
+        `@name ${tableSpec.tableName}`,
       ];
+      if (tableSpec.comment) tableDocs.push(`@comment ${tableSpec.comment}`);
 
       sourceFile.addInterface({
         isExported: true,
@@ -60,30 +61,33 @@ export const generateTableFile = async (config: Config) => {
             : columnSpec.type.ts;
           assert(type !== undefined, 'unexpected undefined column type');
 
-          let columnType = `\`${columnSpec.dataType}\``;
+          let columnType = `${columnSpec.dataType}`;
           if (columnSpec.type.enum) {
-            columnType = `[Enum] \`${columnSpec.type.enum.schema}.${columnSpec.type.enum.name}\``;
+            columnType = `[enum] ${columnSpec.type.enum.schema}.${columnSpec.type.enum.name}`;
           }
           const docs = [
-            `${columnSpec.schema}.${columnSpec.tableName}.${columnSpec.columnName}`,
-            `- column name: \`${columnSpec.columnName}\``,
-            `- column type: ${columnType}`,
+            `@column ${columnSpec.schema}.${columnSpec.tableName}.${columnSpec.columnName}`,
+            `@name ${columnSpec.columnName}`,
+            `@pgtype ${columnType}`,
           ];
 
           if (columnSpec.isNullable) {
-            docs.push(`- nullable: \`true\``);
+            docs.push(`@nullable`);
             type += ' | null';
           }
 
           if (columnSpec.defaults !== undefined) {
-            docs.push(`- defaults: \`${columnSpec.defaults}\``);
+            docs.push(`@default '${columnSpec.defaults}'`);
+          }
+
+          if (columnSpec.comment) {
+            docs.push(`@comment '${columnSpec.comment}'`);
           }
 
           /**
            * todo: add following to jsdocs
            * - indices
            * - fk / pk / unique constraints
-           * - comments
            */
 
           return {

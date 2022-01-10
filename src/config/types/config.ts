@@ -104,9 +104,23 @@ export type UserConfig<JsonTypeDefinitions = JsonTypeDefinitionMap> = {
   };
 };
 
+export type TableAndColumn = {
+  schema: string;
+  tableName: string;
+  columnName: string;
+  dataType: KnownPgType | 'USER-DEFINED';
+  userDefinedUdtSchema?: string | null;
+  udtName: string;
+  isNullable: boolean;
+  tableComment?: string | null;
+  columnComment?: string | null;
+  defaults?: string | null;
+};
+
 export type Table = {
   schema: string;
   tableName: string;
+  comment?: string;
   columns: Record<string, Column>;
 };
 
@@ -120,8 +134,7 @@ export type Column = {
   userDefinedUdtSchema?: string | null;
   udtName: string;
   isNullable: boolean;
-  tableComment?: string | null;
-  columnComment?: string | null;
+  comment?: string | null;
   defaults?: string | null;
 };
 
@@ -153,7 +166,7 @@ export type ColumnTypeMap = Column & {
       };
 };
 
-export type ColumnBare = Pick<Column, 'schema' | 'tableName' | 'columnName'>;
+export type ColumnBare = Pick<Column, 'schema' | 'tableName' | 'columnName' | 'comment'>;
 
 export type RenderTargets = Record<
   string,

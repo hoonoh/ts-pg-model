@@ -31,7 +31,7 @@ export const renderTargetsToQueryRes = (renderTargets: RenderTargets) => {
           userDefinedUdtSchema: columnSpec.userDefinedUdtSchema,
           udtName: columnSpec.udtName,
           isNullable: columnSpec.isNullable,
-          tableComment: columnSpec.tableComment,
+          comment: columnSpec.comment,
           defaults: columnSpec.defaults,
         });
       });
@@ -49,7 +49,7 @@ export const mockEnumColumn = ({
   enumLabels,
   isNullable,
   defaults,
-  columnComment,
+  comment,
 }: {
   schema: string;
   udtSchema?: string;
@@ -59,7 +59,7 @@ export const mockEnumColumn = ({
   enumLabels: string[];
   isNullable?: boolean;
   defaults?: string | null;
-  columnComment?: string;
+  comment?: string;
 }) => {
   const column: Record<string, ColumnTypeMap> = {
     [columnName]: {
@@ -78,7 +78,7 @@ export const mockEnumColumn = ({
           labels: enumLabels,
         },
       },
-      columnComment,
+      comment,
     },
   };
   return column;
@@ -91,7 +91,7 @@ export const mockColumn = ({
   pgType,
   isNullable,
   defaults,
-  columnComment,
+  comment,
 }: {
   schema: string;
   tableName: string;
@@ -99,7 +99,7 @@ export const mockColumn = ({
   pgType: KnownPgType;
   isNullable?: boolean;
   defaults?: string | null;
-  columnComment?: string;
+  comment?: string;
 }) => {
   const column: Record<string, ColumnTypeMap> = {
     [columnName]: {
@@ -113,7 +113,7 @@ export const mockColumn = ({
       type: {
         ts: knownPgTypeToTsTypesMap[pgType],
       },
-      columnComment,
+      comment,
     },
   };
   return column;
@@ -139,8 +139,9 @@ export const mockTable = ({
         tableName,
         columnName: c.columnName,
         pgType: c.pgType,
-        defaults: c.defaults,
         isNullable: c.isNullable,
+        defaults: c.defaults,
+        comment: c.comment,
       }),
     };
     return acc;
@@ -157,6 +158,7 @@ export const mockTable = ({
         enumLabels: c.enumLabels,
         isNullable: c.isNullable,
         defaults: c.defaults,
+        comment: c.comment,
       }),
     };
     return acc;

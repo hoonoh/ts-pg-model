@@ -1,4 +1,5 @@
 import test from 'ava';
+import MockDate from 'mockdate';
 
 import { MockFs } from './helpers/mock-fs';
 
@@ -8,3 +9,4 @@ test.serial.afterEach(() => {
 });
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY;
+MockDate.set('2000-01-01');

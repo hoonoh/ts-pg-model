@@ -6574,6 +6574,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mockdate@npm:3.0.5":
+  version: 3.0.5
+  resolution: "mockdate@npm:3.0.5"
+  checksum: 72b66786d9e072379693f80bf9fb82eb5153c9741030a4294184e3ccaf952d0713fae8966f77780580cf902f8ec7ccc95577b0ad47980d255e2ffb71fc7ca49c
+  languageName: node
+  linkType: hard
+
 "modify-values@npm:^1.0.0":
   version: 1.0.1
   resolution: "modify-values@npm:1.0.1"
@@ -9604,6 +9611,7 @@ __metadata:
     lerna: 4.0.0
     lodash: 4.17.21
     mock-fs: 5.1.2
+    mockdate: 3.0.5
     node-pg-migrate: 6.2.1
     prettier: 2.5.1
     reflect-metadata: 0.1.13

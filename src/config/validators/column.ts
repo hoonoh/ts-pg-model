@@ -1,4 +1,4 @@
-import { Column, ColumnBare } from '../types/config';
+import { ColumnBare, TableAndColumn } from '../types/config';
 import { throwInvalid } from './error';
 
 export const validateColumnNames = ({
@@ -6,7 +6,7 @@ export const validateColumnNames = ({
   tableAndColumns,
 }: {
   names?: string[];
-  tableAndColumns: readonly Column[];
+  tableAndColumns: readonly TableAndColumn[];
 }) => {
   //
   const rtn: ColumnBare[] = [];
@@ -46,7 +46,12 @@ export const validateColumnNames = ({
             l.columnName === cur.columnName,
         )
       ) {
-        rtnSub.push({ schema: cur.schema, tableName: cur.tableName, columnName: cur.columnName });
+        rtnSub.push({
+          schema: cur.schema,
+          tableName: cur.tableName,
+          columnName: cur.columnName,
+          comment: cur.columnComment,
+        });
       }
     });
 

@@ -1,4 +1,4 @@
-import { Column, TableBare } from '../types/config';
+import { TableAndColumn, TableBare } from '../types/config';
 import { throwInvalid } from './error';
 
 export const validateTableNames = ({
@@ -6,7 +6,7 @@ export const validateTableNames = ({
   tableAndColumns,
 }: {
   names?: string[];
-  tableAndColumns: readonly Column[];
+  tableAndColumns: readonly TableAndColumn[];
 }) => {
   //
   const rtn: TableBare[] = [];
@@ -32,7 +32,11 @@ export const validateTableNames = ({
         !rtn.find(l => l.schema === cur.schema && l.tableName === cur.tableName) &&
         !rtnSub.find(l => l.schema === cur.schema && l.tableName === cur.tableName)
       ) {
-        rtnSub.push({ schema: cur.schema, tableName: cur.tableName });
+        rtnSub.push({
+          schema: cur.schema,
+          tableName: cur.tableName,
+          comment: !!cur.tableComment ? cur.tableComment : undefined,
+        });
       }
     });
 

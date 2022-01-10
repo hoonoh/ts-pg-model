@@ -30,6 +30,7 @@ test(titleHelper.should('render tables'), async t => {
               columnName: 'baz_qux',
               pgType: 'text',
               isNullable: true,
+              comment: 'baz_qux comment',
             },
           ],
           enumColumns: [
@@ -38,6 +39,7 @@ test(titleHelper.should('render tables'), async t => {
               enumName: 'bar_baz',
               enumLabels: ['bar_baz_label_1', 'bar_baz_label_2', 'bar_baz_label_2'],
               defaults: 'bar_baz_label1',
+              comment: 'enum_bar_baz comment',
             },
           ],
         },

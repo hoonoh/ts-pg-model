@@ -1,9 +1,9 @@
 import { createMockPool, createMockQueryResult, QueryResult, QueryResultRow } from 'slonik';
 
-import { Column, Table } from '../../config';
+import { Table, TableAndColumn } from '../../config';
 import { searchPathQuery, tableAndColumnsQuery } from '../../config/querries';
 
-const defaultTableAndColumns: Column[] = [
+const defaultTableAndColumns: TableAndColumn[] = [
   {
     schema: 'foo',
     tableName: 'bar',
@@ -48,7 +48,7 @@ type Override = {
  */
 export const mockPool = (
   overrides?: Override[],
-  tableAndColumns: Column[] = defaultTableAndColumns,
+  tableAndColumns: TableAndColumn[] = defaultTableAndColumns,
 ) =>
   createMockPool({
     query: async (sql /*, values*/) => {

@@ -1,6 +1,6 @@
 import { sql } from 'slonik';
 
-import { Column } from './types/config';
+import { TableAndColumn } from './types/config';
 import { PgCompositeTypeBare, PgEnumTypeBare } from './types/pg';
 
 export const searchPathQuery = sql<{ search_path: string }>`
@@ -8,7 +8,7 @@ export const searchPathQuery = sql<{ search_path: string }>`
   show search_path
 `;
 
-export const tableAndColumnsQuery = sql<Column>`
+export const tableAndColumnsQuery = sql<TableAndColumn>`
   /* tableAndColumnsQuery */
   select
     table_schema "schema",
