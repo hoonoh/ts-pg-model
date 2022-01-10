@@ -55,7 +55,7 @@ export const generateTableFile = async (config: Config) => {
         name: pascalCase(tableName),
         docs: [tableDocs.join('\n')],
         properties: Object.entries(tableSpec.columns).map(([columnName, columnSpec]) => {
-          const type = columnSpec.type.enum
+          let type = columnSpec.type.enum
             ? pascalCase(columnSpec.type.enum.name)
             : columnSpec.type.ts;
           assert(type !== undefined, 'unexpected undefined column type');
@@ -72,10 +72,11 @@ export const generateTableFile = async (config: Config) => {
 
           if (columnSpec.isNullable) {
             docs.push(`- nullable: \`true\``);
+            type += ' | null';
           }
 
-          if (columnSpec.default !== undefined) {
-            docs.push(`- defaults: \`${columnSpec.default}\``);
+          if (columnSpec.defaults !== undefined) {
+            docs.push(`- defaults: \`${columnSpec.defaults}\``);
           }
 
           /**

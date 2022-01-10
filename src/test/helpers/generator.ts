@@ -133,7 +133,7 @@ export const mockTable = ({
     enumName: string;
     enumLabels: string[];
     isNullable?: boolean;
-    default?: string | null;
+    defaults?: string | null;
   }[];
   // todo: add json types
 }) => {
@@ -161,6 +161,8 @@ export const mockTable = ({
         udtSchema: c.udtSchema,
         enumName: c.enumName,
         enumLabels: c.enumLabels,
+        isNullable: c.isNullable,
+        defaults: c.defaults,
       }),
     };
     return acc;
@@ -197,7 +199,7 @@ export const mockSchema = ({
       enumName: string;
       enumLabels: string[];
       isNullable?: boolean;
-      default?: string | null;
+      defaults?: string | null;
     }[];
     // todo: add json types
   }[];

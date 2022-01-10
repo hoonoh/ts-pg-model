@@ -3,10 +3,10 @@ import { pascalCase } from 'change-case';
 import { readdirSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 
-import { Column, validateUserConfig } from '../config';
+import { validateUserConfig } from '../config';
 import { enumTypesBareQuery, tableAndColumnsQuery } from '../config/querries';
-import { PgEnumTypeBare } from '../config/types/pg';
 import { connectionURI } from '../test/constants';
+import { mockSchema, renderTargetsToQueryRes } from '../test/helpers/generator';
 import { MockFs } from '../test/helpers/mock-fs';
 import { mockPool } from '../test/helpers/mock-pool';
 import { TitleHelper } from '../test/helpers/title';
@@ -19,85 +19,57 @@ const titleHelper = new TitleHelper();
 test(titleHelper.should('render tables'), async t => {
   MockFs.mockDirectory(generateRoot);
 
-  const enumFooBar: PgEnumTypeBare[] = [
-    {
+  const { columns: columnsFooBar, enums: enumFooBar } = renderTargetsToQueryRes({
+    ...mockSchema({
       schema: 'foo_bar',
-      name: 'bar_baz',
-      label: 'bar_baz_label1',
-      sortOrder: 1,
-    },
-    {
-      schema: 'foo_bar',
-      name: 'bar_baz',
-      label: 'bar_baz_label2',
-      sortOrder: 2,
-    },
-    {
-      schema: 'foo_bar',
-      name: 'bar_baz',
-      label: 'bar_baz_label3',
-      sortOrder: 3,
-    },
-  ];
+      tableSpecs: [
+        {
+          tableName: 'foo_bar_baz',
+          pgColumns: [
+            {
+              columnName: 'baz_qux',
+              type: 'text',
+              isNullable: true,
+            },
+          ],
+          enumColumns: [
+            {
+              columnName: 'enum_bar_baz',
+              enumName: 'bar_baz',
+              enumLabels: ['bar_baz_label_1', 'bar_baz_label_2', 'bar_baz_label_2'],
+              defaults: 'bar_baz_label1',
+            },
+          ],
+        },
+      ],
+    }),
+  });
 
-  const enumBar: PgEnumTypeBare[] = [
-    {
+  const { columns: columnsBar, enums: enumBar } = renderTargetsToQueryRes({
+    ...mockSchema({
       schema: 'bar',
-      name: 'baz_qux',
-      label: 'baz_qux_label1',
-      sortOrder: 1,
-    },
-    {
-      schema: 'bar',
-      name: 'baz_qux',
-      label: 'baz_qux_label2',
-      sortOrder: 2,
-    },
-    {
-      schema: 'bar',
-      name: 'baz_qux',
-      label: 'baz_qux_label3',
-      sortOrder: 3,
-    },
-  ];
+      tableSpecs: [
+        {
+          tableName: 'baz',
+          pgColumns: [
+            {
+              columnName: 'qux',
+              type: 'text',
+            },
+          ],
+          enumColumns: [
+            {
+              columnName: 'enum_baz_qux',
+              enumName: 'baz_qux',
+              enumLabels: ['baz_qux_label_1', 'baz_qux_label_2', 'baz_qux_label_2'],
+            },
+          ],
+        },
+      ],
+    }),
+  });
 
-  const tableAndColumns: Column[] = [
-    {
-      schema: 'foo_bar',
-      tableName: 'foo_bar_baz',
-      columnName: 'baz_qux',
-      dataType: 'text',
-      isNullable: true,
-      udtName: 'text',
-    },
-    {
-      schema: 'foo_bar',
-      tableName: 'foo_bar_baz',
-      columnName: 'enum_bar_baz',
-      dataType: 'bar_baz',
-      isNullable: false,
-      udtName: 'bar_baz',
-      userDefinedUdtSchema: 'foo_bar',
-      default: 'bar_baz_label1',
-    },
-    {
-      schema: 'bar',
-      tableName: 'baz',
-      columnName: 'qux',
-      dataType: 'text',
-      isNullable: false,
-      udtName: 'text',
-    },
-    {
-      schema: 'bar',
-      tableName: 'baz',
-      columnName: 'enum_baz_qux',
-      dataType: 'baz_qux',
-      isNullable: false,
-      udtName: 'baz_qux',
-      userDefinedUdtSchema: 'bar',
-    },
-  ];
+  const tableAndColumns = [...columnsFooBar, ...columnsBar];
 
   const pool = mockPool(
     [
