@@ -14,7 +14,7 @@ import { DeepRequired } from 'ts-essentials';
 
 import { JsonType } from '../../pg-types/json';
 import { PgCompositeType, PgCompositeTypes, PgEnumType, PgEnumTypes } from './pg';
-import { TsType } from './type-map';
+import { KnownPgType, TsType } from './type-map';
 
 export type ConfigKey = 'schemas' | 'tables' | 'columns' | 'types';
 
@@ -116,12 +116,12 @@ export type Column = {
   schema: string;
   tableName: string;
   columnName: string;
-  dataType: string;
+  dataType: KnownPgType | 'USER-DEFINED';
   userDefinedUdtSchema?: string | null;
   udtName: string;
   isNullable: boolean;
   tableComment?: string | null;
-  default?: string | null;
+  defaults?: string | null;
 };
 
 export type ColumnTypeMap = Column & {

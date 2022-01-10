@@ -7,7 +7,7 @@ export type PgEnumTypeBare = {
   sortOrder: number;
 };
 
-export type PgEnumType = Omit<PgEnumTypeBare, 'label'> & {
+export type PgEnumType = Omit<PgEnumTypeBare, 'label' | 'sortOrder'> & {
   labels: string[];
 };
 

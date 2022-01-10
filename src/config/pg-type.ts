@@ -11,7 +11,7 @@ export const getPgTypes = async (pool: DatabasePool) => {
   const enumTypes = enumTypesBare.reduce((rtn, cur) => {
     const { schema, name, label } = cur;
     if (!rtn[schema]) rtn[schema] = {};
-    if (!rtn[schema][name]) rtn[schema][name] = { schema, name, labels: [], sortOrder: 0 };
+    if (!rtn[schema][name]) rtn[schema][name] = { schema, name, labels: [] };
     rtn[schema][name].labels.push(label);
     return rtn;
   }, {} as PgEnumTypes);
