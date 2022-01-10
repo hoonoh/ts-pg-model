@@ -108,7 +108,6 @@ test(titleHelper.should('handle user defined enum type'), async t => {
     labels: ['jpg', 'gif', 'webp'],
     name: 'image_type',
     schema: 'media',
-    sortOrder: 0,
   });
 });
 

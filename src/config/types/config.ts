@@ -117,11 +117,22 @@ export type TableAndColumn = {
   defaults?: string | null;
 };
 
+export type Constraint = {
+  schema: string;
+  tableName: string;
+  name: string;
+  type: 'PrimaryKey' | 'ForeignKey' | 'Unique' | 'Check' | 'Exclude';
+  definition: string;
+  columnNames: string[];
+  docs: string;
+};
+
 export type Table = {
   schema: string;
   tableName: string;
   comment?: string;
   columns: Record<string, Column>;
+  constraints?: Constraint[];
 };
 
 export type TableBare = Omit<Table, 'columns'>;

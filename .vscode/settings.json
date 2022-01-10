@@ -4,7 +4,9 @@
     "**/.svn": true,
     "**/.hg": true,
     "**/CVS": true,
-    "**/.DS_Store": true
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/node_modules": false
   },
 
   // editor
@@ -30,7 +32,8 @@
     "**/.webpack": true,
     "**/.serverless": true,
     "yarn.lock": true,
-    "yarn-error.log": true
+    "yarn-error.log": true,
+    ".yarn/releases": true
   },
 
   "typescript.tsdk": "node_modules/typescript/lib",

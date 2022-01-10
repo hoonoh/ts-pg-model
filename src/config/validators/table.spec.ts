@@ -1,9 +1,10 @@
 import test from 'ava';
 
 import { TitleHelper } from '../../test/helpers/title';
+import { TableAndColumn } from './../types/config';
 import { validateTableNames } from './table';
 
-const tableAndColumns = [
+const tableAndColumns: TableAndColumn[] = [
   {
     schema: 'users',
     tableName: 'users',
@@ -13,7 +14,7 @@ const tableAndColumns = [
     udtName: 'int4',
     isNullable: false,
     tableComment: null,
-    default: "nextval('users.users_id_seq'::regclass)",
+    defaults: "nextval('users.users_id_seq'::regclass)",
   },
 ];
 
@@ -23,13 +24,13 @@ test(titleHelper.should('handle table name with schema'), async t => {
   const tableNameWithSchema = 'users.users';
   const [schema, tableName] = tableNameWithSchema.split('.');
   const res = validateTableNames({ tableAndColumns, names: [tableNameWithSchema] });
-  t.deepEqual(res, [{ schema, tableName }]);
+  t.deepEqual(res, [{ schema, tableName, comment: undefined }]);
 });
 
 test(titleHelper.should('handle table name without schema'), async t => {
   const tableName = 'users';
   const res = validateTableNames({ tableAndColumns, names: [tableName] });
-  t.deepEqual(res, [{ schema: 'users', tableName }]);
+  t.deepEqual(res, [{ schema: 'users', tableName, comment: undefined }]);
 });
 
 test(titleHelper.should('return undefined if no names are supplied'), async t => {

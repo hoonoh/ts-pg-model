@@ -4,7 +4,7 @@ import { readdirSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 
 import { validateUserConfig } from '../config';
-import { enumTypesBareQuery, tableAndColumnsQuery } from '../config/querries';
+import { constraintsBareQuery, enumTypesBareQuery, tableAndColumnsQuery } from '../config/querries';
 import { connectionURI } from '../test/constants';
 import { mockSchema, renderTargetsToQueryRes } from '../test/helpers/generator';
 import { MockFs } from '../test/helpers/mock-fs';
@@ -19,7 +19,11 @@ const titleHelper = new TitleHelper();
 test(titleHelper.should('render tables'), async t => {
   MockFs.mockDirectory(generateRoot);
 
-  const { columns: columnsFooBar, enums: enumFooBar } = renderTargetsToQueryRes({
+  const {
+    columns: columnsFooBar,
+    enums: enumFooBar,
+    constraints: constraintsFooBar,
+  } = renderTargetsToQueryRes({
     ...mockSchema({
       schema: 'foo_bar',
       tableSpecs: [
@@ -32,6 +36,10 @@ test(titleHelper.should('render tables'), async t => {
               isNullable: true,
               comment: 'baz_qux comment',
             },
+            {
+              columnName: 'fkey_col',
+              pgType: 'text',
+            },
           ],
           enumColumns: [
             {
@@ -42,12 +50,43 @@ test(titleHelper.should('render tables'), async t => {
               comment: 'enum_bar_baz comment',
             },
           ],
+          constraintSpecs: [
+            {
+              type: 'p',
+              definition: 'PRIMARY KEY (baz_qux)',
+              constraintName: 'baz_qux_pkey',
+            },
+            {
+              type: 'f',
+              definition: 'FOREIGN KEY (fkey_col) REFERENCES bar.baz (qux)',
+              constraintName: 'fkey_col_fkey',
+            },
+            {
+              type: 'u',
+              definition: 'UNIQUE (baz_qux)',
+              constraintName: 'baz_qux_unique',
+            },
+            {
+              type: 'c',
+              definition: 'CHECK (baz_qux IS NOT NULL)',
+              constraintName: 'baz_qux_check',
+            },
+            {
+              type: 'x',
+              definition: 'EXCLUDE USING gist (baz_qux WITH =)',
+              constraintName: 'baz_qux_exclude',
+            },
+          ],
         },
       ],
     }),
   });
 
-  const { columns: columnsBar, enums: enumBar } = renderTargetsToQueryRes({
+  const {
+    columns: columnsBar,
+    enums: enumBar,
+    constraints: constraintsBar,
+  } = renderTargetsToQueryRes({
     ...mockSchema({
       schema: 'bar',
       tableSpecs: [
@@ -82,6 +121,10 @@ test(titleHelper.should('render tables'), async t => {
       {
         sql: tableAndColumnsQuery.sql,
         rows: tableAndColumns,
+      },
+      {
+        sql: constraintsBareQuery.sql,
+        rows: [...constraintsFooBar, ...constraintsBar],
       },
     ],
     tableAndColumns,

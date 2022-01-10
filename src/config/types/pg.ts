@@ -46,3 +46,30 @@ export type PgCompositeType = Pick<PgCompositeTypeBare, 'schema' | 'name'> & {
  * }
  */
 export type PgCompositeTypes = Record<string, Record<string, PgCompositeType>>;
+
+export type PgConstraintsBare = {
+  schema: string;
+  tableName: string;
+  constraintName: string;
+} & (
+  | {
+      type: 'p';
+      definition: `PRIMARY KEY (${string})`;
+    }
+  | {
+      type: 'f';
+      definition: `FOREIGN KEY (${string}) REFERENCES ${string}(${string})`;
+    }
+  | {
+      type: 'u';
+      definition: `UNIQUE (${string})`;
+    }
+  | {
+      type: 'c';
+      definition: `CHECK (${string})`;
+    }
+  | {
+      type: 'x';
+      definition: `EXCLUDE USING ${string} (${string})`;
+    }
+);

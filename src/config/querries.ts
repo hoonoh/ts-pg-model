@@ -1,7 +1,7 @@
 import { sql } from 'slonik';
 
 import { TableAndColumn } from './types/config';
-import { PgCompositeTypeBare, PgEnumTypeBare } from './types/pg';
+import { PgCompositeTypeBare, PgConstraintsBare, PgEnumTypeBare } from './types/pg';
 
 export const searchPathQuery = sql<{ search_path: string }>`
   /* searchPathQuery */
@@ -24,7 +24,9 @@ export const tableAndColumnsQuery = sql<TableAndColumn>`
   from information_schema.columns c
   join pg_catalog.pg_class pc on pc.relname = c.table_name
   where table_schema not in ('pg_catalog', 'information_schema', 'pg_toast')
-  group by table_schema, table_name, column_name, data_type, udt_schema, udt_name, is_nullable, pg_catalog.obj_description(oid, 'pg_class'), ordinal_position, column_default
+  group by table_schema, table_name, column_name, data_type, udt_schema, udt_name, is_nullable,
+    pg_catalog.obj_description(oid, 'pg_class'), pg_catalog.col_description(oid, ordinal_position),
+    ordinal_position, column_default
   order by table_schema, table_name, ordinal_position;
 `;
 
@@ -78,4 +80,19 @@ export const compositeTypesBareQuery = sql<PgCompositeTypeBare>`
   where a.attnum > 0
   and not a.attisdropped
   order by "schema", "name", attnum
+`;
+
+export const constraintsBareQuery = sql<PgConstraintsBare>`
+  /* constraintsBareQuery */
+  select
+    n.nspname as schema,
+    pc.relname "tableName",
+    c.conname "constraintName",
+    c.contype "type",
+    pg_get_constraintdef(c.oid) "definition"
+  from pg_constraint c
+  join pg_namespace n on n.oid = c.connamespace
+  join pg_catalog.pg_class pc on c.conrelid != 0 and c.conrelid = pc.oid
+  where n.nspname not in ('pg_catalog', 'information_schema', 'pg_toast')
+  order by n.nspname, pc.relname, c.contype, conname;
 `;

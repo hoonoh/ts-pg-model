@@ -5,6 +5,7 @@ export const shorthands: ColumnDefinitions | undefined = undefined;
 
 export async function up(pgm: MigrationBuilder): Promise<void> {
   pgm.addExtension('uuid-ossp', { ifNotExists: true });
+  pgm.addExtension('btree_gist', { ifNotExists: true });
 
   // public
   pgm.createType(
@@ -22,14 +23,52 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
     { schema: 'users', name: 'users' },
     {
       id: { type: 'serial', notNull: true, primaryKey: true },
-      alias: { type: 'text', notNull: true },
-      email: { type: 'text', notNull: true },
+      alias: { type: 'text', notNull: true, unique: true },
+      email: { type: 'text', notNull: true, unique: true },
+      name_first: { type: 'text' },
+      name_last: { type: 'text' },
       created_at: { type: 'timestamptz', notNull: true, default: pgm.func('CURRENT_TIMESTAMP') },
       updated_at: { type: 'timestamptz', notNull: true, default: pgm.func('CURRENT_TIMESTAMP') },
     },
   );
   pgm.addIndex({ schema: 'users', name: 'users' }, 'alias');
   pgm.addIndex({ schema: 'users', name: 'users' }, 'email');
+  pgm.addConstraint({ schema: 'users', name: 'users' }, 'name_unique', {
+    unique: ['name_first', 'name_last'],
+  });
+
+  // constraints & comment test
+  pgm.createTable(
+    { schema: 'users', name: 'constraints_test' },
+    {
+      id1: { type: 'text', comment: 'id1 column comment' },
+      id2: { type: 'text', comment: 'id2 column comment' },
+      alias: { type: 'text' },
+      email: { type: 'text' },
+      name_first: { type: 'text' },
+      name_last: { type: 'text' },
+      note: { type: 'text' },
+    },
+    { comment: 'constraints_test table comment' },
+  );
+  pgm.addConstraint({ schema: 'users', name: 'constraints_test' }, 'constraints_test_pk', {
+    primaryKey: ['id1', 'id2'],
+  });
+  pgm.addConstraint({ schema: 'users', name: 'constraints_test' }, 'constraints_test_uq', {
+    unique: ['alias', 'email'],
+  });
+  pgm.addConstraint({ schema: 'users', name: 'constraints_test' }, 'constraints_test_fk', {
+    foreignKeys: {
+      columns: ['name_first', 'name_last'],
+      references: 'users.users (name_first, name_last)',
+    },
+  });
+  pgm.addConstraint({ schema: 'users', name: 'constraints_test' }, 'constraints_test_ch', {
+    check: `name_first is not null and (name_last is not null or email is not null) or not note is null`,
+  });
+  pgm.addConstraint({ schema: 'users', name: 'constraints_test' }, 'constraints_test_ex', {
+    exclude: 'using gist (alias with =, email with <>)',
+  });
 
   pgm.createType({ schema: 'users', name: 'user_agent_browser' }, [
     'chrome',

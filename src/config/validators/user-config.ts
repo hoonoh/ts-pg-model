@@ -7,7 +7,7 @@ import { cwd } from 'process';
 import { ConnectionError, createPool, DatabasePool } from 'slonik';
 
 import { getPgTypes } from '../pg-type';
-import { searchPathQuery, tableAndColumnsQuery } from '../querries';
+import { constraintsBareQuery, searchPathQuery, tableAndColumnsQuery } from '../querries';
 import {
   changeCaseMap,
   ColumnTypeMap,
@@ -19,6 +19,7 @@ import {
 } from '../types/config';
 import { isKnownPgType, knownPgTypeToTsTypesMap } from '../types/type-map';
 import { validateColumnNames } from './column';
+import { validateConstratints } from './constraint';
 import { validateSchema } from './schema';
 import { validateTableNames } from './table';
 
@@ -96,17 +97,30 @@ export const validateUserConfig = async ({
   // get pg types
   const { enumTypes, compositeTypes } = await getPgTypes(pool);
 
+  // get and parse constraints
+  const constraints = validateConstratints(await pool.any(constraintsBareQuery));
+
   // compose all render targets first
   const allRenderTargets = tableAndColumns.reduce((rtn, cur) => {
-    const { schema, tableName, columnName } = cur;
+    const { schema, tableName, columnName, tableComment } = cur;
     if (!rtn[schema]) rtn[schema] = {};
     if (!rtn[schema][tableName]) {
       rtn[schema][tableName] = {
         schema,
         tableName,
+        comment: tableComment || undefined,
         columns: {},
       };
     }
+
+    // constraints
+    const matchingConstraints = constraints?.filter(
+      c => c.schema === schema && c.tableName === tableName,
+    );
+    if (matchingConstraints?.length) {
+      rtn[schema][tableName].constraints = matchingConstraints;
+    }
+
     // type mapping
     let type: ColumnTypeMap['type'] | undefined;
     const jsonTypeMap = typeMap?.json
@@ -155,7 +169,15 @@ export const validateUserConfig = async ({
     assert(!!type, 'column type should always be defined');
 
     rtn[schema][tableName].columns[columnName] = {
-      ...cur,
+      schema: cur.schema,
+      tableName: cur.tableName,
+      columnName: cur.columnName,
+      dataType: cur.dataType,
+      userDefinedUdtSchema: cur.userDefinedUdtSchema,
+      udtName: cur.udtName,
+      isNullable: cur.isNullable,
+      comment: cur.columnComment || undefined,
+      defaults: cur.defaults,
       type,
     };
     return rtn;

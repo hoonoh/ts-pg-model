@@ -1,16 +1,52 @@
-import { Column, ColumnTypeMap, RenderTargets, Table } from '../../config';
-import { PgEnumTypeBare } from '../../config/types/pg';
+import { ColumnTypeMap, RenderTargets, Table } from '../../config';
+import { PgConstraintsBare, PgEnumTypeBare } from '../../config/types/pg';
 import { KnownPgType, knownPgTypeToTsTypesMap } from '../../config/types/type-map';
+import { validateConstratints } from '../../config/validators/constraint';
+import { TableAndColumn } from './../../config/types/config';
 
 /**
  * helpers for generators
  */
 
 export const renderTargetsToQueryRes = (renderTargets: RenderTargets) => {
-  const columns: Column[] = [];
+  const columns: TableAndColumn[] = [];
   const enums: PgEnumTypeBare[] = [];
+  const constraints: PgConstraintsBare[] = [];
   Object.entries(renderTargets).forEach(([schema, tableSpecs]) => {
     Object.entries(tableSpecs).forEach(([, tableSpec]) => {
+      if (tableSpec.constraints?.length) {
+        constraints.push(
+          ...tableSpec.constraints.map(c => {
+            let type = 'p';
+            switch (c.type) {
+              case 'PrimaryKey':
+                type = 'p';
+                break;
+              case 'ForeignKey':
+                type = 'f';
+                break;
+              case 'Unique':
+                type = 'u';
+                break;
+              case 'Check':
+                type = 'c';
+                break;
+              case 'Exclude':
+                type = 'x';
+                break;
+              default:
+                break;
+            }
+            return {
+              schema,
+              tableName: tableSpec.tableName,
+              type,
+              constraintName: c.name,
+              definition: c.definition,
+            } as PgConstraintsBare;
+          }),
+        );
+      }
       Object.entries(tableSpec.columns).forEach(([, columnSpec]) => {
         if (columnSpec.type.enum) {
           const name = columnSpec.type.enum.name;
@@ -31,13 +67,14 @@ export const renderTargetsToQueryRes = (renderTargets: RenderTargets) => {
           userDefinedUdtSchema: columnSpec.userDefinedUdtSchema,
           udtName: columnSpec.udtName,
           isNullable: columnSpec.isNullable,
-          comment: columnSpec.comment,
+          tableComment: tableSpec.comment,
+          columnComment: columnSpec.comment,
           defaults: columnSpec.defaults,
         });
       });
     });
   });
-  return { columns, enums };
+  return { columns, enums, constraints };
 };
 
 export const mockEnumColumn = ({
@@ -124,12 +161,14 @@ export const mockTable = ({
   tableName,
   pgColumns,
   enumColumns,
+  constraintSpecs,
 }: {
   schema: string;
   tableName: string;
   pgColumns?: Omit<Parameters<typeof mockColumn>[0], 'schema' | 'tableName'>[];
   enumColumns?: Omit<Parameters<typeof mockEnumColumn>[0], 'schema' | 'tableName'>[];
   // todo: add json types
+  constraintSpecs?: Omit<PgConstraintsBare, 'schema' | 'tableName'>[];
 }) => {
   const columns = pgColumns?.reduce((acc, c) => {
     acc = {
@@ -163,6 +202,12 @@ export const mockTable = ({
     };
     return acc;
   }, {} as Record<string, ColumnTypeMap>);
+  // const constraints = constraintSpecs?.map(s => ({ ...s, schema, tableName } as PgConstraintsBare));
+  const constraints = constraintSpecs?.length
+    ? validateConstratints(
+        constraintSpecs.map(s => ({ ...s, schema, tableName } as PgConstraintsBare)),
+      )
+    : undefined;
   const rtn: Record<string, Table & { columns: Record<string, ColumnTypeMap> }> = {
     [tableName]: {
       schema,
@@ -171,6 +216,7 @@ export const mockTable = ({
         ...columns,
         ...enums,
       },
+      constraints,
     },
   };
   return rtn;
@@ -186,6 +232,7 @@ export const mockSchema = ({
     pgColumns?: Omit<Parameters<typeof mockColumn>[0], 'schema' | 'tableName'>[];
     enumColumns?: Omit<Parameters<typeof mockEnumColumn>[0], 'schema' | 'tableName'>[];
     // todo: add json types
+    constraintSpecs?: Omit<PgConstraintsBare, 'schema' | 'tableName'>[];
   }[];
 }) => {
   const tables = tableSpecs.reduce((acc, t) => {
@@ -196,6 +243,7 @@ export const mockSchema = ({
         tableName: t.tableName,
         pgColumns: t.pgColumns,
         enumColumns: t.enumColumns,
+        constraintSpecs: t.constraintSpecs,
       }),
     };
     return acc;

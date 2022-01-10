@@ -1,9 +1,10 @@
 import test from 'ava';
 
 import { TitleHelper } from '../../test/helpers/title';
+import { TableAndColumn } from './../types/config';
 import { validateColumnNames } from './column';
 
-const tableAndColumns = [
+const tableAndColumns: TableAndColumn[] = [
   {
     schema: 'users',
     tableName: 'users',
@@ -13,7 +14,7 @@ const tableAndColumns = [
     udtName: 'int4',
     isNullable: false,
     tableComment: null,
-    default: "nextval('users.users_id_seq'::regclass)",
+    defaults: "nextval('users.users_id_seq'::regclass)",
   },
   // equal data as above, added for branch coverage
   {
@@ -25,7 +26,7 @@ const tableAndColumns = [
     udtName: 'int4',
     isNullable: false,
     tableComment: null,
-    default: "nextval('users.users_id_seq'::regclass)",
+    defaults: "nextval('users.users_id_seq'::regclass)",
   },
 ];
 
@@ -35,20 +36,20 @@ test(titleHelper.should('handle column name with schema & table name'), async t 
   const columnFullName = 'users.users.id';
   const [schema, tableName, columnName] = columnFullName.split('.');
   const res = validateColumnNames({ tableAndColumns, names: [columnFullName] });
-  t.deepEqual(res, [{ schema, tableName, columnName }]);
+  t.deepEqual(res, [{ schema, tableName, columnName, comment: undefined }]);
 });
 
 test(titleHelper.should('handle column name with table name'), async t => {
   const columnFullName = 'users.id';
   const [tableName, columnName] = columnFullName.split('.');
   const res = validateColumnNames({ tableAndColumns, names: [columnFullName] });
-  t.deepEqual(res, [{ schema: 'users', tableName, columnName }]);
+  t.deepEqual(res, [{ schema: 'users', tableName, columnName, comment: undefined }]);
 });
 
 test(titleHelper.should('handle column name only'), async t => {
   const columnName = 'id';
   const res = validateColumnNames({ tableAndColumns, names: [columnName] });
-  t.deepEqual(res, [{ schema: 'users', tableName: 'users', columnName }]);
+  t.deepEqual(res, [{ schema: 'users', tableName: 'users', columnName, comment: undefined }]);
 });
 
 test(titleHelper.should('return undefined if no names are supplied'), async t => {

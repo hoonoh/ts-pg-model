@@ -84,6 +84,18 @@ export const generateTableFile = async (config: Config) => {
             docs.push(`@comment '${columnSpec.comment}'`);
           }
 
+          // constraints
+          tableSpec.constraints
+            ?.filter(
+              c =>
+                c.schema === columnSpec.schema &&
+                c.tableName === columnSpec.tableName &&
+                c.columnNames.includes(columnSpec.columnName),
+            )
+            .forEach(c => {
+              docs.push(c.docs);
+            });
+
           /**
            * todo: add following to jsdocs
            * - indices
