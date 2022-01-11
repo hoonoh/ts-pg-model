@@ -7,7 +7,12 @@ import { cwd } from 'process';
 import { ConnectionError, createPool, DatabasePool } from 'slonik';
 
 import { getPgTypes } from '../pg-type';
-import { constraintsBareQuery, searchPathQuery, tableAndColumnsQuery } from '../querries';
+import {
+  constraintsBareQuery,
+  indexesBareQuery,
+  searchPathQuery,
+  tableAndColumnsQuery,
+} from '../querries';
 import {
   changeCaseMap,
   ColumnTypeMap,
@@ -20,6 +25,7 @@ import {
 import { isKnownPgType, knownPgTypeToTsTypesMap } from '../types/type-map';
 import { validateColumnNames } from './column';
 import { validateConstratints } from './constraint';
+import { validateIndexes } from './pg-index';
 import { validateSchema } from './schema';
 import { validateTableNames } from './table';
 
@@ -97,6 +103,9 @@ export const validateUserConfig = async ({
   // get pg types
   const { enumTypes, compositeTypes } = await getPgTypes(pool);
 
+  // get and parse indexes
+  const indexes = validateIndexes(await pool.any(indexesBareQuery));
+
   // get and parse constraints
   const constraints = validateConstratints(await pool.any(constraintsBareQuery));
 
@@ -111,6 +120,12 @@ export const validateUserConfig = async ({
         comment: tableComment || undefined,
         columns: {},
       };
+    }
+
+    // indexes
+    const matchingIndexes = indexes?.filter(i => i.schema === schema && i.tableName === tableName);
+    if (matchingIndexes?.length) {
+      rtn[schema][tableName].indexes = matchingIndexes;
     }
 
     // constraints

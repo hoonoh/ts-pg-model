@@ -4,7 +4,12 @@ import { readdirSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 
 import { validateUserConfig } from '../config';
-import { constraintsBareQuery, enumTypesBareQuery, tableAndColumnsQuery } from '../config/querries';
+import {
+  constraintsBareQuery,
+  enumTypesBareQuery,
+  indexesBareQuery,
+  tableAndColumnsQuery,
+} from '../config/querries';
 import { connectionURI } from '../test/constants';
 import { mockSchema, renderTargetsToQueryRes } from '../test/helpers/generator';
 import { MockFs } from '../test/helpers/mock-fs';
@@ -22,6 +27,7 @@ test(titleHelper.should('render tables'), async t => {
   const {
     columns: columnsFooBar,
     enums: enumFooBar,
+    indexes: indexesFooBar,
     constraints: constraintsFooBar,
   } = renderTargetsToQueryRes({
     ...mockSchema({
@@ -48,6 +54,12 @@ test(titleHelper.should('render tables'), async t => {
               enumLabels: ['bar_baz_label_1', 'bar_baz_label_2', 'bar_baz_label_2'],
               defaults: 'bar_baz_label1',
               comment: 'enum_bar_baz comment',
+            },
+          ],
+          indexSpecs: [
+            {
+              indexName: 'baz_qux_idx',
+              definition: 'CREATE INDEX baz_qux_idx ON foo_bar.foo_bar_baz USING btree (baz_qux)',
             },
           ],
           constraintSpecs: [
@@ -85,6 +97,7 @@ test(titleHelper.should('render tables'), async t => {
   const {
     columns: columnsBar,
     enums: enumBar,
+    indexes: indexesBar,
     constraints: constraintsBar,
   } = renderTargetsToQueryRes({
     ...mockSchema({
@@ -105,6 +118,13 @@ test(titleHelper.should('render tables'), async t => {
               enumLabels: ['baz_qux_label_1', 'baz_qux_label_2', 'baz_qux_label_2'],
             },
           ],
+          indexSpecs: [
+            {
+              indexName: 'baz__baz_qux_idx',
+              definition:
+                'CREATE INDEX baz__baz_qux_idx ON bar.baz USING btree (qux, enum_baz_qux)',
+            },
+          ],
         },
       ],
     }),
@@ -121,6 +141,10 @@ test(titleHelper.should('render tables'), async t => {
       {
         sql: tableAndColumnsQuery.sql,
         rows: tableAndColumns,
+      },
+      {
+        sql: indexesBareQuery.sql,
+        rows: [...indexesFooBar, ...indexesBar],
       },
       {
         sql: constraintsBareQuery.sql,

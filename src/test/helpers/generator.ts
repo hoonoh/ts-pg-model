@@ -1,8 +1,9 @@
 import { ColumnTypeMap, RenderTargets, Table } from '../../config';
-import { PgConstraintsBare, PgEnumTypeBare } from '../../config/types/pg';
+import { PgConstraintsBare, PgEnumTypeBare, PgIndexBare } from '../../config/types/pg';
 import { KnownPgType, knownPgTypeToTsTypesMap } from '../../config/types/type-map';
 import { validateConstratints } from '../../config/validators/constraint';
 import { TableAndColumn } from './../../config/types/config';
+import { validateIndexes } from './../../config/validators/pg-index';
 
 /**
  * helpers for generators
@@ -11,9 +12,22 @@ import { TableAndColumn } from './../../config/types/config';
 export const renderTargetsToQueryRes = (renderTargets: RenderTargets) => {
   const columns: TableAndColumn[] = [];
   const enums: PgEnumTypeBare[] = [];
+  const indexes: PgIndexBare[] = [];
   const constraints: PgConstraintsBare[] = [];
   Object.entries(renderTargets).forEach(([schema, tableSpecs]) => {
     Object.entries(tableSpecs).forEach(([, tableSpec]) => {
+      if (tableSpec.indexes?.length) {
+        indexes.push(
+          ...tableSpec.indexes.map(i => {
+            return {
+              schema,
+              tableName: tableSpec.tableName,
+              indexName: i.name,
+              definition: i.definition,
+            } as PgIndexBare;
+          }),
+        );
+      }
       if (tableSpec.constraints?.length) {
         constraints.push(
           ...tableSpec.constraints.map(c => {
@@ -74,7 +88,7 @@ export const renderTargetsToQueryRes = (renderTargets: RenderTargets) => {
       });
     });
   });
-  return { columns, enums, constraints };
+  return { columns, enums, indexes, constraints };
 };
 
 export const mockEnumColumn = ({
@@ -161,6 +175,7 @@ export const mockTable = ({
   tableName,
   pgColumns,
   enumColumns,
+  indexSpecs,
   constraintSpecs,
 }: {
   schema: string;
@@ -168,6 +183,7 @@ export const mockTable = ({
   pgColumns?: Omit<Parameters<typeof mockColumn>[0], 'schema' | 'tableName'>[];
   enumColumns?: Omit<Parameters<typeof mockEnumColumn>[0], 'schema' | 'tableName'>[];
   // todo: add json types
+  indexSpecs?: Omit<PgIndexBare, 'schema' | 'tableName'>[];
   constraintSpecs?: Omit<PgConstraintsBare, 'schema' | 'tableName'>[];
 }) => {
   const columns = pgColumns?.reduce((acc, c) => {
@@ -202,12 +218,17 @@ export const mockTable = ({
     };
     return acc;
   }, {} as Record<string, ColumnTypeMap>);
-  // const constraints = constraintSpecs?.map(s => ({ ...s, schema, tableName } as PgConstraintsBare));
+
+  const indexes = indexSpecs?.length
+    ? validateIndexes(indexSpecs.map(s => ({ ...s, schema, tableName } as PgIndexBare)))
+    : undefined;
+
   const constraints = constraintSpecs?.length
     ? validateConstratints(
         constraintSpecs.map(s => ({ ...s, schema, tableName } as PgConstraintsBare)),
       )
     : undefined;
+
   const rtn: Record<string, Table & { columns: Record<string, ColumnTypeMap> }> = {
     [tableName]: {
       schema,
@@ -216,6 +237,7 @@ export const mockTable = ({
         ...columns,
         ...enums,
       },
+      indexes,
       constraints,
     },
   };
@@ -232,6 +254,7 @@ export const mockSchema = ({
     pgColumns?: Omit<Parameters<typeof mockColumn>[0], 'schema' | 'tableName'>[];
     enumColumns?: Omit<Parameters<typeof mockEnumColumn>[0], 'schema' | 'tableName'>[];
     // todo: add json types
+    indexSpecs?: Omit<PgIndexBare, 'schema' | 'tableName'>[];
     constraintSpecs?: Omit<PgConstraintsBare, 'schema' | 'tableName'>[];
   }[];
 }) => {
@@ -243,6 +266,7 @@ export const mockSchema = ({
         tableName: t.tableName,
         pgColumns: t.pgColumns,
         enumColumns: t.enumColumns,
+        indexSpecs: t.indexSpecs,
         constraintSpecs: t.constraintSpecs,
       }),
     };

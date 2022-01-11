@@ -1,5 +1,7 @@
 import { TsType } from './type-map';
 
+// todo: refactor into querries.ts
+
 export type PgEnumTypeBare = {
   schema: string;
   name: string;
@@ -46,6 +48,13 @@ export type PgCompositeType = Pick<PgCompositeTypeBare, 'schema' | 'name'> & {
  * }
  */
 export type PgCompositeTypes = Record<string, Record<string, PgCompositeType>>;
+
+export type PgIndexBare = {
+  schema: string;
+  tableName: string;
+  indexName: string;
+  definition: `CREATE ${string}INDEX ${string} ON ${string} USING ${string} (${string})`;
+};
 
 export type PgConstraintsBare = {
   schema: string;

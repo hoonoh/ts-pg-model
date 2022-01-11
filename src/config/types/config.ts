@@ -117,6 +117,17 @@ export type TableAndColumn = {
   defaults?: string | null;
 };
 
+export type Index = {
+  schema: string;
+  tableName: string;
+  name: string;
+  definition: string;
+  isUnique: boolean;
+  using: string;
+  columnNames: string[];
+  docs: string;
+};
+
 export type Constraint = {
   schema: string;
   tableName: string;
@@ -132,6 +143,7 @@ export type Table = {
   tableName: string;
   comment?: string;
   columns: Record<string, Column>;
+  indexes?: Index[];
   constraints?: Constraint[];
 };
 

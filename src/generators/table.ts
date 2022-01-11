@@ -84,9 +84,9 @@ export const generateTableFile = async (config: Config) => {
             docs.push(`@comment '${columnSpec.comment}'`);
           }
 
-          // constraints
-          tableSpec.constraints
-            ?.filter(
+          // indexes & constraints
+          [...(tableSpec.indexes || []), ...(tableSpec.constraints || [])]
+            .filter(
               c =>
                 c.schema === columnSpec.schema &&
                 c.tableName === columnSpec.tableName &&
@@ -95,12 +95,6 @@ export const generateTableFile = async (config: Config) => {
             .forEach(c => {
               docs.push(c.docs);
             });
-
-          /**
-           * todo: add following to jsdocs
-           * - indices
-           * - fk / pk / unique constraints
-           */
 
           return {
             name: columnName,

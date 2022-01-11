@@ -1,7 +1,7 @@
 import { sql } from 'slonik';
 
 import { TableAndColumn } from './types/config';
-import { PgCompositeTypeBare, PgConstraintsBare, PgEnumTypeBare } from './types/pg';
+import { PgCompositeTypeBare, PgConstraintsBare, PgEnumTypeBare, PgIndexBare } from './types/pg';
 
 export const searchPathQuery = sql<{ search_path: string }>`
   /* searchPathQuery */
@@ -80,6 +80,19 @@ export const compositeTypesBareQuery = sql<PgCompositeTypeBare>`
   where a.attnum > 0
   and not a.attisdropped
   order by "schema", "name", attnum
+`;
+
+export const indexesBareQuery = sql<PgIndexBare>`
+  /* indexesBareQuery */
+  select
+    schemaname as schema,
+    tablename "tableName",
+    indexname "indexName",
+    indexdef "definition"
+  from
+  pg_indexes
+  where schemaname not in ('pg_catalog', 'information_schema', 'pg_toast')
+  order by schemaname, tablename, indexname
 `;
 
 export const constraintsBareQuery = sql<PgConstraintsBare>`
