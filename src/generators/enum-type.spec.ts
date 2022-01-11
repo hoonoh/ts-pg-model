@@ -16,7 +16,7 @@ const generateRoot = resolve('/test', 'generated');
 const titleHelper = new TitleHelper();
 
 test.serial(titleHelper.should('generate enum files as expected'), async t => {
-  const { columns: columnsFoo, enums: enumFoo } = renderTargetsToQueryRes({
+  const { tableAndColumns: tableAndColumnsFoo, enums: enumFoo } = renderTargetsToQueryRes({
     ...mockSchema({
       schema: 'foo',
       tableSpecs: [
@@ -34,7 +34,7 @@ test.serial(titleHelper.should('generate enum files as expected'), async t => {
     }),
   });
 
-  const { columns: columnsBar, enums: enumBar } = renderTargetsToQueryRes({
+  const { tableAndColumns: tableAndColumnsBar, enums: enumBar } = renderTargetsToQueryRes({
     ...mockSchema({
       schema: 'bar',
       tableSpecs: [
@@ -54,7 +54,7 @@ test.serial(titleHelper.should('generate enum files as expected'), async t => {
 
   const enums = [...enumFoo, ...enumBar];
 
-  const tableAndColumns = [...columnsFoo, ...columnsBar];
+  const tableAndColumns = [...tableAndColumnsFoo, ...tableAndColumnsBar];
 
   MockFs.mockDirectory(generateRoot);
 

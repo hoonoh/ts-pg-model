@@ -25,7 +25,7 @@ test(titleHelper.should('render tables'), async t => {
   MockFs.mockDirectory(generateRoot);
 
   const {
-    columns: columnsFooBar,
+    tableAndColumns: tableAndColumnsFooBar,
     enums: enumFooBar,
     indexes: indexesFooBar,
     constraints: constraintsFooBar,
@@ -95,7 +95,7 @@ test(titleHelper.should('render tables'), async t => {
   });
 
   const {
-    columns: columnsBar,
+    tableAndColumns: tableAndColumnsBar,
     enums: enumBar,
     indexes: indexesBar,
     constraints: constraintsBar,
@@ -130,7 +130,7 @@ test(titleHelper.should('render tables'), async t => {
     }),
   });
 
-  const tableAndColumns = [...columnsFooBar, ...columnsBar];
+  const tableAndColumns = [...tableAndColumnsFooBar, ...tableAndColumnsBar];
 
   const pool = mockPool(
     [

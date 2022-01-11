@@ -10,7 +10,7 @@ import { validateIndexes } from './../../config/validators/pg-index';
  */
 
 export const renderTargetsToQueryRes = (renderTargets: RenderTargets) => {
-  const columns: TableAndColumn[] = [];
+  const tableAndColumns: TableAndColumn[] = [];
   const enums: PgEnumTypeBare[] = [];
   const indexes: PgIndexBare[] = [];
   const constraints: PgConstraintsBare[] = [];
@@ -73,7 +73,7 @@ export const renderTargetsToQueryRes = (renderTargets: RenderTargets) => {
             });
           });
         }
-        columns.push({
+        tableAndColumns.push({
           schema: columnSpec.schema,
           tableName: columnSpec.tableName,
           columnName: columnSpec.columnName,
@@ -88,7 +88,7 @@ export const renderTargetsToQueryRes = (renderTargets: RenderTargets) => {
       });
     });
   });
-  return { columns, enums, indexes, constraints };
+  return { tableAndColumns, enums, indexes, constraints };
 };
 
 export const mockEnumColumn = ({
