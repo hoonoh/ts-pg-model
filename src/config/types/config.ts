@@ -88,16 +88,21 @@ export type JsonTypeMap<JsonTypeDefinition> = ColumnBare & {
   name: keyof JsonTypeDefinition;
 };
 
+export type JsonTypeBareDefinitions = [name: string, definition: string][];
+
+export type TypeMap<JsonTypeDefinitions> = {
+  udt?: UdtTypeMap;
+  json?: JsonTypeMap<JsonTypeDefinitions>[];
+  jsonDefinitions?: JsonTypeBareDefinitions;
+};
+
 export type UserConfig<JsonTypeDefinitions = JsonTypeDefinitionMap> = {
   connectionURI?: ConnectionURI;
   dotEnvPath?: string;
   conventions?: Partial<Record<Exclude<ConfigKey, 'tables'> | 'paths', ChangeCase>>;
   schemas?: string[];
   targetSelectors?: (IncludeTargets | ExcludeTargets)[];
-  typeMap?: {
-    udt?: UdtTypeMap;
-    json?: JsonTypeMap<JsonTypeDefinitions>[];
-  };
+  typeMap?: TypeMap<JsonTypeDefinitions>;
   output?: {
     root?: string;
     includeSchemaPath?: boolean;
@@ -196,12 +201,14 @@ export type RenderTargets = Record<
   Record<string, Table & { columns: Record<string, ColumnTypeMap> }>
 >;
 
-export type Config = Required<Pick<UserConfig, 'connectionURI' | 'schemas'>> &
+export type Config<JsonTypeDefinitions = JsonTypeDefinitionMap> = Required<
+  Pick<UserConfig, 'connectionURI' | 'schemas'>
+> &
   DeepRequired<Pick<UserConfig, 'output'>> &
   Omit<UserConfig, 'dotEnvPath' | 'targetSelectors' | 'conventions'> & {
     renderTargets: RenderTargets;
     enumTypes: PgEnumTypes;
     compositeTypes: PgCompositeTypes;
-  } & {
     conventions: Record<Exclude<ConfigKey, 'tables'> | 'paths', (input: string) => string>;
+    typeMap?: TypeMap<JsonTypeDefinitions>;
   };

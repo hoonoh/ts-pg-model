@@ -3,8 +3,10 @@ import { trim } from 'lodash';
 import { EOL } from 'os';
 import { Node, Project, Symbol } from 'ts-morph';
 
+import { JsonTypeBareDefinitions } from './../types/config';
+
 export const parseConfigFile = (sourceFilePath: string) => {
-  const jsonTypeMaps: [name: string, definition: string][] = [];
+  const jsonTypeMaps: JsonTypeBareDefinitions = [];
 
   const project = new Project();
   const sourceFile = project.addSourceFileAtPath(sourceFilePath);

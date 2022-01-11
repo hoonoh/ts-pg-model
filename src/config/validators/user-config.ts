@@ -260,6 +260,7 @@ export const validateUserConfig = async ({
       root: output?.root || defaultConfig.output.root,
       includeSchemaPath: output?.includeSchemaPath || defaultConfig.output.includeSchemaPath,
     },
+    typeMap,
   };
 
   return rtn;
