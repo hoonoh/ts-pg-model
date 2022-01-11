@@ -3,14 +3,17 @@ import { pascalCase } from 'change-case';
 import { lstatSync, readdirSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 
-import { validateUserConfig } from '../config';
-import { enumTypesBareQuery, tableAndColumnsQuery } from '../config/querries';
-import { connectionURI } from '../test/constants';
-import { mockSchema, renderTargetsToQueryRes } from '../test/helpers/generator';
-import { MockFs } from '../test/helpers/mock-fs';
-import { defaultMockPool, mockPool } from '../test/helpers/mock-pool';
-import { TitleHelper } from '../test/helpers/title';
-import { generateEnumFiles } from './enum-type';
+import { validateUserConfig } from '../config/index.js';
+import { enumTypesBareQuery, tableAndColumnsQuery } from '../config/querries.js';
+import { connectionURI } from '../test/constants.js';
+import { mockSchema, renderTargetsToQueryRes } from '../test/helpers/generator.js';
+import { MockFs } from '../test/helpers/mock-fs.js';
+import { defaultMockPool, mockPool } from '../test/helpers/mock-pool.js';
+import { TitleHelper } from '../test/helpers/title.js';
+import { serialAfterEach } from '../test/init.js';
+import { generateEnumFiles } from './enum-type.js';
+
+serialAfterEach(test);
 
 const generateRoot = resolve('/test', 'generated');
 const titleHelper = new TitleHelper();

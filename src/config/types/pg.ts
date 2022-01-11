@@ -1,4 +1,4 @@
-import { TsType } from './type-map';
+import { TsType } from './type-map.js';
 
 // todo: refactor into querries.ts
 

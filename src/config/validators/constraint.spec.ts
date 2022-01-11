@@ -1,8 +1,8 @@
 import test from 'ava';
 
-import { TitleHelper } from './../../test/helpers/title';
-import { PgConstraintsBare } from './../types/pg';
-import { validateConstratints } from './constraint';
+import { TitleHelper } from './../../test/helpers/title.js';
+import { PgConstraintsBare } from './../types/pg.js';
+import { validateConstratints } from './constraint.js';
 
 const titleHelper = new TitleHelper();
 

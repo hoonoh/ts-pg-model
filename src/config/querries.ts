@@ -1,7 +1,7 @@
 import { sql } from 'slonik';
 
-import { TableAndColumn } from './types/config';
-import { PgCompositeTypeBare, PgConstraintsBare, PgEnumTypeBare, PgIndexBare } from './types/pg';
+import { TableAndColumn } from './types/config.js';
+import { PgCompositeTypeBare, PgConstraintsBare, PgEnumTypeBare, PgIndexBare } from './types/pg.js';
 
 export const searchPathQuery = sql<{ search_path: string }>`
   /* searchPathQuery */

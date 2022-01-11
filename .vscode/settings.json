@@ -36,6 +36,10 @@
     ".yarn/releases": true
   },
 
+  // esm
+  "javascript.preferences.importModuleSpecifierEnding": "js",
+  "typescript.preferences.importModuleSpecifierEnding": "js",
+
   "typescript.tsdk": "node_modules/typescript/lib",
 
   "slonikLiveServer.pg.uri": "postgresql://postgres:secretpassword@localhost:54321/postgres",

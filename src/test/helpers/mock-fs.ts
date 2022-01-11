@@ -1,10 +1,11 @@
 import mockFs from 'mock-fs';
 import { resolve } from 'path';
 import { cwd } from 'process';
+import { URL } from 'url';
 
 export class MockFs {
   private static default = {
-    node_modules: mockFs.load(resolve(__dirname, '../../../node_modules'), {
+    node_modules: mockFs.load(new URL('../../../node_modules', import.meta.url).pathname, {
       recursive: true,
     }),
     [resolve(cwd(), 'tsconfig.json')]: mockFs.load(resolve(cwd(), 'tsconfig.json'), {

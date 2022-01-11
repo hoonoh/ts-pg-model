@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 
-import { Config } from '../config';
-import { startProject } from './helpers/ts-morph';
+import { Config } from '../config/index.js';
+import { startProject } from './helpers/ts-morph.js';
 
 export const generateJsonTypeFile = async (config: Config) => {
   const outputPath = resolve(config.output.root, `${config.conventions.paths('json-types')}.ts`);

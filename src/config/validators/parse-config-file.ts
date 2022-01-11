@@ -1,9 +1,9 @@
 import assert from 'assert';
-import { trim } from 'lodash';
+import { trim } from 'lodash-es';
 import { EOL } from 'os';
 import { Node, Project, Symbol } from 'ts-morph';
 
-import { JsonTypeBareDefinitions } from './../types/config';
+import { JsonTypeBareDefinitions } from './../types/config.js';
 
 export const parseConfigFile = (sourceFilePath: string) => {
   const jsonTypeMaps: JsonTypeBareDefinitions = [];

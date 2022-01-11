@@ -1,9 +1,12 @@
 import test from 'ava';
 
-import { connectionURI } from '../../test/constants';
-import { MockFs } from '../../test/helpers/mock-fs';
-import { TitleHelper } from '../../test/helpers/title';
-import { validateUserConfig } from '.';
+import { connectionURI } from '../../test/constants.js';
+import { MockFs } from '../../test/helpers/mock-fs.js';
+import { TitleHelper } from '../../test/helpers/title.js';
+import { serialAfterEach } from '../../test/init.js';
+import { validateUserConfig } from './index.js';
+
+serialAfterEach(test);
 
 const titleHelper = new TitleHelper();
 

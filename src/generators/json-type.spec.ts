@@ -2,15 +2,18 @@ import test from 'ava';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
-import { validateUserConfig } from '../config';
-import { tableAndColumnsQuery } from '../config/querries';
-import { parseConfigFile } from '../config/validators/parse-config-file';
-import { connectionURI } from '../test/constants';
-import { mockSchema, renderTargetsToQueryRes } from '../test/helpers/generator';
-import { MockFs } from '../test/helpers/mock-fs';
-import { mockPool } from '../test/helpers/mock-pool';
-import { TitleHelper } from '../test/helpers/title';
-import { generateJsonTypeFile } from './json-type';
+import { validateUserConfig } from '../config/index.js';
+import { tableAndColumnsQuery } from '../config/querries.js';
+import { parseConfigFile } from '../config/validators/parse-config-file.js';
+import { connectionURI } from '../test/constants.js';
+import { mockSchema, renderTargetsToQueryRes } from '../test/helpers/generator.js';
+import { MockFs } from '../test/helpers/mock-fs.js';
+import { mockPool } from '../test/helpers/mock-pool.js';
+import { TitleHelper } from '../test/helpers/title.js';
+import { serialAfterEach } from '../test/init.js';
+import { generateJsonTypeFile } from './json-type.js';
+
+serialAfterEach(test);
 
 const titleHelper = new TitleHelper();
 

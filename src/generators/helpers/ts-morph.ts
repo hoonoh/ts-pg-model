@@ -1,5 +1,5 @@
-import { resolve } from 'path';
 import { IndentationText, Project, SourceFile } from 'ts-morph';
+import { URL } from 'url';
 
 export const insertGeneratedComment = (sourceFile: SourceFile) => {
   sourceFile.insertStatements(
@@ -15,7 +15,7 @@ export const insertGeneratedComment = (sourceFile: SourceFile) => {
 
 export const startProject = (tsPath: string, source?: string) => {
   const project = new Project({
-    tsConfigFilePath: resolve(__dirname, '../../../tsconfig.json'),
+    tsConfigFilePath: new URL('../../../tsconfig.json', import.meta.url).pathname,
     skipAddingFilesFromTsConfig: true,
     manipulationSettings: {
       indentationText: IndentationText.TwoSpaces,

@@ -1,9 +1,9 @@
-import { merge } from 'lodash';
+import { merge } from 'lodash-es';
 import { DatabasePool } from 'slonik';
 
-import { compositeTypesBareQuery, enumTypesBareQuery } from './querries';
-import { PgCompositeTypeBare, PgCompositeTypes, PgEnumTypes } from './types/pg';
-import { isKnownPgType, knownPgTypeToTsTypesMap } from './types/type-map';
+import { compositeTypesBareQuery, enumTypesBareQuery } from './querries.js';
+import { PgCompositeTypeBare, PgCompositeTypes, PgEnumTypes } from './types/pg.js';
+import { isKnownPgType, knownPgTypeToTsTypesMap } from './types/type-map.js';
 
 export const getPgTypes = async (pool: DatabasePool) => {
   const enumTypesBare = await pool.any(enumTypesBareQuery);

@@ -1,18 +1,18 @@
 import assert from 'assert';
 import dotenv from 'dotenv';
 import { stat } from 'fs/promises';
-import { clone } from 'lodash';
+import { clone } from 'lodash-es';
 import { resolve } from 'path';
 import { cwd } from 'process';
 import { ConnectionError, createPool, DatabasePool } from 'slonik';
 
-import { getPgTypes } from '../pg-type';
+import { getPgTypes } from '../pg-type.js';
 import {
   constraintsBareQuery,
   indexesBareQuery,
   searchPathQuery,
   tableAndColumnsQuery,
-} from '../querries';
+} from '../querries.js';
 import {
   changeCaseMap,
   ColumnTypeMap,
@@ -21,13 +21,13 @@ import {
   isIncludeTargets,
   RenderTargets,
   UserConfig,
-} from '../types/config';
-import { isKnownPgType, knownPgTypeToTsTypesMap } from '../types/type-map';
-import { validateColumnNames } from './column';
-import { validateConstratints } from './constraint';
-import { validateIndexes } from './pg-index';
-import { validateSchema } from './schema';
-import { validateTableNames } from './table';
+} from '../types/config.js';
+import { isKnownPgType, knownPgTypeToTsTypesMap } from '../types/type-map.js';
+import { validateColumnNames } from './column.js';
+import { validateConstratints } from './constraint.js';
+import { validateIndexes } from './pg-index.js';
+import { validateSchema } from './schema.js';
+import { validateTableNames } from './table.js';
 
 const defaultConfig: Pick<Config, 'output'> = {
   output: {

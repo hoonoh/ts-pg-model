@@ -1,8 +1,8 @@
 import test from 'ava';
 
-import { TitleHelper } from './../../test/helpers/title';
-import { PgIndexBare } from './../types/pg';
-import { validateIndexes } from './pg-index';
+import { TitleHelper } from './../../test/helpers/title.js';
+import { PgIndexBare } from './../types/pg.js';
+import { validateIndexes } from './pg-index.js';
 
 const titleHelper = new TitleHelper();
 

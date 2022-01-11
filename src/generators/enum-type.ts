@@ -1,8 +1,8 @@
 import { pascalCase } from 'change-case';
 
-import { Config } from '../config';
-import { resolveOutputPath } from './helpers/output-path';
-import { startProject } from './helpers/ts-morph';
+import { Config } from '../config/index.js';
+import { resolveOutputPath } from './helpers/output-path.js';
+import { startProject } from './helpers/ts-morph.js';
 
 export const generateEnumFiles = async (config: Config) => {
   await Promise.all(

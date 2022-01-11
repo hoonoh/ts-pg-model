@@ -17,7 +17,11 @@
     "name": "hoonoh"
   },
   "packageManager": "yarn@3.1.1",
-  "main": "dist/index.js",
+  "type": "module",
+  "exports": "./dist/index.js",
+  "engines": {
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+  },
   "types": "dist/index.d.ts",
   "files": [
     "dist"
@@ -25,14 +29,14 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "lint": "eslint \"./src/**/*.ts\"",
-    "test": "ava --no-worker-threads",
-    "test:coverage": "c8 -r lcov ava --no-worker-threads",
+    "test": "NODE_NO_WARNINGS=1 ava --no-worker-threads",
+    "test:coverage": "NODE_NO_WARNINGS=1 c8 -r lcov ava --no-worker-threads",
     "test:types": "tsc --noEmit",
-    "test:db:migrate": "DATABASE_URL=postgresql://postgres:secretpassword@localhost:54321/postgres yarn node-pg-migrate -m ./src/test/migrations --tsconfig ./tsconfig.json",
+    "test:db:migrate": "DATABASE_URL=postgresql://postgres:secretpassword@localhost:54321/postgres yarn node-pg-migrate -m ./src/test/migrations --tsconfig ./src/test/migrations/tsconfig.json --ignore-pattern .+\\.json",
     "test:db:migrate:up": "yarn test:db:migrate up",
     "test:db:migrate:down": "yarn test:db:migrate down",
     "test:db:up": "docker run -d --rm --name ts-pg-model -p 54321:5432 -e POSTGRES_PASSWORD=secretpassword postgres:alpine",
-    "test:db:wait": "node ./src/test/ci/wait-for-pg.js",
+    "test:db:wait": "node ./src/test/ci/wait-for-pg.cjs",
     "test:db:down": "docker stop ts-pg-model",
     "test:pre": "yarn test:db:up && yarn test:db:wait && yarn test:db:migrate:up",
     "test:ci": "yarn test:pre && yarn test:coverage",
@@ -40,11 +44,10 @@
   },
   "dependencies": {
     "change-case": "4.1.2",
-    "lodash": "4.17.21",
+    "lodash-es": "4.17.21",
     "reflect-metadata": "0.1.13",
     "slonik": "27.1.0",
-    "ts-morph": "13.0.2",
-    "typedi": "0.10.0"
+    "ts-morph": "13.0.2"
   },
   "devDependencies": {
     "@semantic-release/changelog": "6.0.1",
@@ -52,7 +55,7 @@
     "@semantic-release/git": "10.0.1",
     "@semantic-release/github": "8.0.2",
     "@semantic-release/release-notes-generator": "10.0.3",
-    "@types/lodash": "4.14.178",
+    "@types/lodash-es": "4.17.5",
     "@types/mock-fs": "4.13.1",
     "@types/node": "16.11.19",
     "@typescript-eslint/eslint-plugin": "5.9.0",

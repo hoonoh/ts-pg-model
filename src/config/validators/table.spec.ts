@@ -1,8 +1,8 @@
 import test from 'ava';
 
-import { TitleHelper } from '../../test/helpers/title';
-import { TableAndColumn } from './../types/config';
-import { validateTableNames } from './table';
+import { TitleHelper } from '../../test/helpers/title.js';
+import { TableAndColumn } from './../types/config.js';
+import { validateTableNames } from './table.js';
 
 const tableAndColumns: TableAndColumn[] = [
   {

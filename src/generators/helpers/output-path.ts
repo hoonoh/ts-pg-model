@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 
-import { Config } from '../../config';
+import { Config } from '../../config/index.js';
 
 /**
  * Resolves output file path.

@@ -1,4 +1,5 @@
 import {
+  camelCase,
   capitalCase,
   constantCase,
   dotCase,
@@ -8,13 +9,13 @@ import {
   pascalCase,
   pathCase,
   sentenceCase,
+  snakeCase,
 } from 'change-case';
-import { camelCase, snakeCase } from 'lodash';
 import { DeepRequired } from 'ts-essentials';
 
-import { JsonType } from '../../pg-types/json';
-import { PgCompositeType, PgCompositeTypes, PgEnumType, PgEnumTypes } from './pg';
-import { KnownPgType, TsType } from './type-map';
+import { JsonType } from '../../pg-types/json.js';
+import { PgCompositeType, PgCompositeTypes, PgEnumType, PgEnumTypes } from './pg.js';
+import { KnownPgType, TsType } from './type-map.js';
 
 export type ConfigKey = 'schemas' | 'tables' | 'columns' | 'types';
 

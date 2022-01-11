@@ -1,2 +1,2 @@
-export * from './types/config';
-export * from './validators';
+export * from './types/config.js';
+export * from './validators/index.js';

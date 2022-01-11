@@ -1538,7 +1538,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:4.14.178":
+"@types/lodash-es@npm:4.17.5":
+  version: 4.17.5
+  resolution: "@types/lodash-es@npm:4.17.5"
+  dependencies:
+    "@types/lodash": "*"
+  checksum: 8910f646310aa008bb45071619fe85abf917bbc2c7cc0af883a971de261723247695a58dd966bfa9defd946cef79811d8b075eb6f0af12343080ab0ae6614e12
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:*":
   version: 4.14.178
   resolution: "@types/lodash@npm:4.14.178"
   checksum: a69a04a60bfc5257c3130a554b4efa0c383f0141b7b3db8ab7cf07ad2a46ea085fce66d0242da41da7e5647b133d5dfb2c15add9cbed8d7fef955e4a1e5b3128
@@ -6004,6 +6013,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash-es@npm:4.17.21":
+  version: 4.17.21
+  resolution: "lodash-es@npm:4.17.21"
+  checksum: 05cbffad6e2adbb331a4e16fbd826e7faee403a1a04873b82b42c0f22090f280839f85b95393f487c1303c8a3d2a010048bf06151a6cbe03eee4d388fb0a12d2
+  languageName: node
+  linkType: hard
+
 "lodash._reinterpolate@npm:^3.0.0":
   version: 3.0.0
   resolution: "lodash._reinterpolate@npm:3.0.0"
@@ -6086,7 +6102,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:4.17.21, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.21, lodash@npm:^4.17.4, lodash@npm:^4.7.0":
+"lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.21, lodash@npm:^4.17.4, lodash@npm:^4.7.0":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -9590,7 +9606,7 @@ __metadata:
     "@semantic-release/git": 10.0.1
     "@semantic-release/github": 8.0.2
     "@semantic-release/release-notes-generator": 10.0.3
-    "@types/lodash": 4.14.178
+    "@types/lodash-es": 4.17.5
     "@types/mock-fs": 4.13.1
     "@types/node": 16.11.19
     "@typescript-eslint/eslint-plugin": 5.9.0
@@ -9609,7 +9625,7 @@ __metadata:
     eslint-plugin-simple-import-sort: 7.0.0
     eslint-plugin-unused-imports: 2.0.0
     lerna: 4.0.0
-    lodash: 4.17.21
+    lodash-es: 4.17.21
     mock-fs: 5.1.2
     mockdate: 3.0.5
     node-pg-migrate: 6.2.1
@@ -9620,7 +9636,6 @@ __metadata:
     ts-essentials: 9.1.2
     ts-morph: 13.0.2
     ts-node: 10.4.0
-    typedi: 0.10.0
     typescript: 4.5.4
   languageName: unknown
   linkType: soft
@@ -9767,13 +9782,6 @@ __metadata:
   version: 0.0.6
   resolution: "typedarray@npm:0.0.6"
   checksum: 33b39f3d0e8463985eeaeeacc3cb2e28bc3dfaf2a5ed219628c0b629d5d7b810b0eb2165f9f607c34871d5daa92ba1dc69f49051cf7d578b4cbd26c340b9d1b1
-  languageName: node
-  linkType: hard
-
-"typedi@npm:0.10.0":
-  version: 0.10.0
-  resolution: "typedi@npm:0.10.0"
-  checksum: d26491e3684677d898f745b2ea5403cad4e03f7ed87b35d0a1cc80cbb4837d50042e100574da77d56dd04e3f0270a6f7df18270171c828bec6b93cefbac059a3
   languageName: node
   linkType: hard
 

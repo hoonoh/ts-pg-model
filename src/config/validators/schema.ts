@@ -1,4 +1,4 @@
-import { throwInvalid } from './error';
+import { throwInvalid } from './error.js';
 
 export const validateSchema = ({
   names,

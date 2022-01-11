@@ -1,8 +1,11 @@
 import test from 'ava';
 
-import { TitleHelper } from '../../test/helpers/title';
-import { MockFs } from './../../test/helpers/mock-fs';
-import { parseConfigFile } from './parse-config-file';
+import { TitleHelper } from '../../test/helpers/title.js';
+import { serialAfterEach } from '../../test/init.js';
+import { MockFs } from './../../test/helpers/mock-fs.js';
+import { parseConfigFile } from './parse-config-file.js';
+
+serialAfterEach(test);
 
 const titleHelper = new TitleHelper();
 

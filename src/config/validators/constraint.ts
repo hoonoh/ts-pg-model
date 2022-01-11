@@ -1,5 +1,5 @@
-import { Constraint } from '../types/config';
-import { PgConstraintsBare } from '../types/pg';
+import { Constraint } from '../types/config.js';
+import { PgConstraintsBare } from '../types/pg.js';
 
 export const validateConstratints = (constraintsBare: readonly PgConstraintsBare[]) => {
   const rtn: Constraint[] = [];

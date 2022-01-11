@@ -1,9 +1,8 @@
-import { ColumnTypeMap, RenderTargets, Table } from '../../config';
-import { PgConstraintsBare, PgEnumTypeBare, PgIndexBare } from '../../config/types/pg';
-import { KnownPgType, knownPgTypeToTsTypesMap } from '../../config/types/type-map';
-import { validateConstratints } from '../../config/validators/constraint';
-import { TableAndColumn } from './../../config/types/config';
-import { validateIndexes } from './../../config/validators/pg-index';
+import { ColumnTypeMap, RenderTargets, Table, TableAndColumn } from '../../config/index.js';
+import { PgConstraintsBare, PgEnumTypeBare, PgIndexBare } from '../../config/types/pg.js';
+import { KnownPgType, knownPgTypeToTsTypesMap } from '../../config/types/type-map.js';
+import { validateConstratints } from '../../config/validators/constraint.js';
+import { validateIndexes } from './../../config/validators/pg-index.js';
 
 /**
  * helpers for generators

@@ -12,7 +12,7 @@ import {
   snakeCase,
 } from 'change-case';
 
-import { ChangeCase } from '../../config/types/config';
+import { ChangeCase } from '../../config/types/config.js';
 
 export const changeCase = (input: string, caseType?: ChangeCase) => {
   let rtn = input;

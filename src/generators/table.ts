@@ -2,9 +2,9 @@ import assert from 'assert';
 import { pascalCase } from 'change-case';
 import { PropertySignatureStructure } from 'ts-morph';
 
-import { ColumnTypeMap, Config, Table } from '../config';
-import { resolveOutputPath } from './helpers/output-path';
-import { startProject } from './helpers/ts-morph';
+import { ColumnTypeMap, Config, Table } from '../config/index.js';
+import { resolveOutputPath } from './helpers/output-path.js';
+import { startProject } from './helpers/ts-morph.js';
 
 export const generateTableFile = async (config: Config) => {
   const targets: [

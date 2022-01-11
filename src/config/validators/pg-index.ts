@@ -1,7 +1,7 @@
 import assert from 'assert';
 
-import { Index } from '../types/config';
-import { PgIndexBare } from '../types/pg';
+import { Index } from '../types/config.js';
+import { PgIndexBare } from '../types/pg.js';
 
 export const validateIndexes = (indexBare: readonly PgIndexBare[]) => {
   const rtn: Index[] = [];
