@@ -71,8 +71,6 @@ export const validateConstratints = (constraintsBare: readonly PgConstraintsBare
         if (columns) columnNames.push(...columns);
         docs = `@exclude ${c.constraintName} (${c.definition.split('EXCLUDE USING ').pop()})`;
         break;
-      default:
-        break;
     }
     const constraint: Constraint = {
       schema: c.schema,
