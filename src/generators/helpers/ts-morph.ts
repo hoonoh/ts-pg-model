@@ -1,17 +1,19 @@
 import { resolve } from 'path';
 import { IndentationText, Project, SourceFile } from 'ts-morph';
 
-export const insertGeneratedComment = (sourceFile: SourceFile, index = 0) => {
+export const insertGeneratedComment = (sourceFile: SourceFile) => {
   sourceFile.insertStatements(
-    index,
-    `/**
-* @note This file was generated with \`ts-pg-model\`.
-* @generated ${new Date().toJSON()}
-*/`,
+    0,
+    [
+      `/**`,
+      `* @note This file was generated with \`ts-pg-model\`.`,
+      `* @generated ${new Date().toJSON()}`,
+      `*/`,
+    ].join('\n'),
   );
 };
 
-export const startProject = (tsPath: string, insertGeneratedCommentAt = 0) => {
+export const startProject = (tsPath: string, source?: string) => {
   const project = new Project({
     tsConfigFilePath: resolve(__dirname, '../../../tsconfig.json'),
     skipAddingFilesFromTsConfig: true,
@@ -20,11 +22,11 @@ export const startProject = (tsPath: string, insertGeneratedCommentAt = 0) => {
     },
   });
 
-  const sourceFile = project.createSourceFile(tsPath, undefined, {
+  const sourceFile = project.createSourceFile(tsPath, source, {
     overwrite: true,
   });
 
-  insertGeneratedComment(sourceFile, insertGeneratedCommentAt);
+  insertGeneratedComment(sourceFile);
 
   return { project, sourceFile };
 };

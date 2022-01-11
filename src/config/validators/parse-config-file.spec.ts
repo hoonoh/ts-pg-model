@@ -9,7 +9,7 @@ const titleHelper = new TitleHelper();
 const configFilePath = '/temp/config.ts';
 
 const commonJsonTypeMap = `
-export interface JsonTypeMap extends Record<string, JsonType> {
+interface JsonTypeMap extends Record<string, JsonType> {
   FooType: {
     foo: string;
     bar: number;
