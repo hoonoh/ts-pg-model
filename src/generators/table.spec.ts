@@ -1,6 +1,6 @@
 import test from 'ava';
 import { pascalCase } from 'change-case';
-import { readdirSync, readFileSync } from 'fs';
+import { readdirSync, readFileSync, statSync } from 'fs';
 import { resolve } from 'path';
 
 import { validateUserConfig } from '../config/index.js';
@@ -239,4 +239,72 @@ test(titleHelper.should('render tables'), async t => {
       }
     });
   });
+});
+
+test.serial(titleHelper.should('ignore composite columns'), async t => {
+  MockFs.mockDirectory(generateRoot);
+
+  const { tableAndColumns, compositeTypes } = renderTargetsToQueryRes({
+    ...mockSchema({
+      schema: 'foo',
+      tableSpecs: [
+        {
+          tableName: 'bar',
+          pgColumns: [
+            {
+              columnName: 'baz',
+              pgType: 'text',
+            },
+          ],
+          compositeTypeColumns: [
+            {
+              columnName: 'composite_qux',
+              compositeTypeName: 'qux',
+              attributes: [
+                {
+                  type: 'ts',
+                  name: 'text_attr',
+                  value: 'string',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    }),
+  });
+
+  const pool = mockPool(
+    [
+      {
+        sql: compositeTypesBareQuery.sql,
+        rows: compositeTypes,
+      },
+      {
+        sql: tableAndColumnsQuery.sql,
+        rows: tableAndColumns,
+      },
+    ],
+    tableAndColumns,
+  );
+
+  const config = await validateUserConfig({
+    connectionURI,
+    output: { root: generateRoot, includeSchemaPath: true },
+    pool,
+    conventions: { columns: 'camelCase' },
+    ignoreCompositeTypeColumns: true,
+  });
+
+  await generateTableFile(config);
+
+  const schemaRoot = resolve(generateRoot, config.conventions.paths('foo'));
+  const tableFilePath = resolve(schemaRoot, `${config.conventions.paths('bar')}.ts`);
+  t.notThrows(() => statSync(tableFilePath));
+
+  const tableFile = readFileSync(tableFilePath, { encoding: 'utf-8' });
+  t.true(tableFile.includes('@table foo.bar'));
+  t.true(tableFile.includes('export interface Bar'));
+  t.true(tableFile.includes('@column foo.bar.baz'));
+  t.false(tableFile.includes('@pgtype [composite]'));
 });

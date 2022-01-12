@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { pascalCase } from 'change-case';
-import { PropertySignatureStructure } from 'ts-morph';
+import { OptionalKind, PropertySignatureStructure } from 'ts-morph';
 
 import { ColumnTypeMap, Config, Table } from '../config/index.js';
 import { resolveOutputPath } from './helpers/output-path.js';
@@ -27,7 +27,11 @@ export const generateTableFile = async (config: Config) => {
 
   await Promise.all(
     targets.map(async ([schema, tableName, tableSpec]) => {
-      const outputPath = resolveOutputPath({ schema, filename: `${tableName}.ts`, config });
+      const outputPath = resolveOutputPath({
+        schema,
+        filename: `${config.conventions.paths(tableName)}.ts`,
+        config,
+      });
       const { project, sourceFile } = startProject(outputPath);
 
       const importEnumType = Object.entries(tableSpec.columns).reduce((acc, [, columnSpec]) => {
@@ -55,7 +59,9 @@ export const generateTableFile = async (config: Config) => {
         isExported: true,
         name: pascalCase(tableName),
         docs: [tableDocs.join('\n')],
-        properties: Object.entries(tableSpec.columns).map(([columnName, columnSpec]) => {
+        properties: Object.entries(tableSpec.columns).reduce((acc, [columnName, columnSpec]) => {
+          if (config.ignoreCompositeTypeColumns && columnSpec.type.composite) return acc;
+
           let type: string | undefined = columnSpec.type.ts;
 
           if (columnSpec.type.enum) {
@@ -103,13 +109,15 @@ export const generateTableFile = async (config: Config) => {
               docs.push(c.docs);
             });
 
-          return {
+          acc.push({
             name: columnName,
             type,
             hasQuestionToken: columnSpec.isNullable,
             docs: [docs.join('\n')],
-          } as PropertySignatureStructure;
-        }),
+          } as PropertySignatureStructure);
+
+          return acc;
+        }, [] as OptionalKind<PropertySignatureStructure>[]),
       });
 
       await project.save();
