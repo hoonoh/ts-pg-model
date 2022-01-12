@@ -1,6 +1,15 @@
 import { ColumnTypeMap, RenderTargets, Table, TableAndColumn } from '../../config/index.js';
-import { PgConstraintsBare, PgEnumTypeBare, PgIndexBare } from '../../config/types/pg.js';
-import { KnownPgType, knownPgTypeToTsTypesMap } from '../../config/types/type-map.js';
+import {
+  isPgCompositeType,
+  isPgEnumType,
+  PgCompositeType,
+  PgCompositeTypeBare,
+  PgConstraintsBare,
+  PgEnumType,
+  PgEnumTypeBare,
+  PgIndexBare,
+} from '../../config/types/pg.js';
+import { KnownPgType, knownPgTypeToTsTypesMap, TsType } from '../../config/types/type-map.js';
 import { validateConstratints } from '../../config/validators/constraint.js';
 import { validateIndexes } from './../../config/validators/pg-index.js';
 
@@ -11,6 +20,7 @@ import { validateIndexes } from './../../config/validators/pg-index.js';
 export const renderTargetsToQueryRes = (renderTargets: RenderTargets) => {
   const tableAndColumns: TableAndColumn[] = [];
   const enums: PgEnumTypeBare[] = [];
+  const compositeTypes: PgCompositeTypeBare[] = [];
   const indexes: PgIndexBare[] = [];
   const constraints: PgConstraintsBare[] = [];
   Object.entries(renderTargets).forEach(([schema, tableSpecs]) => {
@@ -72,6 +82,40 @@ export const renderTargetsToQueryRes = (renderTargets: RenderTargets) => {
             });
           });
         }
+        if (columnSpec.type.composite) {
+          const { name } = columnSpec.type.composite;
+          Object.entries(columnSpec.type.composite.attributes).forEach(
+            ([attributeName, attr], idx) => {
+              const isEnum = isPgEnumType(attr);
+              const isComposite = isPgCompositeType(attr);
+              let userType: PgCompositeTypeBare['userType'] = null;
+              if (isEnum) {
+                userType = 'enum';
+              } else if (isComposite) {
+                userType = 'composite';
+              }
+
+              // ? limited accuracy
+              let type: KnownPgType | string = 'text';
+              if (isEnum || isComposite) {
+                type = `${schema}.${attr.name}`;
+              } else if (typeof attr === 'number') {
+                type = 'int2' as KnownPgType;
+              } else if (typeof attr === 'boolean') {
+                type = 'bool' as KnownPgType;
+              }
+
+              compositeTypes.push({
+                schema,
+                name,
+                sortOrder: idx,
+                userType,
+                type,
+                attributeName,
+              } as PgCompositeTypeBare);
+            },
+          );
+        }
         tableAndColumns.push({
           schema: columnSpec.schema,
           tableName: columnSpec.tableName,
@@ -87,7 +131,7 @@ export const renderTargetsToQueryRes = (renderTargets: RenderTargets) => {
       });
     });
   });
-  return { tableAndColumns, enums, indexes, constraints };
+  return { tableAndColumns, enums, compositeTypes, indexes, constraints };
 };
 
 export const mockEnumColumn = ({
@@ -126,6 +170,81 @@ export const mockEnumColumn = ({
           schema,
           name: enumName,
           labels: enumLabels,
+        },
+      },
+      comment,
+    },
+  };
+  return column;
+};
+
+export const mockCompositeColumn = ({
+  schema,
+  udtSchema,
+  tableName,
+  columnName,
+  compositeTypeName,
+  attributes,
+  isNullable,
+  defaults,
+  comment,
+}: {
+  schema: string;
+  udtSchema?: string;
+  tableName: string;
+  columnName: string;
+  compositeTypeName: string;
+  attributes: (
+    | {
+        type: 'ts';
+        name: string;
+        value: TsType;
+      }
+    | {
+        type: 'enum';
+        name: string;
+        value: Omit<PgEnumType, 'schema'>;
+      }
+    | {
+        type: 'composite';
+        name: string;
+        value: Omit<PgCompositeType, 'schema'>;
+      }
+  )[];
+  isNullable?: boolean;
+  defaults?: string | null;
+  comment?: string;
+}) => {
+  const column: Record<string, ColumnTypeMap> = {
+    [columnName]: {
+      schema,
+      tableName,
+      columnName,
+      isNullable: !!isNullable,
+      defaults,
+      userDefinedUdtSchema: udtSchema || schema,
+      udtName: compositeTypeName,
+      dataType: 'USER-DEFINED',
+      type: {
+        composite: {
+          schema,
+          name: compositeTypeName,
+          attributes: attributes.reduce((acc, cur) => {
+            if (cur.type === 'ts') {
+              acc[cur.name] = cur.value;
+            } else if (cur.type === 'enum') {
+              acc[cur.name] = {
+                schema,
+                ...cur.value,
+              } as PgEnumType;
+            } else if (cur.type === 'composite') {
+              acc[cur.name] = {
+                schema,
+                ...cur.value,
+              } as PgCompositeType;
+            }
+            return acc;
+          }, {} as PgCompositeType['attributes']),
         },
       },
       comment,
@@ -174,6 +293,7 @@ export const mockTable = ({
   tableName,
   pgColumns,
   enumColumns,
+  compositeTypeColumns,
   indexSpecs,
   constraintSpecs,
 }: {
@@ -181,6 +301,7 @@ export const mockTable = ({
   tableName: string;
   pgColumns?: Omit<Parameters<typeof mockColumn>[0], 'schema' | 'tableName'>[];
   enumColumns?: Omit<Parameters<typeof mockEnumColumn>[0], 'schema' | 'tableName'>[];
+  compositeTypeColumns?: Omit<Parameters<typeof mockCompositeColumn>[0], 'schema' | 'tableName'>[];
   // todo: add json types
   indexSpecs?: Omit<PgIndexBare, 'schema' | 'tableName'>[];
   constraintSpecs?: Omit<PgConstraintsBare, 'schema' | 'tableName'>[];
@@ -218,6 +339,24 @@ export const mockTable = ({
     return acc;
   }, {} as Record<string, ColumnTypeMap>);
 
+  const compositeTypes = compositeTypeColumns?.reduce((acc, c) => {
+    acc = {
+      ...acc,
+      ...mockCompositeColumn({
+        schema,
+        tableName,
+        columnName: c.columnName,
+        udtSchema: c.udtSchema,
+        compositeTypeName: c.compositeTypeName,
+        attributes: c.attributes,
+        isNullable: c.isNullable,
+        defaults: c.defaults,
+        comment: c.comment,
+      }),
+    };
+    return acc;
+  }, {} as Record<string, ColumnTypeMap>);
+
   const indexes = indexSpecs?.length
     ? validateIndexes(indexSpecs.map(s => ({ ...s, schema, tableName } as PgIndexBare)))
     : undefined;
@@ -235,6 +374,7 @@ export const mockTable = ({
       columns: {
         ...columns,
         ...enums,
+        ...compositeTypes,
       },
       indexes,
       constraints,
@@ -252,6 +392,10 @@ export const mockSchema = ({
     tableName: string;
     pgColumns?: Omit<Parameters<typeof mockColumn>[0], 'schema' | 'tableName'>[];
     enumColumns?: Omit<Parameters<typeof mockEnumColumn>[0], 'schema' | 'tableName'>[];
+    compositeTypeColumns?: Omit<
+      Parameters<typeof mockCompositeColumn>[0],
+      'schema' | 'tableName'
+    >[];
     // todo: add json types
     indexSpecs?: Omit<PgIndexBare, 'schema' | 'tableName'>[];
     constraintSpecs?: Omit<PgConstraintsBare, 'schema' | 'tableName'>[];
@@ -265,6 +409,7 @@ export const mockSchema = ({
         tableName: t.tableName,
         pgColumns: t.pgColumns,
         enumColumns: t.enumColumns,
+        compositeTypeColumns: t.compositeTypeColumns,
         indexSpecs: t.indexSpecs,
         constraintSpecs: t.constraintSpecs,
       }),

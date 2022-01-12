@@ -10,4 +10,4 @@ dist
 generated
 node_modules
 yarn-error.log
-zz-test*.ts
+zz-test*.*

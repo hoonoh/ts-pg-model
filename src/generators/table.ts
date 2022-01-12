@@ -56,15 +56,22 @@ export const generateTableFile = async (config: Config) => {
         name: pascalCase(tableName),
         docs: [tableDocs.join('\n')],
         properties: Object.entries(tableSpec.columns).map(([columnName, columnSpec]) => {
-          let type = columnSpec.type.enum
-            ? pascalCase(columnSpec.type.enum.name)
-            : columnSpec.type.ts;
+          let type: string | undefined = columnSpec.type.ts;
+
+          if (columnSpec.type.enum) {
+            type = pascalCase(columnSpec.type.enum.name);
+          } else if (columnSpec.type.composite) {
+            type = pascalCase(columnSpec.type.composite.name);
+          }
           assert(type !== undefined, 'unexpected undefined column type');
 
           let columnType = `${columnSpec.dataType}`;
           if (columnSpec.type.enum) {
             columnType = `[enum] ${columnSpec.type.enum.schema}.${columnSpec.type.enum.name}`;
+          } else if (columnSpec.type.composite) {
+            columnType = `[composite] ${columnSpec.type.composite.schema}.${columnSpec.type.composite.name}`;
           }
+
           const docs = [
             `@column ${columnSpec.schema}.${columnSpec.tableName}.${columnSpec.columnName}`,
             `@name ${columnSpec.columnName}`,

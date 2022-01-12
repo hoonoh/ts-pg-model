@@ -25,33 +25,43 @@ export const getPgTypes = async (pool: DatabasePool) => {
     findCompositeTypesFrom?: PgCompositeTypes,
   ) =>
     from.reduce((rtn, cur) => {
-      const { schema, name, attributeName, type } = cur;
+      const { schema, name, attributeName, type, userType } = cur;
       if (!rtn[schema]) rtn[schema] = {};
       if (!rtn[schema][name]) rtn[schema][name] = { schema, name, attributes: {} };
 
       if (isKnownPgType(type)) {
         rtn[schema][name].attributes[attributeName] = knownPgTypeToTsTypesMap[type];
-      } else if (type.match(/\w+\.\w+/)) {
-        // type = `[string].[string]`, check if enum or composite type
-
+      } else if (userType) {
         const [typeSchema, typeName] = type.split('.');
-        if (!typeSchema || !typeName) throw new Error(`unexpected composite type name "${type}"`);
-        if (enumTypes[typeSchema][typeName]) {
+        if (
           // enum type
+          userType === 'enum'
+        ) {
           rtn[schema][name].attributes[attributeName] = enumTypes[typeSchema][typeName];
-        } else if (findCompositeTypesFrom?.[typeSchema][typeName]) {
-          // composite type found from retry routine
-          rtn[schema][name].attributes[attributeName] =
-            findCompositeTypesFrom[typeSchema][typeName];
-        } else if (rtn[typeSchema][typeName]) {
-          // composite type found from parsed list
-          rtn[schema][name].attributes[attributeName] = rtn[typeSchema][typeName];
-        } else if (!findCompositeTypesFrom) {
-          // target composite type may not be parsed yet, register for retry
-          compositeTypesRetry.push(cur);
-        } else {
-          // unexpected error
-          throw new Error(`unexpected type ${type}`);
+        } else if (
+          // composite type
+          userType === 'composite'
+        ) {
+          if (
+            // composite type found from retry routine
+            findCompositeTypesFrom?.[typeSchema][typeName]
+          ) {
+            rtn[schema][name].attributes[attributeName] =
+              findCompositeTypesFrom[typeSchema][typeName];
+          } else if (
+            // composite type found from parsed list
+            rtn[typeSchema][typeName]
+          ) {
+            rtn[schema][name].attributes[attributeName] = rtn[typeSchema][typeName];
+          } else if (
+            // target composite type may not be parsed yet, register for retry
+            !findCompositeTypesFrom
+          ) {
+            compositeTypesRetry.push(cur);
+          } else {
+            // unexpected error
+            throw new Error(`unexpected type ${type}`);
+          }
         }
       }
       return rtn;

@@ -13,6 +13,10 @@ export type PgEnumType = Omit<PgEnumTypeBare, 'label' | 'sortOrder'> & {
   labels: string[];
 };
 
+export const isPgEnumType = (input: any): input is PgEnumType => {
+  return input.labels !== undefined;
+};
+
 /**
  * {
  *  [schema name]: {
@@ -28,12 +32,17 @@ export type PgCompositeTypeBare = {
   schema: string;
   name: string;
   attributeName: string;
-  type: string;
   sortOrder: number;
+  type: string;
+  userType: 'enum' | 'composite' | null;
 };
 
 export type PgCompositeType = Pick<PgCompositeTypeBare, 'schema' | 'name'> & {
   attributes: Record<string, TsType | PgEnumType | PgCompositeType>;
+};
+
+export const isPgCompositeType = (input: any): input is PgCompositeType => {
+  return input.attributes !== undefined;
 };
 
 /**

@@ -5,6 +5,7 @@ import { resolve } from 'path';
 
 import { validateUserConfig } from '../config/index.js';
 import {
+  compositeTypesBareQuery,
   constraintsBareQuery,
   enumTypesBareQuery,
   indexesBareQuery,
@@ -30,6 +31,7 @@ test(titleHelper.should('render tables'), async t => {
   const {
     tableAndColumns: tableAndColumnsFooBar,
     enums: enumFooBar,
+    compositeTypes: compositeTypesFooBar,
     indexes: indexesFooBar,
     constraints: constraintsFooBar,
   } = renderTargetsToQueryRes({
@@ -57,6 +59,28 @@ test(titleHelper.should('render tables'), async t => {
               enumLabels: ['bar_baz_label_1', 'bar_baz_label_2', 'bar_baz_label_2'],
               defaults: 'bar_baz_label1',
               comment: 'enum_bar_baz comment',
+            },
+          ],
+          compositeTypeColumns: [
+            {
+              columnName: 'composite_baz_qux',
+              compositeTypeName: 'baz_qux',
+              attributes: [
+                {
+                  // from above enum
+                  type: 'enum',
+                  name: 'bar_baz_attr',
+                  value: {
+                    name: 'bar_baz',
+                    labels: ['bar_baz_label_1', 'bar_baz_label_2', 'bar_baz_label_2'],
+                  },
+                },
+                {
+                  type: 'ts',
+                  name: 'text_attr',
+                  value: 'string',
+                },
+              ],
             },
           ],
           indexSpecs: [
@@ -100,6 +124,7 @@ test(titleHelper.should('render tables'), async t => {
   const {
     tableAndColumns: tableAndColumnsBar,
     enums: enumBar,
+    compositeTypes: compositeTypesBar,
     indexes: indexesBar,
     constraints: constraintsBar,
   } = renderTargetsToQueryRes({
@@ -140,6 +165,10 @@ test(titleHelper.should('render tables'), async t => {
       {
         sql: enumTypesBareQuery.sql,
         rows: [...enumFooBar, ...enumBar],
+      },
+      {
+        sql: compositeTypesBareQuery.sql,
+        rows: [...compositeTypesFooBar, ...compositeTypesBar],
       },
       {
         sql: tableAndColumnsQuery.sql,

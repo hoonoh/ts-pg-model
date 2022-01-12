@@ -5,6 +5,7 @@ import { clone } from 'lodash-es';
 import { resolve } from 'path';
 import { cwd } from 'process';
 import { ConnectionError, createPool, DatabasePool } from 'slonik';
+import ts from 'typescript';
 
 import { getPgTypes } from '../pg-type.js';
 import {
@@ -32,7 +33,18 @@ import { validateTableNames } from './table.js';
 const defaultConfig: Pick<Config, 'output'> = {
   output: {
     includeSchemaPath: false,
-    root: resolve(cwd(), 'generated'),
+    root: (() => {
+      // try to resolve tsconfig.json sourceRoot
+      let sourceRoot = '';
+      try {
+        sourceRoot =
+          ts.readConfigFile(resolve(cwd(), 'tsconfig.json'), ts.sys.readFile).config
+            ?.compilerOptions?.sourceRoot || '';
+      } catch (error) {
+        //
+      }
+      return resolve(cwd(), sourceRoot, 'generated');
+    })(),
   },
 };
 
@@ -48,6 +60,7 @@ export const validateUserConfig = async ({
   typeMap,
   output,
   pool,
+  ignoreCompositeTypeColumns,
 }: UserConfig & { pool?: DatabasePool } = {}) => {
   if (!connectionURI) {
     if (dotEnvPath) {
@@ -261,6 +274,7 @@ export const validateUserConfig = async ({
       includeSchemaPath: output?.includeSchemaPath || defaultConfig.output.includeSchemaPath,
     },
     typeMap,
+    ignoreCompositeTypeColumns: !!ignoreCompositeTypeColumns,
   };
 
   return rtn;

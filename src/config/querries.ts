@@ -8,6 +8,7 @@ export const searchPathQuery = sql<{ search_path: string }>`
   show search_path
 `;
 
+// slonik-live-server-disable-cost-errors
 export const tableAndColumnsQuery = sql<TableAndColumn>`
   /* tableAndColumnsQuery */
   select
@@ -18,14 +19,14 @@ export const tableAndColumnsQuery = sql<TableAndColumn>`
     case when udt_schema = 'pg_catalog' then null else udt_schema end "userDefinedUdtSchema",
     udt_name "udtName",
     is_nullable::bool "isNullable",
-    pg_catalog.obj_description(oid, 'pg_class') "tableComment",
-    pg_catalog.col_description(oid, ordinal_position) "columnComment",
+    obj_description(oid, 'pg_class') "tableComment",
+    col_description(oid, ordinal_position) "columnComment",
     column_default "default"
   from information_schema.columns c
-  join pg_catalog.pg_class pc on pc.relname = c.table_name
+  join pg_class pc on pc.relname = c.table_name
   where table_schema not in ('pg_catalog', 'information_schema', 'pg_toast')
   group by table_schema, table_name, column_name, data_type, udt_schema, udt_name, is_nullable,
-    pg_catalog.obj_description(oid, 'pg_class'), pg_catalog.col_description(oid, ordinal_position),
+    obj_description(oid, 'pg_class'), col_description(oid, ordinal_position),
     ordinal_position, column_default
   order by table_schema, table_name, ordinal_position;
 `;
@@ -39,7 +40,7 @@ export const enumTypesBareQuery = sql<PgEnumTypeBare>`
     enumsortorder "sortOrder"
   from pg_type t
   join pg_enum e on e.enumtypid = t.oid
-  join pg_catalog.pg_namespace n on n.oid = t.typnamespace
+  join pg_namespace n on n.oid = t.typnamespace
   where n.nspname not in ('pg_catalog', 'information_schema')
   order by "schema", "name", enumsortorder
 `;
@@ -50,36 +51,55 @@ export const compositeTypesBareQuery = sql<PgCompositeTypeBare>`
   with types as (
     select
       n.nspname,
-      pg_catalog.format_type (t.oid, null) obj_name
-    from pg_catalog.pg_type t
-    join pg_catalog.pg_namespace n on n.oid = t.typnamespace
+      format_type (t.oid, null) obj_name
+    from pg_type t
+    join pg_namespace n on n.oid = t.typnamespace
     where true
     and (
       t.typrelid = 0
-      or (select c.relkind = 'c' from pg_catalog.pg_class c where c.oid = t.typrelid)
+      or (select c.relkind = 'c' from pg_class c where c.oid = t.typrelid)
     )
     and not exists (
       select 1
-      from pg_catalog.pg_type el
+      from pg_type el
       where el.oid = t.typelem
       and el.typarray = t.oid
     )
-    and n.nspname not in ('pg_catalog', 'information_schema')
-    and n.nspname !~ '^pg_toast'
+    and n.nspname not in ('pg_catalog', 'information_schema', 'pg_toast')
+  ),
+  list as (
+    select
+      a.atttypid,
+      t.oid,
+      n.nspname::text "schema",
+      t.typname "name",
+      a.attname::text "attributeName",
+      format_type (a.atttypid, a.atttypmod) "type",
+      a.attnum "sortOrder",
+      case
+        when (select oid from pg_enum e where e.enumtypid = a.atttypid limit 1) is not null then true
+        else false
+      end "isEnum"
+    from pg_attribute a
+    join pg_type t on a.attrelid = t.typrelid
+    join pg_namespace n on n.oid = t.typnamespace
+    join types on (types.nspname = n.nspname and types.obj_name = format_type (t.oid, null))
+    where a.attnum > 0
+    and not a.attisdropped
+    order by "schema", "name", attnum
   )
   select
-    n.nspname::text "schema",
-    t.typname "name",
-    a.attname::text "attributeName",
-    pg_catalog.format_type (a.atttypid, a.atttypmod) "type",
-    a.attnum "sortOrder"
-  from pg_catalog.pg_attribute a
-  join pg_catalog.pg_type t on a.attrelid = t.typrelid
-  join pg_catalog.pg_namespace n on n.oid = t.typnamespace
-  join types on (types.nspname = n.nspname and types.obj_name = pg_catalog.format_type (t.oid, null))
-  where a.attnum > 0
-  and not a.attisdropped
-  order by "schema", "name", attnum
+    "schema",
+    "name",
+    "attributeName",
+    "sortOrder",
+    "type",
+    case
+      when "isEnum" = true then 'enum'
+      when (select oid from list sl where l.atttypid = sl.oid limit 1) is not null then 'composite'
+      else null
+    end "userType"
+  from list l
 `;
 
 export const indexesBareQuery = sql<PgIndexBare>`
@@ -105,7 +125,7 @@ export const constraintsBareQuery = sql<PgConstraintsBare>`
     pg_get_constraintdef(c.oid) "definition"
   from pg_constraint c
   join pg_namespace n on n.oid = c.connamespace
-  join pg_catalog.pg_class pc on c.conrelid != 0 and c.conrelid = pc.oid
+  join pg_class pc on c.conrelid != 0 and c.conrelid = pc.oid
   where n.nspname not in ('pg_catalog', 'information_schema', 'pg_toast')
   order by n.nspname, pc.relname, c.contype, conname;
 `;

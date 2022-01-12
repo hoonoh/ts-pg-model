@@ -108,6 +108,7 @@ export type UserConfig<JsonTypeDefinitions = JsonTypeDefinitionMap> = {
     root?: string;
     includeSchemaPath?: boolean;
   };
+  ignoreCompositeTypeColumns?: boolean;
 };
 
 export type TableAndColumn = {
@@ -203,7 +204,7 @@ export type RenderTargets = Record<
 >;
 
 export type Config<JsonTypeDefinitions = JsonTypeDefinitionMap> = Required<
-  Pick<UserConfig, 'connectionURI' | 'schemas'>
+  Pick<UserConfig, 'connectionURI' | 'schemas' | 'ignoreCompositeTypeColumns'>
 > &
   DeepRequired<Pick<UserConfig, 'output'>> &
   Omit<UserConfig, 'dotEnvPath' | 'targetSelectors' | 'conventions'> & {
