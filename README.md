@@ -97,7 +97,7 @@ settings file. When `typeMap.json` is defined, this will require JSON type defin
 #### Example
 
 ```ts
-export interface JsonTypeMap extends Record<string, JsonType> {
+export interface JsonTypeMap {
   MediaMetadata: {
     width: number;
     height: number;

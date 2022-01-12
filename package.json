@@ -26,6 +26,7 @@
   "files": [
     "dist"
   ],
+  "bin": "yarn ts-node ./src/cli.ts",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "lint": "eslint \"./src/**/*.ts\"",
@@ -40,11 +41,16 @@
     "test:db:down": "docker stop ts-pg-model",
     "test:pre": "yarn test:db:up && yarn test:db:wait && yarn test:db:migrate:up",
     "test:ci": "yarn test:pre && yarn test:coverage",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "ts-node": "NODE_NO_WARNINGS=1 node -r ts-node/register/transpile-only --loader ts-node/esm"
   },
   "dependencies": {
     "change-case": "4.1.2",
+    "esbuild": "0.14.11",
     "lodash-es": "4.17.21",
+    "meow": "10.1.2",
+    "ora": "6.0.1",
+    "read-pkg-up": "9.0.0",
     "reflect-metadata": "0.1.13",
     "slonik": "27.1.0",
     "ts-morph": "13.0.2"

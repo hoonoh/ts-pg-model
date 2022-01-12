@@ -76,28 +76,23 @@ export const isIncludeTargets = (target: any): target is IncludeTargets => {
  */
 export type UdtTypeMap = Record<string, TsType>;
 
-/**
- * the record key will be used as generated type name
- *
- * {
- *  [type name]: JsonType
- * }
- */
-export type JsonTypeDefinitionMap = Record<string, JsonType>;
-
-export type JsonTypeMap<JsonTypeDefinition> = ColumnBare & {
-  name: keyof JsonTypeDefinition;
-};
+export type JsonTypeMap<K> = ColumnBare & { name: K };
 
 export type JsonTypeBareDefinitions = [name: string, definition: string][];
 
-export type TypeMap<JsonTypeDefinitions> = {
+export type TypeMap<
+  JsonTypeDefinitions extends Record<K, JsonType> = Record<any, JsonType>,
+  K extends keyof JsonTypeDefinitions = keyof JsonTypeDefinitions,
+> = {
   udt?: UdtTypeMap;
-  json?: JsonTypeMap<JsonTypeDefinitions>[];
+  json?: JsonTypeMap<K>[];
   jsonDefinitions?: JsonTypeBareDefinitions;
 };
 
-export type UserConfig<JsonTypeDefinitions = JsonTypeDefinitionMap> = {
+export type UserConfig<
+  JsonTypeDefinitions extends Record<K, JsonType> = Record<any, JsonType>,
+  K extends keyof JsonTypeDefinitions = keyof JsonTypeDefinitions,
+> = {
   connectionURI?: ConnectionURI;
   dotEnvPath?: string;
   conventions?: Partial<Record<Exclude<ConfigKey, 'tables'> | 'paths', ChangeCase>>;
@@ -178,7 +173,7 @@ export type ColumnTypeMap = Column & {
       }
     | {
         ts?: undefined;
-        json: JsonType;
+        json: JsonTypeMap<string>;
         enum?: undefined;
         composite?: undefined;
       }
@@ -203,7 +198,7 @@ export type RenderTargets = Record<
   Record<string, Table & { columns: Record<string, ColumnTypeMap> }>
 >;
 
-export type Config<JsonTypeDefinitions = JsonTypeDefinitionMap> = Required<
+export type Config = Required<
   Pick<UserConfig, 'connectionURI' | 'schemas' | 'ignoreCompositeTypeColumns'>
 > &
   DeepRequired<Pick<UserConfig, 'output'>> &
@@ -212,5 +207,6 @@ export type Config<JsonTypeDefinitions = JsonTypeDefinitionMap> = Required<
     enumTypes: PgEnumTypes;
     compositeTypes: PgCompositeTypes;
     conventions: Record<Exclude<ConfigKey, 'tables'> | 'paths', (input: string) => string>;
-    typeMap?: TypeMap<JsonTypeDefinitions>;
+    typeMap?: TypeMap;
+    importSuffix: string;
   };

@@ -4,6 +4,7 @@ import { stat } from 'fs/promises';
 import { clone } from 'lodash-es';
 import { resolve } from 'path';
 import { cwd } from 'process';
+import { readPackageUp } from 'read-pkg-up';
 import { ConnectionError, createPool, DatabasePool } from 'slonik';
 import ts from 'typescript';
 
@@ -275,6 +276,7 @@ export const validateUserConfig = async ({
     },
     typeMap,
     ignoreCompositeTypeColumns: !!ignoreCompositeTypeColumns,
+    importSuffix: (await readPackageUp())?.packageJson.type === 'module' ? '.js' : '',
   };
 
   return rtn;

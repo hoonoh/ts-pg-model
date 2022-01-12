@@ -45,7 +45,7 @@ export const generateTableFile = async (config: Config) => {
 
       sourceFile.addImportDeclaration({
         namedImports: enumTypeNames.map(n => pascalCase(n)),
-        moduleSpecifier: `./${config.conventions.paths('enum-types')}.ts`,
+        moduleSpecifier: `./${config.conventions.paths('enum-types')}${config.importSuffix}`,
       });
 
       const tableDocs = [
@@ -68,7 +68,14 @@ export const generateTableFile = async (config: Config) => {
             type = pascalCase(columnSpec.type.enum.name);
           } else if (columnSpec.type.composite) {
             type = pascalCase(columnSpec.type.composite.name);
+          } else if (columnSpec.type.json) {
+            type = pascalCase(columnSpec.type.json.name);
+            sourceFile.addImportDeclaration({
+              namedImports: [columnSpec.type.json.name],
+              moduleSpecifier: `../json-types${config.importSuffix}`,
+            });
           }
+
           assert(type !== undefined, 'unexpected undefined column type');
 
           let columnType = `${columnSpec.dataType}`;
