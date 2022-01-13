@@ -34,19 +34,46 @@ export const generateTableFile = async (config: Config) => {
       });
       const { project, sourceFile } = startProject(outputPath);
 
+      /**
+       * import enum types if required
+       */
       const importEnumType = Object.entries(tableSpec.columns).reduce((acc, [, columnSpec]) => {
         if (columnSpec.type.enum) acc.push(columnSpec);
         return acc;
       }, [] as ColumnTypeMap[]);
 
-      const enumTypeNames = importEnumType.map(i => i.type.enum?.name || 'UNEXPECTED');
+      if (importEnumType.length) {
+        const enumTypeNames = importEnumType.map(i => i.type.enum?.name || 'UNEXPECTED');
+        enumTypeNames.forEach(n => assert(n !== 'UNEXPECTED', 'unexpected enum type name'));
+        sourceFile.addImportDeclaration({
+          namedImports: enumTypeNames.map(n => pascalCase(n)),
+          moduleSpecifier: `./${config.conventions.paths('enum-types')}${config.importSuffix}`,
+        });
+      }
 
-      enumTypeNames.forEach(n => assert(n !== 'UNEXPECTED', 'unexpected enum type name'));
+      /**
+       * import composite types if required
+       */
+      const importCompositeType = Object.entries(tableSpec.columns).reduce(
+        (acc, [, columnSpec]) => {
+          if (columnSpec.type.composite) acc.push(columnSpec);
+          return acc;
+        },
+        [] as ColumnTypeMap[],
+      );
 
-      sourceFile.addImportDeclaration({
-        namedImports: enumTypeNames.map(n => pascalCase(n)),
-        moduleSpecifier: `./${config.conventions.paths('enum-types')}${config.importSuffix}`,
-      });
+      if (importCompositeType.length) {
+        const compositeTypeNames = importCompositeType.map(
+          i => i.type.composite?.name || 'UNEXPECTED',
+        );
+        compositeTypeNames.forEach(n =>
+          assert(n !== 'UNEXPECTED', 'unexpected composite type name'),
+        );
+        sourceFile.addImportDeclaration({
+          namedImports: compositeTypeNames.map(n => pascalCase(n)),
+          moduleSpecifier: `./${config.conventions.paths('composite-types')}${config.importSuffix}`,
+        });
+      }
 
       const tableDocs = [
         `@table ${tableSpec.schema}.${tableSpec.tableName}`,
