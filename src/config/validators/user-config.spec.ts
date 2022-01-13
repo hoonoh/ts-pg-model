@@ -1,10 +1,10 @@
 import test from 'ava';
 
+import { validateUserConfig } from '../../config/validators/user-config.js';
 import { connectionURI } from '../../test/constants.js';
 import { MockFs } from '../../test/helpers/mock-fs.js';
 import { TitleHelper } from '../../test/helpers/title.js';
 import { serialAfterEach } from '../../test/init.js';
-import { validateUserConfig } from './index.js';
 
 serialAfterEach(test);
 

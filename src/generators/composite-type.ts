@@ -1,7 +1,7 @@
 import { pascalCase } from 'change-case';
 import { OptionalKind, TypeAliasDeclarationStructure } from 'ts-morph';
 
-import { ColumnTypeMap, Config } from '../config/index.js';
+import { ColumnTypeMap, Config } from '../config/types/config.js';
 import { isPgCompositeType, isPgEnumType } from '../config/types/pg.js';
 import { resolveOutputPath } from './helpers/output-path.js';
 import { saveProject, startProject } from './helpers/ts-morph.js';

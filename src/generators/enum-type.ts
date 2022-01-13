@@ -1,6 +1,6 @@
 import { pascalCase } from 'change-case';
 
-import { Config } from '../config/index.js';
+import { Config } from '../config/types/config.js';
 import { resolveOutputPath } from './helpers/output-path.js';
 import { saveProject, startProject } from './helpers/ts-morph.js';
 

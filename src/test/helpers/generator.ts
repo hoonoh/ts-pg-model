@@ -1,4 +1,4 @@
-import { ColumnTypeMap, RenderTargets, Table, TableAndColumn } from '../../config/index.js';
+import { ColumnTypeMap, RenderTargets, Table, TableAndColumn } from '../../config/types/config.js';
 import {
   isPgCompositeType,
   isPgEnumType,

@@ -2,9 +2,9 @@ import test from 'ava';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
-import { validateUserConfig } from '../config/index.js';
 import { tableAndColumnsQuery } from '../config/querries.js';
 import { parseConfigFile } from '../config/validators/parse-config-file.js';
+import { validateUserConfig } from '../config/validators/user-config.js';
 import { connectionURI } from '../test/constants.js';
 import { mockSchema, renderTargetsToQueryRes } from '../test/helpers/generator.js';
 import { MockFs } from '../test/helpers/mock-fs.js';

@@ -7,8 +7,9 @@ import { tmpdir } from 'os';
 import { basename, extname, resolve } from 'path';
 import { cwd } from 'process';
 
-import { UserConfig, validateUserConfig } from './config/index.js';
+import { UserConfig } from './config/types/config.js';
 import { parseConfigFile } from './config/validators/parse-config-file.js';
+import { validateUserConfig } from './config/validators/user-config.js';
 import { generateCompositeFiles } from './generators/composite-type.js';
 import { generateEnumFiles } from './generators/enum-type.js';
 import { generateJsonTypeFile } from './generators/json-type.js';

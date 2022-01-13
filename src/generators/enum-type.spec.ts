@@ -3,8 +3,8 @@ import { pascalCase } from 'change-case';
 import { lstatSync, readdirSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 
-import { validateUserConfig } from '../config/index.js';
 import { enumTypesBareQuery, tableAndColumnsQuery } from '../config/querries.js';
+import { validateUserConfig } from '../config/validators/user-config.js';
 import { connectionURI } from '../test/constants.js';
 import { mockSchema, renderTargetsToQueryRes } from '../test/helpers/generator.js';
 import { MockFs } from '../test/helpers/mock-fs.js';
