@@ -83,7 +83,7 @@ export const generateCompositeFiles = async (config: Config) => {
         if (type.enum.length) {
           sourceFile.addImportDeclaration({
             moduleSpecifier:
-              (typeSchema === schema ? `./` : `../${typeSchema}/`) +
+              (typeSchema === schema ? `./` : `../${config.conventions.paths(typeSchema)}/`) +
               `enum-types${config.importSuffix}`,
             namedImports: type.enum.map(t => pascalCase(t.name)),
           });
@@ -91,7 +91,9 @@ export const generateCompositeFiles = async (config: Config) => {
         if (type.composite.length) {
           // only composite types of other schema will be imported
           sourceFile.addImportDeclaration({
-            moduleSpecifier: `../${typeSchema}/composite-types${config.importSuffix}`,
+            moduleSpecifier:
+              `../${config.conventions.paths(typeSchema)}/` +
+              `composite-types${config.importSuffix}`,
             namedImports: type.composite.map(t => pascalCase(t.name)),
           });
         }

@@ -21,7 +21,7 @@ export const generateTableFile = async (config: Config) => {
           delete tableSpec.columns[columnNameRaw];
         }
       });
-      targets.push([config.conventions.schemas(schema), pascalCase(tableName), tableSpec]);
+      targets.push([schema, pascalCase(tableName), tableSpec]);
     });
   });
 
@@ -140,7 +140,7 @@ export const generateTableFile = async (config: Config) => {
         if (type.enum.length) {
           sourceFile.addImportDeclaration({
             moduleSpecifier:
-              (typeSchema === schema ? `./` : `../${typeSchema}/`) +
+              (typeSchema === schema ? `./` : `../${config.conventions.paths(typeSchema)}/`) +
               `enum-types${config.importSuffix}`,
             namedImports: type.enum.map(t => pascalCase(t.name)),
           });
@@ -148,7 +148,7 @@ export const generateTableFile = async (config: Config) => {
         if (type.composite.length) {
           sourceFile.addImportDeclaration({
             moduleSpecifier:
-              (typeSchema === schema ? `./` : `../${typeSchema}/`) +
+              (typeSchema === schema ? `./` : `../${config.conventions.paths(typeSchema)}/`) +
               `composite-types${config.importSuffix}`,
             namedImports: type.composite.map(t => pascalCase(t.name)),
           });
