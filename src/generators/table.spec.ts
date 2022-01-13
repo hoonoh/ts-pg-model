@@ -51,6 +51,14 @@ test(titleHelper.should('render tables'), async t => {
               columnName: 'fkey_col',
               pgType: 'text',
             },
+            {
+              columnName: 'json_col',
+              pgType: 'jsonb',
+            },
+            {
+              columnName: 'tz_col',
+              pgType: 'timestamp with time zone',
+            },
           ],
           enumColumns: [
             {

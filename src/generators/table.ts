@@ -40,6 +40,10 @@ export const generateTableFile = async (config: Config) => {
         Record<'enum' | 'composite', { name: string; type: ColumnTypeMap['type'] }[]>
       > = {};
 
+      // for custom pg-type imports
+      const pgTypes = ['JsonType', 'Timestamp'] as const;
+      const importPgTypes: Set<typeof pgTypes[number]> = new Set();
+
       const tableDocs = [
         `@table ${tableSpec.schema}.${tableSpec.tableName}`,
         `@schema ${tableSpec.schema}`,
@@ -66,6 +70,8 @@ export const generateTableFile = async (config: Config) => {
               namedImports: [columnSpec.type.json.name],
               moduleSpecifier: `../json-types${config.importSuffix}`,
             });
+          } else if (type && pgTypes.includes(type as typeof pgTypes[number])) {
+            importPgTypes.add(type as typeof pgTypes[number]);
           }
 
           assert(type !== undefined, 'unexpected undefined column type');
@@ -154,6 +160,13 @@ export const generateTableFile = async (config: Config) => {
           });
         }
       });
+
+      if (importPgTypes.size > 0) {
+        sourceFile.addImportDeclaration({
+          moduleSpecifier: `ts-pg-model`,
+          namedImports: Array.from(importPgTypes),
+        });
+      }
 
       await saveProject({ project, sourceFile });
     }),
