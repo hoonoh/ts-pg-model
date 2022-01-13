@@ -258,6 +258,9 @@ export const validateUserConfig = async ({
     });
   });
 
+  // todo: enumTypes & compositeTypes should be filtered by table usage.
+  // remove if unused so they dont get generated
+
   const rtn: Config = {
     connectionURI,
     conventions: {

@@ -10,6 +10,7 @@ import { cwd } from 'process';
 import { UserConfig } from './config/types/config.js';
 import { parseConfigFile } from './config/validators/parse-config-file.js';
 import { validateUserConfig } from './config/validators/user-config.js';
+import { generateBarrel } from './generators/barrel.js';
 import { generateCompositeFiles } from './generators/composite-type.js';
 import { generateEnumFiles } from './generators/enum-type.js';
 import { generateJsonTypeFile } from './generators/json-type.js';
@@ -93,6 +94,7 @@ const exit = async (configTranspilePath?: string, code = 0) => {
   await generateCompositeFiles(config);
   await generateJsonTypeFile(config);
   await generateTableFile(config);
+  await generateBarrel(config);
 
   // todo: generate composite type file
   // todo: import pg types (Timestamp, JsonType, etc...)
