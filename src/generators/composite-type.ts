@@ -25,6 +25,7 @@ export const generateCompositeFiles = async (config: Config) => {
         types.push({
           name: pgCompositeName,
           isExported: true,
+          docs: [`@compositeType ${schema}.${pgCompositeNameRaw}`],
           type: w => {
             w.write('{');
             const indent = 1;

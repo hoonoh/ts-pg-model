@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { pascalCase } from 'change-case';
-import { OptionalKind, PropertySignatureStructure } from 'ts-morph';
+import { OptionalKind, PropertySignatureStructure, StructureKind } from 'ts-morph';
 
 import { ColumnTypeMap, Config, Table } from '../config/types/config.js';
 import { resolveOutputPath } from './helpers/output-path.js';
@@ -44,12 +44,24 @@ export const generateTableFile = async (config: Config) => {
       const pgTypes = ['JsonType', 'Timestamp'] as const;
       const importPgTypes: Set<typeof pgTypes[number]> = new Set();
 
-      const tableDocs = [
-        `@table ${tableSpec.schema}.${tableSpec.tableName}`,
-        `@schema ${tableSpec.schema}`,
-        `@name ${tableSpec.tableName}`,
-      ];
+      const tableDocs = [`@table ${tableSpec.schema}.${tableSpec.tableName}`];
       if (tableSpec.comment) tableDocs.push(`@comment ${tableSpec.comment}`);
+      tableDocs.push(
+        ...(tableSpec.constraints?.filter(c => c.type === 'PrimaryKey').map(c => c.docs) || []),
+      );
+      tableDocs.push(
+        ...(tableSpec.constraints?.filter(c => c.type === 'ForeignKey').map(c => c.docs) || []),
+      );
+      tableDocs.push(
+        ...(tableSpec.constraints?.filter(c => c.type === 'Unique').map(c => c.docs) || []),
+      );
+      tableDocs.push(
+        ...(tableSpec.constraints?.filter(c => c.type === 'Check').map(c => c.docs) || []),
+      );
+      tableDocs.push(
+        ...(tableSpec.constraints?.filter(c => c.type === 'Exclude').map(c => c.docs) || []),
+      );
+      tableDocs.push(...(tableSpec.indexes?.map(c => c.docs) || []));
 
       sourceFile.addInterface({
         isExported: true,
@@ -99,11 +111,7 @@ export const generateTableFile = async (config: Config) => {
             });
           }
 
-          const docs = [
-            `@column ${columnSpec.schema}.${columnSpec.tableName}.${columnSpec.columnName}`,
-            `@name ${columnSpec.columnName}`,
-            `@pgtype ${columnType}`,
-          ];
+          const docs = [`@column ${columnSpec.columnName}`, `@pgType ${columnType}`];
 
           if (columnSpec.isNullable) {
             docs.push(`@nullable`);
@@ -135,6 +143,8 @@ export const generateTableFile = async (config: Config) => {
             type,
             hasQuestionToken: columnSpec.isNullable,
             docs: [docs.join('\n')],
+            trailingTrivia: w => w.newLine(),
+            kind: StructureKind.PropertySignature,
           } as PropertySignatureStructure);
 
           return acc;

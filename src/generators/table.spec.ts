@@ -313,6 +313,6 @@ test.serial(titleHelper.should('ignore composite columns'), async t => {
   const tableFile = readFileSync(tableFilePath, { encoding: 'utf-8' });
   t.true(tableFile.includes('@table foo.bar'));
   t.true(tableFile.includes('export interface Bar'));
-  t.true(tableFile.includes('@column foo.bar.baz'));
+  t.true(tableFile.includes('@column baz'));
   t.false(tableFile.includes('@pgtype [composite]'));
 });

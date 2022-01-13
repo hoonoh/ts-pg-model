@@ -19,6 +19,7 @@ export const generateEnumFiles = async (config: Config) => {
           name: pgEnumName,
           isExported: true,
           members: pgEnum.labels.map(l => ({ name: config.conventions.types(l), value: l })),
+          docs: [`@enumType ${schema}.${pgEnumNameRaw}`],
         });
       });
       await saveProject({ project, sourceFile });
