@@ -9,6 +9,7 @@ import { cwd } from 'process';
 
 import { UserConfig, validateUserConfig } from './config/index.js';
 import { parseConfigFile } from './config/validators/parse-config-file.js';
+import { generateCompositeFiles } from './generators/composite-type.js';
 import { generateEnumFiles } from './generators/enum-type.js';
 import { generateJsonTypeFile } from './generators/json-type.js';
 import { generateTableFile } from './generators/table.js';
@@ -88,6 +89,7 @@ const exit = async (configTranspilePath?: string, code = 0) => {
   const config = await validateUserConfig(userConfig);
 
   await generateEnumFiles(config);
+  await generateCompositeFiles(config);
   await generateJsonTypeFile(config);
   await generateTableFile(config);
 

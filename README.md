@@ -105,7 +105,7 @@ export interface JsonTypeMap {
 }
 
 // `UserConfig` variable has to be either exported via named export (with name `userConfig`) or default export
-export const userConfig: UserConfig<JsonTypeMap> = {
+export const userConfig: Config<JsonTypeMap> = {
   // includes `users` schema only.
   schemas: ['users'],
   targetSelectors: [

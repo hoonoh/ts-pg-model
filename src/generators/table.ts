@@ -34,46 +34,11 @@ export const generateTableFile = async (config: Config) => {
       });
       const { project, sourceFile } = startProject(outputPath);
 
-      /**
-       * import enum types if required
-       */
-      const importEnumType = Object.entries(tableSpec.columns).reduce((acc, [, columnSpec]) => {
-        if (columnSpec.type.enum) acc.push(columnSpec);
-        return acc;
-      }, [] as ColumnTypeMap[]);
-
-      if (importEnumType.length) {
-        const enumTypeNames = importEnumType.map(i => i.type.enum?.name || 'UNEXPECTED');
-        enumTypeNames.forEach(n => assert(n !== 'UNEXPECTED', 'unexpected enum type name'));
-        sourceFile.addImportDeclaration({
-          namedImports: enumTypeNames.map(n => pascalCase(n)),
-          moduleSpecifier: `./${config.conventions.paths('enum-types')}${config.importSuffix}`,
-        });
-      }
-
-      /**
-       * import composite types if required
-       */
-      const importCompositeType = Object.entries(tableSpec.columns).reduce(
-        (acc, [, columnSpec]) => {
-          if (columnSpec.type.composite) acc.push(columnSpec);
-          return acc;
-        },
-        [] as ColumnTypeMap[],
-      );
-
-      if (importCompositeType.length) {
-        const compositeTypeNames = importCompositeType.map(
-          i => i.type.composite?.name || 'UNEXPECTED',
-        );
-        compositeTypeNames.forEach(n =>
-          assert(n !== 'UNEXPECTED', 'unexpected composite type name'),
-        );
-        sourceFile.addImportDeclaration({
-          namedImports: compositeTypeNames.map(n => pascalCase(n)),
-          moduleSpecifier: `./${config.conventions.paths('composite-types')}${config.importSuffix}`,
-        });
-      }
+      // for enum / composite type imports
+      const importTypes: Record<
+        string,
+        Record<'enum' | 'composite', { name: string; type: ColumnTypeMap['type'] }[]>
+      > = {};
 
       const tableDocs = [
         `@table ${tableSpec.schema}.${tableSpec.tableName}`,
@@ -105,11 +70,27 @@ export const generateTableFile = async (config: Config) => {
 
           assert(type !== undefined, 'unexpected undefined column type');
 
+          const typeSchema = columnSpec.type.enum?.schema || columnSpec.type.composite?.schema;
+          if (typeSchema && !importTypes[typeSchema]) {
+            importTypes[typeSchema] = {
+              enum: [],
+              composite: [],
+            };
+          }
+
           let columnType = `${columnSpec.dataType}`;
           if (columnSpec.type.enum) {
             columnType = `[enum] ${columnSpec.type.enum.schema}.${columnSpec.type.enum.name}`;
+            importTypes[columnSpec.type.enum.schema].enum.push({
+              name: columnSpec.type.enum.name,
+              type: { enum: columnSpec.type.enum },
+            });
           } else if (columnSpec.type.composite) {
             columnType = `[composite] ${columnSpec.type.composite.schema}.${columnSpec.type.composite.name}`;
+            importTypes[columnSpec.type.composite.schema].composite.push({
+              name: columnSpec.type.composite.name,
+              type: { composite: columnSpec.type.composite },
+            });
           }
 
           const docs = [
@@ -152,6 +133,26 @@ export const generateTableFile = async (config: Config) => {
 
           return acc;
         }, [] as OptionalKind<PropertySignatureStructure>[]),
+      });
+
+      // enum / composite type imports
+      Object.entries(importTypes).forEach(([typeSchema, type]) => {
+        if (type.enum.length) {
+          sourceFile.addImportDeclaration({
+            moduleSpecifier:
+              (typeSchema === schema ? `./` : `../${typeSchema}/`) +
+              `enum-types${config.importSuffix}`,
+            namedImports: type.enum.map(t => pascalCase(t.name)),
+          });
+        }
+        if (type.composite.length) {
+          sourceFile.addImportDeclaration({
+            moduleSpecifier:
+              (typeSchema === schema ? `./` : `../${typeSchema}/`) +
+              `composite-types${config.importSuffix}`,
+            namedImports: type.composite.map(t => pascalCase(t.name)),
+          });
+        }
       });
 
       await saveProject({ project, sourceFile });

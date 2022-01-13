@@ -21,6 +21,7 @@ export const startProject = (tsPath: string, source?: string) => {
     skipAddingFilesFromTsConfig: true,
     manipulationSettings: {
       indentationText: IndentationText.TwoSpaces,
+      useTrailingCommas: true,
     },
   });
 
