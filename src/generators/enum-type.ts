@@ -2,7 +2,7 @@ import { pascalCase } from 'change-case';
 
 import { Config } from '../config/index.js';
 import { resolveOutputPath } from './helpers/output-path.js';
-import { startProject } from './helpers/ts-morph.js';
+import { saveProject, startProject } from './helpers/ts-morph.js';
 
 export const generateEnumFiles = async (config: Config) => {
   await Promise.all(
@@ -21,7 +21,7 @@ export const generateEnumFiles = async (config: Config) => {
           members: pgEnum.labels.map(l => ({ name: config.conventions.types(l), value: l })),
         });
       });
-      await project.save();
+      await saveProject({ project, sourceFile });
     }),
   );
 };

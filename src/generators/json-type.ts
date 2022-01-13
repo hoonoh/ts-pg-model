@@ -1,19 +1,18 @@
 import { resolve } from 'path';
 
 import { Config } from '../config/index.js';
-import { startProject } from './helpers/ts-morph.js';
+import { saveProject, startProject } from './helpers/ts-morph.js';
 
 export const generateJsonTypeFile = async (config: Config) => {
   const outputPath = resolve(config.output.root, `${config.conventions.paths('json-types')}.ts`);
 
-  const src = config.typeMap?.jsonDefinitions?.reduce((acc, [name, def]) => {
-    acc += `\nexport type ${name} = ${def}\n`;
-    return acc;
-  }, '');
+  // todo: parse and generate defs with ts-morph
+  const src = config.typeMap?.jsonDefinitions
+    ?.map(([name, def]) => `export type ${name} = ${def}`)
+    .join('\n\n');
 
   if (src) {
     const { project, sourceFile } = startProject(outputPath, src);
-    sourceFile.formatText();
-    await project.save();
+    await saveProject({ project, sourceFile });
   }
 };

@@ -4,7 +4,7 @@ import { OptionalKind, PropertySignatureStructure } from 'ts-morph';
 
 import { ColumnTypeMap, Config, Table } from '../config/index.js';
 import { resolveOutputPath } from './helpers/output-path.js';
-import { startProject } from './helpers/ts-morph.js';
+import { saveProject, startProject } from './helpers/ts-morph.js';
 
 export const generateTableFile = async (config: Config) => {
   const targets: [
@@ -154,7 +154,7 @@ export const generateTableFile = async (config: Config) => {
         }, [] as OptionalKind<PropertySignatureStructure>[]),
       });
 
-      await project.save();
+      await saveProject({ project, sourceFile });
     }),
   );
 };

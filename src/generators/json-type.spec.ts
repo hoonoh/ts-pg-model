@@ -146,28 +146,5 @@ test.serial(titleHelper.should('parse named exports'), async t => {
     { encoding: 'utf-8' },
   );
 
-  t.is(
-    jsonTypeFile,
-    [
-      '/**',
-      '* @note This file was generated with `ts-pg-model`.',
-      '* @generated 2000-01-01T00:00:00.000Z',
-      '*/',
-      '',
-      'export type FooType = {',
-      '  foo: string;',
-      '  bar: number;',
-      '  baz?: {',
-      '    foobar: number;',
-      '    barbaz: string;',
-      '  };',
-      '};',
-      '',
-      'export type BarType = {',
-      '  bar: number;',
-      '  baz: string;',
-      '};',
-      '',
-    ].join('\n'),
-  );
+  t.snapshot(jsonTypeFile);
 });

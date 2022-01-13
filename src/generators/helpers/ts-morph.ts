@@ -6,9 +6,11 @@ export const insertGeneratedComment = (sourceFile: SourceFile) => {
     0,
     [
       `/**`,
-      `* @note This file was generated with \`ts-pg-model\`.`,
-      `* @generated ${new Date().toJSON()}`,
-      `*/`,
+      ` * @note This file was generated with \`ts-pg-model\`.`,
+      ` * @generated ${new Date().toJSON()}`,
+      ` */`,
+      '',
+      '',
     ].join('\n'),
   );
 };
@@ -26,7 +28,19 @@ export const startProject = (tsPath: string, source?: string) => {
     overwrite: true,
   });
 
-  insertGeneratedComment(sourceFile);
-
   return { project, sourceFile };
+};
+
+export const saveProject = async ({
+  project,
+  sourceFile,
+  skipInsertGeneratedComment,
+}: {
+  project: Project;
+  sourceFile: SourceFile;
+  skipInsertGeneratedComment?: boolean;
+}) => {
+  if (skipInsertGeneratedComment !== true) insertGeneratedComment(sourceFile);
+  sourceFile.formatText();
+  await project.save();
 };
