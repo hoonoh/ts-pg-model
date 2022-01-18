@@ -12,7 +12,7 @@ export const generateEnumFiles = async (config: Config) => {
         filename: `${config.conventions.paths('enum-types')}.ts`,
         config,
       });
-      const { project, sourceFile } = startProject(outputPath);
+      const { project, sourceFile, prevSource } = await startProject(outputPath);
       Object.entries(enumType).forEach(([pgEnumNameRaw, pgEnum]) => {
         const pgEnumName = pascalCase(pgEnumNameRaw);
         sourceFile.addEnum({
@@ -22,7 +22,7 @@ export const generateEnumFiles = async (config: Config) => {
           docs: [`@enumType ${schema}.${pgEnumNameRaw}`],
         });
       });
-      await saveProject({ project, sourceFile });
+      await saveProject({ project, sourceFile, prevSource });
     }),
   );
 };

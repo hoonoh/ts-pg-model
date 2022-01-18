@@ -14,7 +14,7 @@ export const generateCompositeFiles = async (config: Config) => {
         filename: `${config.conventions.paths('composite-types')}.ts`,
         config,
       });
-      const { project, sourceFile } = startProject(outputPath);
+      const { project, sourceFile, prevSource } = await startProject(outputPath);
 
       // enum or composite types to import
       const importTypes: { schema: string; name: string; type: ColumnTypeMap['type'] }[] = [];
@@ -100,7 +100,7 @@ export const generateCompositeFiles = async (config: Config) => {
         }
       });
 
-      await saveProject({ project, sourceFile });
+      await saveProject({ project, sourceFile, prevSource });
     }),
   );
 };

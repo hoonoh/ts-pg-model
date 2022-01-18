@@ -12,7 +12,7 @@ export const generateJsonTypeFile = async (config: Config) => {
     .join('\n\n');
 
   if (src) {
-    const { project, sourceFile } = startProject(outputPath, src);
-    await saveProject({ project, sourceFile });
+    const { project, sourceFile, prevSource } = await startProject(outputPath, src);
+    await saveProject({ project, sourceFile, prevSource });
   }
 };

@@ -32,7 +32,7 @@ export const generateTableFile = async (config: Config) => {
         filename: `${config.conventions.paths(tableName)}.ts`,
         config,
       });
-      const { project, sourceFile } = startProject(outputPath);
+      const { project, sourceFile, prevSource } = await startProject(outputPath);
 
       // for enum / composite type imports
       const importTypes: Record<
@@ -178,7 +178,7 @@ export const generateTableFile = async (config: Config) => {
         });
       }
 
-      await saveProject({ project, sourceFile });
+      await saveProject({ project, sourceFile, prevSource });
     }),
   );
 };

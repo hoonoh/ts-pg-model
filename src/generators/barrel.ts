@@ -15,7 +15,9 @@ export const generateBarrel = async (config: Config) => {
     schemaRoots.map(async schema => {
       const schemaPath = resolve(config.output.root, schema);
       const files = await readdir(schemaPath);
-      const { project, sourceFile } = startProject(resolve(schemaPath, 'index.ts'));
+      const { project, sourceFile, prevSource } = await startProject(
+        resolve(schemaPath, 'index.ts'),
+      );
 
       const enumTypeNames: string[] = [];
       const compositeTypeNames: string[] = [];
@@ -73,7 +75,7 @@ export const generateBarrel = async (config: Config) => {
         docs: [`@schema: ${schema}`],
       });
 
-      await saveProject({ project, sourceFile });
+      await saveProject({ project, sourceFile, prevSource });
     }),
   );
 };
