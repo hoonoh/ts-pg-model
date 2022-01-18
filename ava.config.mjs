@@ -11,5 +11,6 @@ export default function factory({ projectDir }) {
     files: ['src/**/*.spec.ts'],
     snapshotDir: resolve('./src/test/snapshots'),
     require: ['ts-node/register/transpile-only', './src/test/init.ts'],
+    timeout: '30s',
   };
 }
