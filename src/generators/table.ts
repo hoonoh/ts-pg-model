@@ -4,7 +4,7 @@ import { OptionalKind, PropertySignatureStructure, StructureKind } from 'ts-morp
 
 import { ColumnTypeMap, Config, Table } from '../config/types/config.js';
 import { resolveOutputPath } from './helpers/output-path.js';
-import { saveProject, startProject } from './helpers/ts-morph.js';
+import { TsMorphHelper } from './helpers/ts-morph.js';
 
 export const generateTableFile = async (config: Config) => {
   const targets: [
@@ -32,7 +32,8 @@ export const generateTableFile = async (config: Config) => {
         filename: `${config.conventions.paths(tableName)}.ts`,
         config,
       });
-      const { project, sourceFile, prevSource } = await startProject(outputPath);
+      const tsMorph = new TsMorphHelper(outputPath);
+      const sourceFile = tsMorph.sourceFile;
 
       // for enum / composite type imports
       const importTypes: Record<
@@ -178,7 +179,7 @@ export const generateTableFile = async (config: Config) => {
         });
       }
 
-      await saveProject({ project, sourceFile, prevSource });
+      await tsMorph.save();
     }),
   );
 };

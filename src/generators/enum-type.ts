@@ -2,7 +2,7 @@ import { pascalCase } from 'change-case';
 
 import { Config } from '../config/types/config.js';
 import { resolveOutputPath } from './helpers/output-path.js';
-import { saveProject, startProject } from './helpers/ts-morph.js';
+import { TsMorphHelper } from './helpers/ts-morph.js';
 
 export const generateEnumFiles = async (config: Config) => {
   await Promise.all(
@@ -12,7 +12,8 @@ export const generateEnumFiles = async (config: Config) => {
         filename: `${config.conventions.paths('enum-types')}.ts`,
         config,
       });
-      const { project, sourceFile, prevSource } = await startProject(outputPath);
+      const tsMorph = new TsMorphHelper(outputPath);
+      const sourceFile = tsMorph.sourceFile;
       Object.entries(enumType).forEach(([pgEnumNameRaw, pgEnum]) => {
         const pgEnumName = pascalCase(pgEnumNameRaw);
         sourceFile.addEnum({
@@ -22,7 +23,7 @@ export const generateEnumFiles = async (config: Config) => {
           docs: [`@enumType ${schema}.${pgEnumNameRaw}`],
         });
       });
-      await saveProject({ project, sourceFile, prevSource });
+      await tsMorph.save();
     }),
   );
 };

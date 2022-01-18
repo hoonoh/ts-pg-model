@@ -5,7 +5,7 @@ import { resolve } from 'path';
 import { ModuleDeclarationKind } from 'ts-morph';
 
 import { Config } from '../config/types/config.js';
-import { saveProject, startProject } from './helpers/ts-morph.js';
+import { TsMorphHelper } from './helpers/ts-morph.js';
 
 export const generateBarrel = async (config: Config) => {
   const schemaRoots = (await readdir(config.output.root)).filter(p =>
@@ -15,9 +15,8 @@ export const generateBarrel = async (config: Config) => {
     schemaRoots.map(async schema => {
       const schemaPath = resolve(config.output.root, schema);
       const files = await readdir(schemaPath);
-      const { project, sourceFile, prevSource } = await startProject(
-        resolve(schemaPath, 'index.ts'),
-      );
+      const tsMorph = new TsMorphHelper(resolve(schemaPath, 'index.ts'));
+      const sourceFile = tsMorph.sourceFile;
 
       const enumTypeNames: string[] = [];
       const compositeTypeNames: string[] = [];
@@ -75,7 +74,7 @@ export const generateBarrel = async (config: Config) => {
         docs: [`@schema: ${schema}`],
       });
 
-      await saveProject({ project, sourceFile, prevSource });
+      await tsMorph.save();
     }),
   );
 };

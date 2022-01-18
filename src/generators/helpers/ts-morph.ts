@@ -1,70 +1,62 @@
-import { readFile } from 'fs/promises';
+import { readFileSync } from 'fs';
 import { IndentationText, Project, SourceFile } from 'ts-morph';
 import { URL } from 'url';
 
-export const insertGeneratedComment = (sourceFile: SourceFile) => {
-  sourceFile.insertStatements(
-    0,
-    [
-      `/**`,
-      ` * @note This file was generated with \`ts-pg-model\`.`,
-      ` * @generated ${new Date().toJSON()}`,
-      ` */`,
-      '',
-      '',
-    ].join('\n'),
-  );
-};
+export class TsMorphHelper {
+  project: Project;
 
-export const startProject = async (tsPath: string, source?: string) => {
-  const project = new Project({
-    tsConfigFilePath: new URL('../../../tsconfig.json', import.meta.url).pathname,
-    skipAddingFilesFromTsConfig: true,
-    manipulationSettings: {
-      indentationText: IndentationText.TwoSpaces,
-      useTrailingCommas: true,
-    },
-  });
+  sourceFile: SourceFile;
 
-  let prevSource: string | undefined;
-  try {
-    prevSource = await readFile(tsPath, { encoding: 'utf-8' });
-  } catch (error) {
-    //
+  prevSource: string | undefined;
+
+  constructor(tsPath: string, source?: string) {
+    this.project = new Project({
+      tsConfigFilePath: new URL('../../../tsconfig.json', import.meta.url).pathname,
+      skipAddingFilesFromTsConfig: true,
+      manipulationSettings: {
+        indentationText: IndentationText.TwoSpaces,
+        useTrailingCommas: true,
+      },
+    });
+
+    try {
+      this.prevSource = readFileSync(tsPath, { encoding: 'utf-8' });
+    } catch (error) {
+      //
+    }
+
+    this.sourceFile = this.project.createSourceFile(tsPath, source, {
+      overwrite: true,
+    });
   }
 
-  const sourceFile = project.createSourceFile(tsPath, source, {
-    overwrite: true,
-  });
-
-  return { project, sourceFile, prevSource };
-};
-
-export const saveProject = async ({
-  project,
-  sourceFile,
-  prevSource,
-  skipInsertGeneratedComment,
-}: {
-  project: Project;
-  sourceFile: SourceFile;
-  prevSource?: string;
-  skipInsertGeneratedComment?: boolean;
-}) => {
-  if (skipInsertGeneratedComment !== true) insertGeneratedComment(sourceFile);
-  sourceFile.formatText();
-
-  const normalizeGeneratedDate = (source: string) =>
-    source.replace(
-      / \* @generated \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/,
-      ' * @generated GENERATED_DATE',
+  async save() {
+    this.sourceFile.insertStatements(
+      0,
+      [
+        `/**`,
+        ` * @note This file was generated with \`ts-pg-model\`.`,
+        ` * @generated ${new Date().toJSON()}`,
+        ` */`,
+        '',
+        '',
+      ].join('\n'),
     );
 
-  if (prevSource) {
-    const curSourceNormalized = normalizeGeneratedDate(sourceFile.getFullText());
-    const prevSourceNormalized = normalizeGeneratedDate(prevSource);
-    if (curSourceNormalized !== prevSourceNormalized) await project.save();
-  } else {
-    await project.save();
+    this.sourceFile.formatText();
+
+    const normalizeGeneratedDate = (source: string) =>
+      source.replace(
+        / \* @generated \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/,
+        ' * @generated GENERATED_DATE',
+      );
+
+    if (this.prevSource) {
+      const curSourceNormalized = normalizeGeneratedDate(this.sourceFile.getFullText());
+      const prevSourceNormalized = normalizeGeneratedDate(this.prevSource);
+      if (curSourceNormalized !== prevSourceNormalized) await this.project.save();
+    } else {
+      await this.project.save();
+    }
   }
-};
+}

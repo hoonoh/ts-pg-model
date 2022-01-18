@@ -4,7 +4,7 @@ import { OptionalKind, TypeAliasDeclarationStructure } from 'ts-morph';
 import { ColumnTypeMap, Config } from '../config/types/config.js';
 import { isPgCompositeType, isPgEnumType } from '../config/types/pg.js';
 import { resolveOutputPath } from './helpers/output-path.js';
-import { saveProject, startProject } from './helpers/ts-morph.js';
+import { TsMorphHelper } from './helpers/ts-morph.js';
 
 export const generateCompositeFiles = async (config: Config) => {
   await Promise.all(
@@ -14,7 +14,8 @@ export const generateCompositeFiles = async (config: Config) => {
         filename: `${config.conventions.paths('composite-types')}.ts`,
         config,
       });
-      const { project, sourceFile, prevSource } = await startProject(outputPath);
+      const tsMorph = new TsMorphHelper(outputPath);
+      const sourceFile = tsMorph.sourceFile;
 
       // enum or composite types to import
       const importTypes: { schema: string; name: string; type: ColumnTypeMap['type'] }[] = [];
@@ -100,7 +101,7 @@ export const generateCompositeFiles = async (config: Config) => {
         }
       });
 
-      await saveProject({ project, sourceFile, prevSource });
+      await tsMorph.save();
     }),
   );
 };
