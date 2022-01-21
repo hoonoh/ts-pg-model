@@ -10019,7 +10019,7 @@ __metadata:
     ts-node: 10.4.0
     typescript: 4.5.4
   bin:
-    ts-pg-model: yarn ts-node ./src/cli.ts
+    ts-pg-model: ./dist/cli/index.js
   languageName: unknown
   linkType: soft
 

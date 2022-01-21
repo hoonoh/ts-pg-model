@@ -26,12 +26,12 @@
   "files": [
     "dist"
   ],
-  "bin": "yarn ts-node ./src/cli.ts",
+  "bin": "./dist/cli/index.js",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "lint": "eslint \"./src/**/*.ts\"",
-    "test": "NODE_NO_WARNINGS=1 ava --no-worker-threads",
-    "test:coverage": "NODE_NO_WARNINGS=1 c8 -r lcov ava --no-worker-threads",
+    "test": "NODE_NO_WARNINGS=1 ava",
+    "test:coverage": "NODE_NO_WARNINGS=1 c8 -r lcov ava",
     "test:types": "tsc --noEmit",
     "test:db:migrate": "DATABASE_URL=postgresql://postgres:secretpassword@localhost:54321/postgres yarn node-pg-migrate -m ./src/test/migrations --tsconfig ./src/test/migrations/tsconfig.json --ignore-pattern .+\\.json",
     "test:db:migrate:up": "yarn test:db:migrate up",
