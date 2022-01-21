@@ -11,6 +11,8 @@ export class TsMorphHelper {
 
   constructor(public sourcePath: string, source?: string) {
     this.project = new Project({
+      // todo: tsconfig path should be relative from cwd
+      // todo: requires tsconfig path config
       tsConfigFilePath: new URL('../../../tsconfig.json', import.meta.url).pathname,
       skipAddingFilesFromTsConfig: true,
       manipulationSettings: {
@@ -59,7 +61,7 @@ export class TsMorphHelper {
         normalizeGeneratedDate(this.sourceFile.getFullText()) !==
           normalizeGeneratedDate(this.prevSource))
     ) {
-      this.project.save();
+      await this.project.save();
     }
   }
 }

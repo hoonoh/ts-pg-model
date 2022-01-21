@@ -266,6 +266,12 @@ export const validateUserConfig = async ({
     const rtn: string[] = [];
 
     const recurse = async (root: string) => {
+      try {
+        // skip if stat fails (noexist)
+        await stat(root);
+      } catch (error) {
+        return;
+      }
       await Promise.all(
         (
           await readdir(root)
