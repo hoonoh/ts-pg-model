@@ -8733,13 +8733,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"reflect-metadata@npm:0.1.13":
-  version: 0.1.13
-  resolution: "reflect-metadata@npm:0.1.13"
-  checksum: 798d379a7b6f6455501145419505c97dd11cbc23857a386add2b9ef15963ccf15a48d9d15507afe01d4cd74116df8a213247200bac00320bd7c11ddeaa5e8fb4
-  languageName: node
-  linkType: hard
-
 "regexpp@npm:^3.2.0":
   version: 3.2.0
   resolution: "regexpp@npm:3.2.0"
@@ -10019,7 +10012,6 @@ __metadata:
     ora: 6.0.1
     prettier: 2.5.1
     read-pkg-up: 9.0.0
-    reflect-metadata: 0.1.13
     semantic-release: 18.0.1
     slonik: 27.1.0
     ts-essentials: 9.1.2
