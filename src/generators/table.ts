@@ -3,10 +3,11 @@ import { pascalCase } from 'change-case';
 import { OptionalKind, PropertySignatureStructure, StructureKind } from 'ts-morph';
 
 import { ColumnTypeMap, Config, Table } from '../config/types/config.js';
+import { FileGenerator } from './generator.js';
 import { resolveOutputPath } from './helpers/output-path.js';
 import { TsMorphHelper } from './helpers/ts-morph.js';
 
-export const generateTableFile = async (config: Config) => {
+export const generateTableFile: FileGenerator = async (config: Config) => {
   const targets: [
     schema: string,
     tableName: string,
@@ -25,7 +26,7 @@ export const generateTableFile = async (config: Config) => {
     });
   });
 
-  await Promise.all(
+  return Promise.all(
     targets.map(async ([schema, tableName, tableSpec]) => {
       const outputPath = resolveOutputPath({
         schema,
@@ -180,6 +181,7 @@ export const generateTableFile = async (config: Config) => {
       }
 
       await tsMorph.save();
+      return tsMorph.sourcePath;
     }),
   );
 };

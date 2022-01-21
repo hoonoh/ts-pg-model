@@ -1,6 +1,6 @@
 import assert from 'assert';
 import dotenv from 'dotenv';
-import { stat } from 'fs/promises';
+import { lstat, readdir, stat } from 'fs/promises';
 import { clone } from 'lodash-es';
 import { resolve } from 'path';
 import { cwd } from 'process';
@@ -46,6 +46,8 @@ const defaultConfig: Pick<Config, 'output'> = {
       }
       return resolve(cwd(), sourceRoot, 'generated');
     })(),
+    existingFilePaths: [],
+    keepFiles: [],
   },
 };
 
@@ -258,6 +260,31 @@ export const validateUserConfig = async ({
     });
   });
 
+  const outputRoot = output?.root || defaultConfig.output.root;
+
+  const existingFilePaths = (() => {
+    const rtn: string[] = [];
+
+    const recurse = async (root: string) => {
+      await Promise.all(
+        (
+          await readdir(root)
+        ).map(async p => {
+          const pPath = resolve(root, p);
+          const pStat = await lstat(pPath);
+          if (pStat.isDirectory()) {
+            await recurse(pPath);
+          } else if (pStat.isFile()) {
+            rtn.push(pPath);
+          }
+        }),
+      );
+    };
+    recurse(outputRoot);
+
+    return rtn.sort();
+  })();
+
   // todo: enumTypes & compositeTypes should be filtered by table usage.
   // remove if unused so they dont get generated
 
@@ -274,8 +301,11 @@ export const validateUserConfig = async ({
     enumTypes,
     compositeTypes,
     output: {
-      root: output?.root || defaultConfig.output.root,
+      root: outputRoot,
       includeSchemaPath: output?.includeSchemaPath || defaultConfig.output.includeSchemaPath,
+      existingFilePaths,
+      keepFiles:
+        output?.keepFiles?.map(p => resolve(outputRoot, p)) || defaultConfig.output.keepFiles,
     },
     typeMap,
     ignoreCompositeTypeColumns: !!ignoreCompositeTypeColumns,

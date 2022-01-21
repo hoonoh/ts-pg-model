@@ -5,13 +5,14 @@ import { resolve } from 'path';
 import { ModuleDeclarationKind } from 'ts-morph';
 
 import { Config } from '../config/types/config.js';
+import { FileGenerator } from './generator.js';
 import { TsMorphHelper } from './helpers/ts-morph.js';
 
-export const generateBarrel = async (config: Config) => {
+export const generateBarrel: FileGenerator = async (config: Config) => {
   const schemaRoots = (await readdir(config.output.root)).filter(p =>
     lstatSync(resolve(config.output.root, p)).isDirectory(),
   );
-  await Promise.all(
+  return Promise.all(
     schemaRoots.map(async schema => {
       const schemaPath = resolve(config.output.root, schema);
       const files = await readdir(schemaPath);
@@ -75,6 +76,8 @@ export const generateBarrel = async (config: Config) => {
       });
 
       await tsMorph.save();
+
+      return tsMorph.sourcePath;
     }),
   );
 };

@@ -9,7 +9,7 @@ export class TsMorphHelper {
 
   prevSource: string | undefined;
 
-  constructor(tsPath: string, source?: string) {
+  constructor(public sourcePath: string, source?: string) {
     this.project = new Project({
       tsConfigFilePath: new URL('../../../tsconfig.json', import.meta.url).pathname,
       skipAddingFilesFromTsConfig: true,
@@ -20,12 +20,12 @@ export class TsMorphHelper {
     });
 
     try {
-      this.prevSource = readFileSync(tsPath, { encoding: 'utf-8' });
+      this.prevSource = readFileSync(sourcePath, { encoding: 'utf-8' });
     } catch (error) {
       //
     }
 
-    this.sourceFile = this.project.createSourceFile(tsPath, source, {
+    this.sourceFile = this.project.createSourceFile(sourcePath, source, {
       overwrite: true,
     });
   }
@@ -51,12 +51,15 @@ export class TsMorphHelper {
         ' * @generated GENERATED_DATE',
       );
 
-    if (this.prevSource) {
-      const curSourceNormalized = normalizeGeneratedDate(this.sourceFile.getFullText());
-      const prevSourceNormalized = normalizeGeneratedDate(this.prevSource);
-      if (curSourceNormalized !== prevSourceNormalized) await this.project.save();
-    } else {
-      await this.project.save();
+    // only save if previous source is not available
+    // OR output source is updated excluding generated date.
+    if (
+      !this.prevSource ||
+      (this.prevSource &&
+        normalizeGeneratedDate(this.sourceFile.getFullText()) !==
+          normalizeGeneratedDate(this.prevSource))
+    ) {
+      this.project.save();
     }
   }
 }

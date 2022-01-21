@@ -1,11 +1,12 @@
 import { pascalCase } from 'change-case';
 
 import { Config } from '../config/types/config.js';
+import { FileGenerator } from './generator.js';
 import { resolveOutputPath } from './helpers/output-path.js';
 import { TsMorphHelper } from './helpers/ts-morph.js';
 
-export const generateEnumFiles = async (config: Config) => {
-  await Promise.all(
+export const generateEnumFiles: FileGenerator = async (config: Config) => {
+  return Promise.all(
     Object.entries(config.enumTypes).map(async ([schema, enumType]) => {
       const outputPath = resolveOutputPath({
         schema,
@@ -24,6 +25,7 @@ export const generateEnumFiles = async (config: Config) => {
         });
       });
       await tsMorph.save();
+      return tsMorph.sourcePath;
     }),
   );
 };

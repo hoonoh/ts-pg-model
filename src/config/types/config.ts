@@ -102,6 +102,7 @@ export type UserConfig<
   output?: {
     root?: string;
     includeSchemaPath?: boolean;
+    keepFiles?: string[];
   };
   ignoreCompositeTypeColumns?: boolean;
 };
@@ -201,7 +202,7 @@ export type RenderTargets = Record<
 export type Config = Required<
   Pick<UserConfig, 'connectionURI' | 'schemas' | 'ignoreCompositeTypeColumns'>
 > &
-  DeepRequired<Pick<UserConfig, 'output'>> &
+  DeepRequired<Pick<UserConfig, 'output'> & { output: { existingFilePaths: string[] } }> &
   Omit<UserConfig, 'dotEnvPath' | 'targetSelectors' | 'conventions'> & {
     renderTargets: RenderTargets;
     enumTypes: PgEnumTypes;

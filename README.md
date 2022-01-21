@@ -12,6 +12,36 @@ URI value must follow valid Postgres URI scheme starting with `postgresql://` or
 [`dotenv`](https://www.npmjs.com/package/dotenv) is also supported. You can also set `.env` file
 location with `dotEnvPath` in configuration.
 
+### Output paths
+
+```ts
+{
+  output: {
+    root?: string;
+    includeSchemaPath?: boolean;
+    keepFiles?: string[];
+  }
+}
+```
+
+### Root path
+
+`output.root`
+
+Defaults to `./src/generated`.
+
+### Schema paths
+
+If there are multiple schemas targeted for file generation, each resources within a schema will be
+always grouped within a directory named after the schema. If only single schema is targeted (e.g.
+`public`) directory structure will not be used unless `output.includeSchemaPath` is set to `true`.
+
+### Keeping files from being removed
+
+Files will only be overwritten if there are structural changes (`@generated` date will not be
+updated) and will be deleted if no longer needed. If any files should be kept from being removed
+inside the root folder, add file paths (relative to `output.root`) to `output.keepFiles`.
+
 ### Naming convensions
 
 ```ts

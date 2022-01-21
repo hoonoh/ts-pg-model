@@ -3,11 +3,12 @@ import { OptionalKind, TypeAliasDeclarationStructure } from 'ts-morph';
 
 import { ColumnTypeMap, Config } from '../config/types/config.js';
 import { isPgCompositeType, isPgEnumType } from '../config/types/pg.js';
+import { FileGenerator } from './generator.js';
 import { resolveOutputPath } from './helpers/output-path.js';
 import { TsMorphHelper } from './helpers/ts-morph.js';
 
-export const generateCompositeFiles = async (config: Config) => {
-  await Promise.all(
+export const generateCompositeFiles: FileGenerator = async (config: Config) => {
+  return Promise.all(
     Object.entries(config.compositeTypes).map(async ([schema, compositeType]) => {
       const outputPath = resolveOutputPath({
         schema,
@@ -102,6 +103,7 @@ export const generateCompositeFiles = async (config: Config) => {
       });
 
       await tsMorph.save();
+      return tsMorph.sourcePath;
     }),
   );
 };

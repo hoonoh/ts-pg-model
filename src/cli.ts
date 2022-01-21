@@ -1,10 +1,9 @@
 import esbuild from 'esbuild';
-import { writeFileSync } from 'fs';
 import { rm, stat } from 'fs/promises';
 import meow from 'meow';
 import ora from 'ora';
 import { tmpdir } from 'os';
-import { basename, extname, resolve } from 'path';
+import { basename, extname, relative, resolve } from 'path';
 import { cwd } from 'process';
 
 import { UserConfig } from './config/types/config.js';
@@ -16,7 +15,7 @@ import { generateEnumFiles } from './generators/enum-type.js';
 import { generateJsonTypeFile } from './generators/json-type.js';
 import { generateTableFile } from './generators/table.js';
 
-const cli = meow(
+const args = meow(
   `
   // todo: add cli help text
 `,
@@ -41,21 +40,21 @@ const exit = async (configTranspilePath?: string, code = 0) => {
   process.exit(code);
 };
 
-(async () => {
-  const configPath = resolve(cwd(), cli.flags.configPath);
+export const cliStart = async () => {
+  const configPath = resolve(cwd(), args.flags.configPath);
 
   try {
     await stat(configPath);
   } catch (error) {
-    ora(`invalid config file path "${configPath}"`).fail();
+    ora(`invalid config file path ${configPath}`).fail();
     exit();
   }
 
-  const spinner = ora('Transpiling config file').start();
+  const spinner = ora().info('ts-pg-model');
 
   const configTranspilePath = resolve(
     tmpdir(),
-    basename(cli.flags.configPath).replace(extname(cli.flags.configPath), '.mjs'),
+    basename(args.flags.configPath).replace(extname(args.flags.configPath), '.mjs'),
   );
 
   await esbuild.build({
@@ -74,42 +73,56 @@ const exit = async (configTranspilePath?: string, code = 0) => {
   if (!userConfig) {
     spinner.fail(
       [
-        `Failed to find configuration in file "${configPath}".`,
+        `Failed to find configuration in file ${configPath}.`,
         'Configuration file requires settings exported as default or by named export as `userConfig`',
       ].join('\n'),
     );
     exit(configTranspilePath, 1);
   }
 
-  spinner.text = 'Checking config file for JSON Map Definitions';
+  const configPrefix = '[config] ';
+  spinner.start(`${configPrefix}Checking for JSON map definitions...`);
   const jsonTypeDefinitions = parseConfigFile(configPath);
   if (jsonTypeDefinitions && userConfig.typeMap) {
     userConfig.typeMap.jsonDefinitions = jsonTypeDefinitions;
+    spinner.succeed(`${configPrefix}${jsonTypeDefinitions.length} JSON map definition(s) found.`);
+  } else {
+    spinner.info(`${configPrefix}No JSON map definitions found.`);
   }
 
-  spinner.text = 'Validating config file';
+  spinner.start(`${configPrefix}Validating...`);
   const config = await validateUserConfig(userConfig);
 
-  await generateEnumFiles(config);
-  await generateCompositeFiles(config);
-  await generateJsonTypeFile(config);
-  await generateTableFile(config);
-  await generateBarrel(config);
+  spinner.succeed(`${configPrefix}Validation successful.`);
 
-  // todo: generate composite type file
-  // todo: import pg types (Timestamp, JsonType, etc...)
+  spinner.start(`Generating files...`);
 
-  spinner.text = 'complete!';
-  spinner.succeed();
+  const generatedFilePaths = [
+    ...(await generateEnumFiles(config)),
+    ...(await generateCompositeFiles(config)),
+    ...(await generateJsonTypeFile(config)),
+    ...(await generateTableFile(config)),
+    ...(await generateBarrel(config)),
+  ];
 
-  // ! temp ----------------- start
-  writeFileSync(
-    new URL('./zz-test.json', import.meta.url).pathname,
-    JSON.stringify(config, null, 2),
+  spinner.succeed(
+    `Generated ${generatedFilePaths.length} file(s) in ${relative(cwd(), config.output.root)}.`,
   );
-  // ! temp ----------------- end
+
+  // remove files which is not generated in current execution & not in `output.keepFiles` settings
+  const { existingFilePaths, keepFiles } = config.output;
+  existingFilePaths.map(async p => {
+    if (!generatedFilePaths.includes(p) && !keepFiles.includes(p)) {
+      await rm(p);
+      spinner.start().warn(`Removed unused file ${relative(cwd(), p)}`);
+    }
+  });
 
   exit(configTranspilePath);
+};
+
+(async () => {
+  cliStart();
 })();
 
 export default {};
