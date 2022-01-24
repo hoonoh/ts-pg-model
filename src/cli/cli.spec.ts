@@ -2,12 +2,13 @@ import test from 'ava';
 import { mkdir, readdir, readFile, rmdir, stat, writeFile } from 'fs/promises';
 import { tmpdir } from 'os';
 import { resolve } from 'path';
+import sinon from 'sinon';
 
 import { tableAndColumnsQuery } from '../config/querries.js';
 import { mockSchema, renderTargetsToQueryRes } from '../test/helpers/generator.js';
 import { mockPool } from '../test/helpers/mock-pool.js';
 import { TitleHelper } from '../test/helpers/title.js';
-import { cli } from './cli.js';
+import cli from './cli.js';
 
 const titleHelper = new TitleHelper();
 
@@ -24,11 +25,15 @@ const addTmpPath = async () => {
   return tmpPath;
 };
 
-test.after(async () => {
-  await rmdir(tmpRoot, { recursive: true });
+test.serial.after(async () => {
+  try {
+    await rmdir(tmpRoot, { recursive: true });
+  } catch (error) {
+    //
+  }
 });
 
-test(titleHelper.should('should generate for single schema setup'), async t => {
+test.serial(titleHelper.should('generate for single schema setup'), async t => {
   const root = await addTmpPath();
   const generateRoot = resolve(root, 'generated');
 
@@ -99,14 +104,19 @@ export const userConfig: Config<JsonTypeMap> = {
 
   await writeFile(configPath, configSource);
 
-  await cli(configPath, { pool, silent: true, skipProcessExit: true });
+  await cli.run(configPath, {
+    pool,
+    silent: true,
+    skipProcessExit: true,
+    configTranspilePath: resolve(root, 'config.mjs'),
+  });
 
   const rootFiles = await readdir(generateRoot);
   const expectedFiles = ['bar.ts', 'json-types.ts'];
 
   t.deepEqual(rootFiles.sort(), expectedFiles.sort());
 
-  t.snapshot(configSource, 'config.ts');
+  t.snapshot(configSource.replaceAll(`${root}/`, ''), 'config.ts');
 
   await Promise.all(
     expectedFiles.map(async p => {
@@ -116,4 +126,45 @@ export const userConfig: Config<JsonTypeMap> = {
       t.snapshot(source, fullPath.replace(`${root}/`, ''));
     }),
   );
+});
+
+test.serial(titleHelper.should('fail on invalid setup file path'), async t => {
+  const root = await addTmpPath();
+  const spy = sinon.spy(cli, 'exit');
+
+  await cli.run(resolve(root, 'invalid/path.ts'), {
+    silent: true,
+    skipProcessExit: true,
+    configTranspilePath: resolve(root, 'config.mjs'),
+  });
+
+  t.true(spy.calledOnce);
+  t.true(spy.calledWith({ code: 1, skipProcessExit: true }));
+
+  spy.restore();
+});
+
+test.serial(titleHelper.should('fail on setup file without valid config setup'), async t => {
+  const root = await addTmpPath();
+  const configPath = resolve(root, 'config.ts');
+  await writeFile(configPath, '// empty');
+
+  const spy = sinon.spy(cli, 'exit');
+
+  await cli.run(configPath, {
+    silent: true,
+    skipProcessExit: true,
+    configTranspilePath: resolve(root, 'config.mjs'),
+  });
+
+  t.true(spy.calledOnce);
+  t.true(
+    spy.calledWith({
+      configTranspilePath: resolve(root, 'config.mjs'),
+      code: 1,
+      skipProcessExit: true,
+    }),
+  );
+
+  spy.restore();
 });

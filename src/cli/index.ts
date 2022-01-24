@@ -2,7 +2,7 @@ import meow from 'meow';
 import { resolve } from 'path';
 import { cwd } from 'process';
 
-import { cli } from './cli.js';
+import cli from './cli.js';
 
 const args = meow(
   `
@@ -21,7 +21,7 @@ const args = meow(
 );
 
 (async () => {
-  await cli(resolve(cwd(), args.flags.configPath));
+  await cli.run(resolve(cwd(), args.flags.configPath));
 })();
 
 export default {};
