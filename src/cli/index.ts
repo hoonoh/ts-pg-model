@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import meow from 'meow';
 import { resolve } from 'path';
 import { cwd } from 'process';
@@ -6,8 +7,10 @@ import cli from './cli.js';
 
 const args = meow(
   `
-  // todo: add cli help text
-`,
+    ${chalk.bold('Usage')}
+      $ npx  ts-pg-model [config file path]
+      $ yarn ts-pg-model [config file path]
+  `,
   {
     importMeta: import.meta,
     flags: {
