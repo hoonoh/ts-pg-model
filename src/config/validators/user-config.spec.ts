@@ -1,4 +1,6 @@
 import test from 'ava';
+import { resolve } from 'path';
+import { cwd } from 'process';
 
 import { validateUserConfig } from '../../config/validators/user-config.js';
 import { connectionURI } from '../../test/constants.js';
@@ -132,7 +134,11 @@ titleHelper.ungroup();
 //
 titleHelper.group('snapshot');
 
-test(titleHelper.should('validate `UserConfig` and return expected `Config`'), async t => {
+test.serial(titleHelper.should('validate `UserConfig` and return expected `Config`'), async t => {
+  MockFs.mockString({
+    [new URL(resolve(cwd(), 'package.json'), import.meta.url).pathname]: `{"type":"module"}`,
+    '/tsconfig.json': `{}`,
+  });
   const res = await validateUserConfig({
     connectionURI,
     schemas: ['users'],
@@ -168,6 +174,19 @@ test(titleHelper.should('validate `UserConfig` and return expected `Config`'), a
     output: {
       root: '/generated',
     },
+    tsConfig: '/tsconfig.json',
   });
   t.snapshot(res);
+});
+
+test.serial(titleHelper.should('have empty importSuffix if not ESM project'), async t => {
+  MockFs.mockString({
+    [new URL(resolve(cwd(), 'package.json'), import.meta.url).pathname]: `{}`,
+    '/tsconfig.json': `{}`,
+  });
+  const res = await validateUserConfig({
+    connectionURI,
+    tsConfig: '/tsconfig.json',
+  });
+  t.true(res.importSuffix === '');
 });
