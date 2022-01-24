@@ -40,7 +40,7 @@
     "test:db:wait": "node ./src/test/ci/wait-for-pg.cjs",
     "test:db:down": "docker stop ts-pg-model",
     "test:pre": "yarn test:db:up && yarn test:db:wait && yarn test:db:migrate:up",
-    "test:ci": "yarn test:pre && yarn test:coverage",
+    "test:ci": "yarn test:db:wait && yarn test:db:migrate:up && yarn test:coverage",
     "release": "semantic-release",
     "ts-node": "NODE_NO_WARNINGS=1 node -r ts-node/register/transpile-only --loader ts-node/esm"
   },
