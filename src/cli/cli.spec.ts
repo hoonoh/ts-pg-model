@@ -5,6 +5,7 @@ import { resolve } from 'path';
 import sinon from 'sinon';
 
 import { tableAndColumnsQuery } from '../config/querries.js';
+import { connectionURI } from '../test/constants.js';
 import { mockSchema, renderTargetsToQueryRes } from '../test/helpers/generator.js';
 import { mockPool } from '../test/helpers/mock-pool.js';
 import { TitleHelper } from '../test/helpers/title.js';
@@ -85,6 +86,7 @@ interface JsonTypeMap {
 }
 
 export const userConfig: Config<JsonTypeMap> = {
+  connectionURI: '${connectionURI}',
   schemas: ['foo'],
   typeMap: {
     json: [
