@@ -1,12 +1,13 @@
 import assert from 'assert';
 import dotenv from 'dotenv';
+import { readFileSync } from 'fs';
 import { lstat, readdir, stat } from 'fs/promises';
 import { clone } from 'lodash-es';
 import { resolve } from 'path';
 import { cwd } from 'process';
 import { readPackageUp } from 'read-pkg-up';
 import { ConnectionError, createPool, DatabasePool } from 'slonik';
-import ts from 'typescript';
+import stripJsonComments from 'strip-json-comments';
 
 import { getPgTypes } from '../pg-type.js';
 import {
@@ -39,10 +40,11 @@ const defaultConfig: Pick<Config, 'output'> = {
       let sourceRoot = '';
       try {
         sourceRoot =
-          ts.readConfigFile(resolve(cwd(), 'tsconfig.json'), ts.sys.readFile).config
-            ?.compilerOptions?.sourceRoot || '';
+          JSON.parse(
+            stripJsonComments(readFileSync(resolve(cwd(), 'tsconfig.json'), { encoding: 'utf-8' })),
+          )?.compilerOptions?.sourceRoot || 'src';
       } catch (error) {
-        //
+        sourceRoot = 'src';
       }
       return resolve(cwd(), sourceRoot, 'generated');
     })(),
