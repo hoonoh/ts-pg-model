@@ -1,5 +1,12 @@
 # ts-pg-model changelog
 
+# [1.0.0-preview.2](https://github.com/hoonoh/ts-pg-model/compare/v1.0.0-preview.1...v1.0.0-preview.2) (2022-01-24)
+
+
+### Bug Fixes
+
+* cli updates ([63b8ca6](https://github.com/hoonoh/ts-pg-model/commit/63b8ca6da8d1f891db18033ffb063b041d97f69f))
+
 # 1.0.0-preview.1 (2022-01-24)
 
 

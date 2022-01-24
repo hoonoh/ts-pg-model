@@ -1,6 +1,6 @@
 {
   "name": "ts-pg-model",
-  "version": "1.0.0-preview.1",
+  "version": "1.0.0-preview.2",
   "description": "Generates Typescript type definitions from live Postgres server.",
   "keywords": [
     "pg",
