@@ -32,7 +32,7 @@ import { validateIndexes } from './pg-index.js';
 import { validateSchema } from './schema.js';
 import { validateTableNames } from './table.js';
 
-const defaultConfig: Pick<Config, 'output'> = {
+const defaultConfig: Pick<Config, 'output' | 'tsConfig'> = {
   output: {
     includeSchemaPath: false,
     root: (() => {
@@ -51,6 +51,7 @@ const defaultConfig: Pick<Config, 'output'> = {
     existingFilePaths: [],
     keepFiles: [],
   },
+  tsConfig: resolve(cwd(), 'tsconfig.json'),
 };
 
 /**
@@ -66,6 +67,7 @@ export const validateUserConfig = async ({
   output,
   pool,
   ignoreCompositeTypeColumns,
+  tsConfig,
 }: UserConfig & { pool?: DatabasePool } = {}) => {
   if (!connectionURI) {
     if (dotEnvPath) {
@@ -87,6 +89,13 @@ export const validateUserConfig = async ({
     if (!connectionURI) throw new Error('valid connectionURI cannot be found');
   } else if (!isConnectionURI(connectionURI)) {
     throw new Error(`connectionURI value "${connectionURI}" is invalid`);
+  }
+
+  tsConfig = tsConfig ? resolve(cwd(), tsConfig) : defaultConfig.tsConfig;
+  try {
+    await stat(tsConfig);
+  } catch (error) {
+    throw new Error(`tsConfig path "${tsConfig}" is invalid`);
   }
 
   // generate pool if undefined
@@ -318,6 +327,7 @@ export const validateUserConfig = async ({
     typeMap,
     ignoreCompositeTypeColumns: !!ignoreCompositeTypeColumns,
     importSuffix: (await readPackageUp())?.packageJson.type === 'module' ? '.js' : '',
+    tsConfig,
   };
 
   return rtn;

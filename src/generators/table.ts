@@ -33,7 +33,7 @@ export const generateTableFile: FileGenerator = async (config: Config) => {
         filename: `${config.conventions.paths(tableName)}.ts`,
         config,
       });
-      const tsMorph = new TsMorphHelper(outputPath);
+      const tsMorph = new TsMorphHelper(outputPath, config);
       const sourceFile = tsMorph.sourceFile;
 
       // for enum / composite type imports

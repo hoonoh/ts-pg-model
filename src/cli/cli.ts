@@ -6,7 +6,7 @@ import { basename, extname, relative, resolve } from 'path';
 import { cwd } from 'process';
 import { DatabasePool } from 'slonik';
 
-import { UserConfig } from '../config/types/config.js';
+import { Config, UserConfig } from '../config/types/config.js';
 import { parseConfigFile } from '../config/validators/parse-config-file.js';
 import { validateUserConfig } from '../config/validators/user-config.js';
 import { generateBarrel } from '../generators/barrel.js';
@@ -118,7 +118,14 @@ const cli = {
 
     /* c8 ignore next */
     spinner?.start(`${configPrefix}Validating...`);
-    const config = await validateUserConfig({ ...userConfig, pool });
+    let config: Config | undefined;
+
+    try {
+      config = await validateUserConfig({ ...userConfig, pool });
+    } catch (error) {
+      spinner?.fail(`${configPrefix}Validation error: ${(error as Error).message}`);
+      return cli.exit({ configTranspilePath, code: 1, skipProcessExit });
+    }
 
     /* c8 ignore next */
     spinner?.succeed(`${configPrefix}Validation successful.`);

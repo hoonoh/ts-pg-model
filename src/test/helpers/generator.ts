@@ -302,7 +302,6 @@ export const mockTable = ({
   pgColumns?: Omit<Parameters<typeof mockColumn>[0], 'schema' | 'tableName'>[];
   enumColumns?: Omit<Parameters<typeof mockEnumColumn>[0], 'schema' | 'tableName'>[];
   compositeTypeColumns?: Omit<Parameters<typeof mockCompositeColumn>[0], 'schema' | 'tableName'>[];
-  // todo: add json types
   indexSpecs?: Omit<PgIndexBare, 'schema' | 'tableName'>[];
   constraintSpecs?: Omit<PgConstraintsBare, 'schema' | 'tableName'>[];
 }) => {
@@ -396,7 +395,6 @@ export const mockSchema = ({
       Parameters<typeof mockCompositeColumn>[0],
       'schema' | 'tableName'
     >[];
-    // todo: add json types
     indexSpecs?: Omit<PgIndexBare, 'schema' | 'tableName'>[];
     constraintSpecs?: Omit<PgConstraintsBare, 'schema' | 'tableName'>[];
   }[];

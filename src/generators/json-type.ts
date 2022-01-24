@@ -13,7 +13,7 @@ export const generateJsonTypeFile: FileGenerator = async (config: Config) => {
     .join('\n\n');
 
   if (src) {
-    const tsMorph = new TsMorphHelper(outputPath, src);
+    const tsMorph = new TsMorphHelper(outputPath, config, src);
     await tsMorph.save();
     return [tsMorph.sourcePath];
   }

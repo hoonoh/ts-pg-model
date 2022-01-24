@@ -20,7 +20,7 @@ const args = meow(
 
 if (!args.input[0]) {
   process.stdout.write(args.help);
-  process.exit(1);
+  process.exit(0);
 }
 
 await cli.run(resolve(cwd(), args.input[0]));

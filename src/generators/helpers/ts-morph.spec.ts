@@ -4,6 +4,7 @@ import MockDate from 'mockdate';
 import { resolve } from 'path';
 import { SourceFile } from 'ts-morph';
 
+import { Config } from '../../config/types/config.js';
 import { MockFs } from '../../test/helpers/mock-fs.js';
 import { TitleHelper } from '../../test/helpers/title.js';
 import { serialAfterEach } from '../../test/init.js';
@@ -27,7 +28,12 @@ test.serial(
       sf.addImportDeclaration({ moduleSpecifier: 'test-module' });
     };
 
-    const firstRun = new TsMorphHelper(testFilePath);
+    // TsMorphHelper only looks for tsConfig path value
+    const config: Pick<Config, 'tsConfig'> = {
+      tsConfig: new URL('../../../tsconfig.json', import.meta.url).pathname,
+    };
+
+    const firstRun = new TsMorphHelper(testFilePath, config as Config);
     addImport(firstRun.sourceFile);
     await firstRun.save();
 
@@ -35,7 +41,7 @@ test.serial(
 
     // do same routine with different date
     MockDate.set('2000-01-02');
-    const secondRun = new TsMorphHelper(testFilePath);
+    const secondRun = new TsMorphHelper(testFilePath, config as Config);
     addImport(secondRun.sourceFile);
     await secondRun.save();
 

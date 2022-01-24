@@ -105,6 +105,7 @@ export type UserConfig<
     keepFiles?: string[];
   };
   ignoreCompositeTypeColumns?: boolean;
+  tsConfig?: string;
 };
 
 export type TableAndColumn = {
@@ -200,7 +201,7 @@ export type RenderTargets = Record<
 >;
 
 export type Config = Required<
-  Pick<UserConfig, 'connectionURI' | 'schemas' | 'ignoreCompositeTypeColumns'>
+  Pick<UserConfig, 'connectionURI' | 'schemas' | 'ignoreCompositeTypeColumns' | 'tsConfig'>
 > &
   DeepRequired<Pick<UserConfig, 'output'> & { output: { existingFilePaths: string[] } }> &
   Omit<UserConfig, 'dotEnvPath' | 'targetSelectors' | 'conventions'> & {

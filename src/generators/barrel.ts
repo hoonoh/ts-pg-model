@@ -16,7 +16,7 @@ export const generateBarrel: FileGenerator = async (config: Config) => {
     schemaRoots.map(async schema => {
       const schemaPath = resolve(config.output.root, schema);
       const files = await readdir(schemaPath);
-      const tsMorph = new TsMorphHelper(resolve(schemaPath, 'index.ts'));
+      const tsMorph = new TsMorphHelper(resolve(schemaPath, 'index.ts'), config);
       const sourceFile = tsMorph.sourceFile;
 
       const enumTypeNames: string[] = [];

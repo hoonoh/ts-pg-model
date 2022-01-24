@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import { IndentationText, Project, SourceFile } from 'ts-morph';
-import { URL } from 'url';
+
+import { Config } from '../../config/types/config.js';
 
 export class TsMorphHelper {
   project: Project;
@@ -9,11 +10,9 @@ export class TsMorphHelper {
 
   prevSource: string | undefined;
 
-  constructor(public sourcePath: string, source?: string) {
+  constructor(public sourcePath: string, config: Config, source?: string) {
     this.project = new Project({
-      // todo: tsconfig path should be relative from cwd
-      // todo: requires tsconfig path config
-      tsConfigFilePath: new URL('../../../tsconfig.json', import.meta.url).pathname,
+      tsConfigFilePath: config.tsConfig,
       skipAddingFilesFromTsConfig: true,
       manipulationSettings: {
         indentationText: IndentationText.TwoSpaces,

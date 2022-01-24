@@ -30,6 +30,12 @@ location with `dotEnvPath` in configuration.
 
 Defaults to `./src/generated`.
 
+### tsconfig.json path
+
+`tsConfig`
+
+Defaults to `./tsconfig.json`
+
 ### Schema paths
 
 If there are multiple schemas targeted for file generation, each resources within a schema will be
