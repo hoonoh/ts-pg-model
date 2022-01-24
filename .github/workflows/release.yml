@@ -1,13 +1,22 @@
 name: Release
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [main, preview]
 
 jobs:
   status-checks:
     name: Run status checks and release
 
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        ports:
+          - 54321:5432
+        env:
+          POSTGRES_PASSWORD: secretpassword
 
     steps:
       - uses: actions/checkout@v2
@@ -31,7 +40,7 @@ jobs:
         uses: ./.github/workflows/status-checks
 
       - name: Release
-        if: github.actor == 'hoonoh'
-        run: yarn semantic-release -r https://github.com/$GITHUB_REPOSITORY
+        run: yarn release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
