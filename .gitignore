@@ -4,6 +4,7 @@
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+*.tgz
 .env
 coverage
 dist

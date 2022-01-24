@@ -1,5 +1,4 @@
 .yarn
 dist
 generated
-tsconfig.json
 zz-test*.*
