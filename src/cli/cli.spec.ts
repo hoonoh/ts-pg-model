@@ -33,7 +33,7 @@ test.serial.after(async () => {
   }
 });
 
-test.serial(titleHelper.should('generate for single schema setup'), async t => {
+test.serial(titleHelper.should('generate single schema setup & remove unused files'), async t => {
   const root = await addTmpPath();
   const generateRoot = resolve(root, 'generated');
 
@@ -104,6 +104,11 @@ export const userConfig: Config<JsonTypeMap> = {
 
   await writeFile(configPath, configSource);
 
+  // unused files
+  await mkdir(generateRoot, { recursive: true });
+  const unusedFiles = [resolve(generateRoot, 'file-a.ts'), resolve(generateRoot, 'file-b.ts')];
+  await Promise.all(unusedFiles.map(async p => writeFile(p, '// unused')));
+
   await cli.run(configPath, {
     pool,
     silent: true,
@@ -126,6 +131,9 @@ export const userConfig: Config<JsonTypeMap> = {
       t.snapshot(source, fullPath.replace(`${root}/`, ''));
     }),
   );
+
+  // check unused files removal
+  await Promise.all(unusedFiles.map(async p => t.throwsAsync(async () => stat(p))));
 });
 
 test.serial(titleHelper.should('fail on invalid setup file path'), async t => {
