@@ -47,7 +47,7 @@
   "dependencies": {
     "chalk": "5.0.0",
     "change-case": "4.1.2",
-    "dotenv": "10.0.0",
+    "dotenv": "14.2.0",
     "esbuild": "0.14.13",
     "lodash-es": "4.17.21",
     "meow": "10.1.2",
