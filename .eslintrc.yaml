@@ -75,3 +75,8 @@ overrides:
       '@typescript-eslint/explicit-function-return-type': 0
       '@typescript-eslint/no-explicit-any': 0
       '@typescript-eslint/explicit-module-boundary-types': 0
+  - files: ['bin/cli.mjs']
+    parser: '@babel/eslint-parser'
+    parserOptions:
+      sourceType: module
+      requireConfigFile: false
