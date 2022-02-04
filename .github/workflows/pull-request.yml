@@ -14,6 +14,14 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres
+        ports:
+          - 54321:5432
+        env:
+          POSTGRES_PASSWORD: secretpassword
+
     steps:
       - uses: actions/checkout@v2
 
