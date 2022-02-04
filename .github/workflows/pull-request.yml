@@ -14,13 +14,23 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres
+        ports:
+          - 54321:5432
+        env:
+          POSTGRES_PASSWORD: secretpassword
+
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         shell: bash
-        run: echo "::set-output name=dir::$(yarn cache dir)"
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
 
       - uses: actions/cache@v2
         id: yarn-cache
