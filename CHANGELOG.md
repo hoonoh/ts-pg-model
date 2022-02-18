@@ -1,5 +1,12 @@
 # ts-pg-model changelog
 
+## [1.0.2](https://github.com/hoonoh/ts-pg-model/compare/v1.0.1...v1.0.2) (2022-02-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency esbuild to v0.14.23 ([#22](https://github.com/hoonoh/ts-pg-model/issues/22)) ([7c434c4](https://github.com/hoonoh/ts-pg-model/commit/7c434c4f98bc44d4a0b50dab013d15cb3e4e8897))
+
 ## [1.0.1](https://github.com/hoonoh/ts-pg-model/compare/v1.0.0...v1.0.1) (2022-02-04)
 
 
