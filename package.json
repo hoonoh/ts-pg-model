@@ -48,7 +48,7 @@
     "chalk": "5.0.0",
     "change-case": "4.1.2",
     "dotenv": "16.0.0",
-    "esbuild": "0.14.22",
+    "esbuild": "0.14.23",
     "lodash-es": "4.17.21",
     "meow": "10.1.2",
     "ora": "6.0.1",
