@@ -58,7 +58,7 @@
     "ts-morph": "14.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.17.7",
+    "@babel/core": "7.17.8",
     "@babel/eslint-parser": "7.17.0",
     "@semantic-release/changelog": "6.0.1",
     "@semantic-release/commit-analyzer": "9.0.2",
