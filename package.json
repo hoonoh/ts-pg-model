@@ -16,7 +16,7 @@
   "author": {
     "name": "hoonoh"
   },
-  "packageManager": "yarn@3.2.0",
+  "packageManager": "yarn@3.2.1",
   "type": "module",
   "exports": "./dist/index.js",
   "engines": {
@@ -47,8 +47,8 @@
   "dependencies": {
     "chalk": "5.0.1",
     "change-case": "4.1.2",
-    "dotenv": "16.0.0",
-    "esbuild": "0.14.38",
+    "dotenv": "16.0.1",
+    "esbuild": "0.14.39",
     "lodash-es": "4.17.21",
     "meow": "10.1.2",
     "ora": "6.1.0",
@@ -67,10 +67,10 @@
     "@semantic-release/release-notes-generator": "10.0.3",
     "@types/lodash-es": "4.17.6",
     "@types/mock-fs": "4.13.1",
-    "@types/node": "16.11.33",
+    "@types/node": "16.11.35",
     "@types/sinon": "10.0.11",
-    "@typescript-eslint/eslint-plugin": "5.22.0",
-    "@typescript-eslint/parser": "5.22.0",
+    "@typescript-eslint/eslint-plugin": "5.23.0",
+    "@typescript-eslint/parser": "5.23.0",
     "ava": "4.2.0",
     "c8": "7.11.2",
     "eslint": "8.15.0",
