@@ -2056,15 +2056,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ts-morph/common@npm:~0.13.0":
-  version: 0.13.0
-  resolution: "@ts-morph/common@npm:0.13.0"
+"@ts-morph/common@npm:~0.15.0":
+  version: 0.15.0
+  resolution: "@ts-morph/common@npm:0.15.0"
   dependencies:
     fast-glob: ^3.2.11
     minimatch: ^5.0.1
     mkdirp: ^1.0.4
     path-browserify: ^1.0.1
-  checksum: 88b3d4b82dc6aca12741e55c6bf037f2243d14f4b9c42bbe28ed4a773ae9cd8d3ca6a6f9f827b5830c188037b0781d881a002ddb73e094fa5d5ff2a3352dc842
+  checksum: 31476b677df02aebe3ca7985e393f02929002ef6094d1d803d0026fdda7947fa3276d6594feeef862f719c3e92dd9b6336ea3c0929782a36cdf003813508270e
   languageName: node
   linkType: hard
 
@@ -10918,13 +10918,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-morph@npm:14.0.0":
-  version: 14.0.0
-  resolution: "ts-morph@npm:14.0.0"
+"ts-morph@npm:15.0.0":
+  version: 15.0.0
+  resolution: "ts-morph@npm:15.0.0"
   dependencies:
-    "@ts-morph/common": ~0.13.0
+    "@ts-morph/common": ~0.15.0
     code-block-writer: ^11.0.0
-  checksum: e975fb245ae558c638e94014dcbbad828b904dee5a7309bfb4ef2b2922d0d7ad902ec00874a959be58991043ce655f78ae78df0d0e0d6fb3800b991b95be08ce
+  checksum: a2de1f0d7fd80c1eb21cbdbc8e1eca828100288f102560f7f17915813b504f445a432fac18fec43ce84ecdbdb80e375ca7beab6ec9f8598550195c63aca9e5e6
   languageName: node
   linkType: hard
 
@@ -11012,7 +11012,7 @@ __metadata:
     slonik: 28.1.0
     strip-json-comments: 4.0.0
     ts-essentials: 9.1.2
-    ts-morph: 14.0.0
+    ts-morph: 15.0.0
     ts-node: 10.8.0
     typescript: 4.7.2
   bin:
