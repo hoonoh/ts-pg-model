@@ -54,7 +54,7 @@
     "ora": "6.1.2",
     "read-pkg-up": "9.1.0",
     "slonik": "28.1.1",
-    "strip-json-comments": "4.0.0",
+    "strip-json-comments": "5.0.0",
     "ts-morph": "15.1.0"
   },
   "devDependencies": {

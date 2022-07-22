@@ -10738,10 +10738,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"strip-json-comments@npm:4.0.0":
-  version: 4.0.0
-  resolution: "strip-json-comments@npm:4.0.0"
-  checksum: 26bd0fbedd631d673dc5382163efd39cffdff0b7fcaf61e522a1c6d976968811eff6b2d3a3d5fec1d7563efac516f45ced1352df1ab2cf4991cc93fcfb94d05a
+"strip-json-comments@npm:5.0.0":
+  version: 5.0.0
+  resolution: "strip-json-comments@npm:5.0.0"
+  checksum: 99cad07ccc3b86cc7bb8a9274a801b0660cbd595189ad291f6e206b8d7b23d90eed3119cdae44e126d9563796024b3ef0e7de2eeee4634b3b9019bafb62803e7
   languageName: node
   linkType: hard
 
@@ -11179,7 +11179,7 @@ __metadata:
     semantic-release: 19.0.3
     sinon: 14.0.0
     slonik: 28.1.1
-    strip-json-comments: 4.0.0
+    strip-json-comments: 5.0.0
     ts-essentials: 9.2.0
     ts-morph: 15.1.0
     ts-node: 10.9.1
