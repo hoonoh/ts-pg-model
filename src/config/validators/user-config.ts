@@ -99,7 +99,7 @@ export const validateUserConfig = async ({
   }
 
   // generate pool if undefined
-  pool ??= createPool(connectionURI);
+  pool ??= await createPool(connectionURI);
 
   // test connection & get search paths
   const searchPaths: string[] = [];
