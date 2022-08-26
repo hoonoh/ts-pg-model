@@ -16,7 +16,7 @@
   "author": {
     "name": "hoonoh"
   },
-  "packageManager": "yarn@3.2.2",
+  "packageManager": "yarn@3.2.3",
   "type": "module",
   "exports": "./dist/index.js",
   "engines": {
@@ -58,7 +58,7 @@
     "ts-morph": "15.1.0"
   },
   "devDependencies": {
-    "@babel/core": "7.18.10",
+    "@babel/core": "7.18.13",
     "@babel/eslint-parser": "7.18.9",
     "@semantic-release/changelog": "6.0.1",
     "@semantic-release/commit-analyzer": "9.0.2",
@@ -67,17 +67,17 @@
     "@semantic-release/release-notes-generator": "10.0.3",
     "@types/lodash-es": "4.17.6",
     "@types/mock-fs": "4.13.1",
-    "@types/node": "16.11.51",
+    "@types/node": "16.11.56",
     "@types/sinon": "10.0.13",
-    "@typescript-eslint/eslint-plugin": "5.33.1",
-    "@typescript-eslint/parser": "5.33.1",
-    "ava": "4.3.1",
+    "@typescript-eslint/eslint-plugin": "5.35.1",
+    "@typescript-eslint/parser": "5.35.1",
+    "ava": "4.3.3",
     "c8": "7.12.0",
     "eslint": "8.22.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-airbnb-typescript": "17.0.0",
     "eslint-config-prettier": "8.5.0",
-    "eslint-import-resolver-typescript": "3.4.2",
+    "eslint-import-resolver-typescript": "3.5.0",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-simple-import-sort": "7.0.0",
@@ -87,10 +87,10 @@
     "mockdate": "3.0.5",
     "node-pg-migrate": "6.2.2",
     "prettier": "2.7.1",
-    "semantic-release": "19.0.3",
+    "semantic-release": "19.0.5",
     "sinon": "14.0.0",
-    "ts-essentials": "9.2.0",
+    "ts-essentials": "9.3.0",
     "ts-node": "10.9.1",
-    "typescript": "4.7.4"
+    "typescript": "4.8.2"
   }
 }
