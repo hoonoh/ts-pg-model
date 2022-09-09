@@ -10765,9 +10765,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"slonik@npm:30.4.3":
-  version: 30.4.3
-  resolution: "slonik@npm:30.4.3"
+"slonik@npm:31.1.0":
+  version: 31.1.0
+  resolution: "slonik@npm:31.1.0"
   dependencies:
     concat-stream: ^2.0.0
     es6-error: ^4.1.1
@@ -10789,7 +10789,7 @@ __metadata:
     serialize-error: ^8.0.0
     through2: ^4.0.2
     zod: ^3.19.0
-  checksum: 25b8899085219eac67af2f03a3edf69064ade3cf4f00126100ae43caa2a634ae2677e3bde597bb1cbd9e9050523599cc9b6524e0195d4380dbee1eb8da16da12
+  checksum: ed1788e394bc614b79d8dc224c0c19d5b0ae9ac6459c617b85a138634fdc6b547827d81c04eddf8eea7fedd039a70f7f8d58aac9dead2b0077ad08e90a6f2793
   languageName: node
   linkType: hard
 
@@ -11673,7 +11673,7 @@ __metadata:
     read-pkg-up: 9.1.0
     semantic-release: 19.0.5
     sinon: 14.0.0
-    slonik: 30.4.3
+    slonik: 31.1.0
     strip-json-comments: 5.0.0
     ts-essentials: 9.3.0
     ts-morph: 15.1.0
