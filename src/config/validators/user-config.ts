@@ -259,10 +259,9 @@ export const validateUserConfig = async ({
       const table = renderTargets[schema]?.[tableName];
       if (isInclude) {
         // handle column includes
-        if (table && allRenderTargets[schema]?.[tableName]?.columns[columnName]) {
-          table.columns[columnName] = clone(
-            allRenderTargets[schema]?.[tableName]?.columns[columnName],
-          );
+        const col = allRenderTargets[schema]?.[tableName]?.columns[columnName];
+        if (table && col) {
+          table.columns[columnName] = clone(col);
         }
       } else {
         // handle column excludes

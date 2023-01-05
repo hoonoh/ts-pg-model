@@ -12,10 +12,11 @@ import {
   snakeCase,
 } from 'change-case';
 import { DeepRequired } from 'ts-essentials';
+import z from 'zod';
 
 import { JsonType } from '../../pg-types/json.js';
 import { PgCompositeType, PgCompositeTypes, PgEnumType, PgEnumTypes } from './pg.js';
-import { KnownPgType, TsType } from './type-map.js';
+import { KnownPgType, knownPgTypesZod, TsType } from './type-map.js';
 
 export type ConfigKey = 'schemas' | 'tables' | 'columns' | 'types';
 
@@ -108,18 +109,20 @@ export type UserConfig<
   tsConfig?: string;
 };
 
-export type TableAndColumn = {
-  schema: string;
-  tableName: string;
-  columnName: string;
-  dataType: KnownPgType | 'USER-DEFINED';
-  userDefinedUdtSchema?: string | null;
-  udtName: string;
-  isNullable: boolean;
-  tableComment?: string | null;
-  columnComment?: string | null;
-  defaults?: string | null;
-};
+export const tableAndColumnZod = z.object({
+  schema: z.string(),
+  tableName: z.string(),
+  columnName: z.string(),
+  dataType: knownPgTypesZod.or(z.literal('USER-DEFINED')),
+  userDefinedUdtSchema: z.nullable(z.optional(z.string())),
+  udtName: z.string(),
+  isNullable: z.boolean(),
+  tableComment: z.nullable(z.optional(z.string())),
+  columnComment: z.nullable(z.optional(z.string())),
+  defaults: z.nullable(z.optional(z.string())),
+});
+
+export type TableAndColumn = z.infer<typeof tableAndColumnZod>;
 
 export type Index = {
   schema: string;

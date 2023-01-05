@@ -1,5 +1,7 @@
 // https://www.postgresql.org/docs/current/datatype.html
 
+import z from 'zod';
+
 export type TsType =
   | 'number'
   | 'string'
@@ -75,7 +77,8 @@ export const knownPgTypes = [
   'xml',
 ] as const;
 
-export type KnownPgType = typeof knownPgTypes[number];
+export const knownPgTypesZod = z.enum(knownPgTypes);
+export type KnownPgType = z.infer<typeof knownPgTypesZod>;
 
 export const isKnownPgType = (name: any): name is KnownPgType => {
   return knownPgTypes.includes(name);
