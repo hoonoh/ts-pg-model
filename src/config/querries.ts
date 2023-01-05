@@ -1,15 +1,21 @@
 import { sql } from 'slonik';
+import z from 'zod';
 
-import { TableAndColumn } from './types/config.js';
-import { PgCompositeTypeBare, PgConstraintsBare, PgEnumTypeBare, PgIndexBare } from './types/pg.js';
+import { tableAndColumnZod } from './types/config.js';
+import {
+  pgCompositeTypeBareZod,
+  pgConstraintsBareZod,
+  pgEnumTypeBareZod,
+  pgIndexBareZod,
+} from './types/pg.js';
 
-export const searchPathQuery = sql<{ search_path: string }>`
+export const searchPathQuery = sql.type(z.object({ search_path: z.string() }))`
   /* searchPathQuery */
   show search_path
 `;
 
 // slonik-live-server-disable-cost-errors
-export const tableAndColumnsQuery = sql<TableAndColumn>`
+export const tableAndColumnsQuery = sql.type(tableAndColumnZod)`
   /* tableAndColumnsQuery */
   select
     table_schema "schema",
@@ -31,7 +37,7 @@ export const tableAndColumnsQuery = sql<TableAndColumn>`
   order by table_schema, table_name, ordinal_position;
 `;
 
-export const enumTypesBareQuery = sql<PgEnumTypeBare>`
+export const enumTypesBareQuery = sql.type(pgEnumTypeBareZod)`
   /* enumTypesBareQuery */
   select
     n.nspname "schema",
@@ -46,7 +52,7 @@ export const enumTypesBareQuery = sql<PgEnumTypeBare>`
 `;
 
 // slonik-live-server-disable-cost-errors
-export const compositeTypesBareQuery = sql<PgCompositeTypeBare>`
+export const compositeTypesBareQuery = sql.type(pgCompositeTypeBareZod)`
   /* compositeTypesBareQuery */
   with types as (
     select
@@ -102,7 +108,7 @@ export const compositeTypesBareQuery = sql<PgCompositeTypeBare>`
   from list l
 `;
 
-export const indexesBareQuery = sql<PgIndexBare>`
+export const indexesBareQuery = sql.type(pgIndexBareZod)`
   /* indexesBareQuery */
   select
     schemaname as schema,
@@ -115,7 +121,7 @@ export const indexesBareQuery = sql<PgIndexBare>`
   order by schemaname, tablename, indexname
 `;
 
-export const constraintsBareQuery = sql<PgConstraintsBare>`
+export const constraintsBareQuery = sql.type(pgConstraintsBareZod)`
   /* constraintsBareQuery */
   select
     n.nspname as schema,
