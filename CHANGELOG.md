@@ -1,5 +1,23 @@
 # ts-pg-model changelog
 
+## [1.0.3](https://github.com/hoonoh/ts-pg-model/compare/v1.0.2...v1.0.3) (2023-03-25)
+
+
+### Bug Fixes
+
+* **deps:** update dependency meow to v11 ([#81](https://github.com/hoonoh/ts-pg-model/issues/81)) ([4647797](https://github.com/hoonoh/ts-pg-model/commit/4647797cfedf57f434c7fb069d29b59e208964f0))
+* **deps:** update dependency slonik to v28 ([#36](https://github.com/hoonoh/ts-pg-model/issues/36)) ([e83f93c](https://github.com/hoonoh/ts-pg-model/commit/e83f93c1da1fde26b21706587a4230c528b12c8b))
+* **deps:** update dependency slonik to v29 ([#64](https://github.com/hoonoh/ts-pg-model/issues/64)) ([c53ce48](https://github.com/hoonoh/ts-pg-model/commit/c53ce483c718e99bd36f7cd28831cc0e5a273ffc))
+* **deps:** update dependency slonik to v30 ([#66](https://github.com/hoonoh/ts-pg-model/issues/66)) ([f71654c](https://github.com/hoonoh/ts-pg-model/commit/f71654cc9c131bb78cf3ade066a054c9024e6e8b))
+* **deps:** update dependency slonik to v31 ([#73](https://github.com/hoonoh/ts-pg-model/issues/73)) ([a94943c](https://github.com/hoonoh/ts-pg-model/commit/a94943ce4efbefdb817fbd9aa863ddf46c1df214))
+* **deps:** update dependency slonik to v32 ([#83](https://github.com/hoonoh/ts-pg-model/issues/83)) ([37d6c39](https://github.com/hoonoh/ts-pg-model/commit/37d6c395a278029a277ac90b106f7487f7c353e4))
+* **deps:** update dependency slonik to v33 ([#91](https://github.com/hoonoh/ts-pg-model/issues/91)) ([1d2b130](https://github.com/hoonoh/ts-pg-model/commit/1d2b130494bbfc7aa99538109ebb479b225dd1d8))
+* **deps:** update dependency strip-json-comments to v5 ([#62](https://github.com/hoonoh/ts-pg-model/issues/62)) ([90f6385](https://github.com/hoonoh/ts-pg-model/commit/90f63856db98aba1db79e6b9224464808bcd43ec))
+* **deps:** update dependency ts-morph to v14 ([#27](https://github.com/hoonoh/ts-pg-model/issues/27)) ([c7e5f86](https://github.com/hoonoh/ts-pg-model/commit/c7e5f86327da2c4e58460649b5f983745a1af59e))
+* **deps:** update dependency ts-morph to v15 ([#51](https://github.com/hoonoh/ts-pg-model/issues/51)) ([684eb28](https://github.com/hoonoh/ts-pg-model/commit/684eb28a25026642f06f981ef94332e5e6eca43a))
+* **deps:** update dependency ts-morph to v16 ([#74](https://github.com/hoonoh/ts-pg-model/issues/74)) ([fa3806e](https://github.com/hoonoh/ts-pg-model/commit/fa3806e84ecf6e8c60184ec71b8e01b48cf9dbd8))
+* **deps:** update dependency ts-morph to v17 ([#95](https://github.com/hoonoh/ts-pg-model/issues/95)) ([9fed3a2](https://github.com/hoonoh/ts-pg-model/commit/9fed3a297c576b996ede785043c579492eba2146))
+
 ## [1.0.2](https://github.com/hoonoh/ts-pg-model/compare/v1.0.1...v1.0.2) (2022-02-18)
 
 
