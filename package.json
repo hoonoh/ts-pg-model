@@ -55,7 +55,7 @@
     "read-pkg-up": "9.1.0",
     "slonik": "33.0.6",
     "strip-json-comments": "5.0.0",
-    "ts-morph": "17.0.1"
+    "ts-morph": "18.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.20.12",
