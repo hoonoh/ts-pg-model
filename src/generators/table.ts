@@ -44,7 +44,7 @@ export const generateTableFile: FileGenerator = async (config: Config) => {
 
       // for custom pg-type imports
       const pgTypes = ['JsonType', 'Timestamp'] as const;
-      const importPgTypes: Set<typeof pgTypes[number]> = new Set();
+      const importPgTypes: Set<(typeof pgTypes)[number]> = new Set();
 
       const tableDocs = [`@table ${tableSpec.schema}.${tableSpec.tableName}`];
       if (tableSpec.comment) tableDocs.push(`@comment ${tableSpec.comment}`);
@@ -84,8 +84,8 @@ export const generateTableFile: FileGenerator = async (config: Config) => {
               namedImports: [columnSpec.type.json.name],
               moduleSpecifier: `../json-types${config.importSuffix}`,
             });
-          } else if (type && pgTypes.includes(type as typeof pgTypes[number])) {
-            importPgTypes.add(type as typeof pgTypes[number]);
+          } else if (type && pgTypes.includes(type as (typeof pgTypes)[number])) {
+            importPgTypes.add(type as (typeof pgTypes)[number]);
           }
 
           assert(type !== undefined, 'unexpected undefined column type');
