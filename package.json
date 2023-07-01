@@ -16,7 +16,7 @@
   "author": {
     "name": "hoonoh"
   },
-  "packageManager": "yarn@3.6.0",
+  "packageManager": "yarn@3.6.1",
   "type": "module",
   "exports": "./dist/index.js",
   "engines": {
@@ -68,13 +68,13 @@
     "@semantic-release/release-notes-generator": "11.0.3",
     "@types/lodash-es": "4.17.7",
     "@types/mock-fs": "4.13.1",
-    "@types/node": "18.16.18",
+    "@types/node": "18.16.19",
     "@types/sinon": "10.0.15",
     "@typescript-eslint/eslint-plugin": "5.60.1",
     "@typescript-eslint/parser": "5.60.1",
     "ava": "5.3.1",
     "c8": "8.0.0",
-    "eslint": "8.43.0",
+    "eslint": "8.44.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-airbnb-typescript": "17.0.0",
     "eslint-config-prettier": "8.8.0",
