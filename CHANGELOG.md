@@ -1,5 +1,12 @@
 # ts-pg-model changelog
 
+## [1.0.8](https://github.com/hoonoh/ts-pg-model/compare/v1.0.7...v1.0.8) (2023-07-07)
+
+
+### Bug Fixes
+
+* **deps:** update dependency read-pkg-up to v10 ([#143](https://github.com/hoonoh/ts-pg-model/issues/143)) ([1658cfc](https://github.com/hoonoh/ts-pg-model/commit/1658cfce3b5a655104b08d396aaf295990c407cb))
+
 ## [1.0.7](https://github.com/hoonoh/ts-pg-model/compare/v1.0.6...v1.0.7) (2023-06-16)
 
 
