@@ -9703,18 +9703,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"read-pkg-up@npm:9.1.0, read-pkg-up@npm:^9.0.0, read-pkg-up@npm:^9.1.0":
-  version: 9.1.0
-  resolution: "read-pkg-up@npm:9.1.0"
-  dependencies:
-    find-up: ^6.3.0
-    read-pkg: ^7.1.0
-    type-fest: ^2.5.0
-  checksum: 41b8ba4bdb7c1e914aa6ce2d36a7c1651e9086938977fa12f058f6fca51ee15315634af648ca4ef70dd074e575e854616b39032ad0b376e9e97d61a9d0867afe
-  languageName: node
-  linkType: hard
-
-"read-pkg-up@npm:^10.0.0":
+"read-pkg-up@npm:10.0.0, read-pkg-up@npm:^10.0.0":
   version: 10.0.0
   resolution: "read-pkg-up@npm:10.0.0"
   dependencies:
@@ -9743,6 +9732,17 @@ __metadata:
     read-pkg: ^5.2.0
     type-fest: ^0.8.1
   checksum: e4e93ce70e5905b490ca8f883eb9e48b5d3cebc6cd4527c25a0d8f3ae2903bd4121c5ab9c5a3e217ada0141098eeb661313c86fa008524b089b8ed0b7f165e44
+  languageName: node
+  linkType: hard
+
+"read-pkg-up@npm:^9.0.0, read-pkg-up@npm:^9.1.0":
+  version: 9.1.0
+  resolution: "read-pkg-up@npm:9.1.0"
+  dependencies:
+    find-up: ^6.3.0
+    read-pkg: ^7.1.0
+    type-fest: ^2.5.0
+  checksum: 41b8ba4bdb7c1e914aa6ce2d36a7c1651e9086938977fa12f058f6fca51ee15315634af648ca4ef70dd074e575e854616b39032ad0b376e9e97d61a9d0867afe
   languageName: node
   linkType: hard
 
@@ -11297,7 +11297,7 @@ __metadata:
     node-pg-migrate: 6.2.2
     ora: 6.3.1
     prettier: 2.8.8
-    read-pkg-up: 9.1.0
+    read-pkg-up: 10.0.0
     semantic-release: 21.0.7
     sinon: 15.2.0
     slonik: 34.0.1
