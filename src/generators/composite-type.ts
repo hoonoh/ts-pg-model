@@ -71,16 +71,19 @@ export const generateCompositeFiles: FileGenerator = async (config: Config) => {
         });
       });
 
-      const importTypesSorted = importTypes.reduce((acc, cur) => {
-        if (!acc[cur.schema]) acc[cur.schema] = { composite: [], enum: [] };
-        if (cur.type.enum) {
-          acc[cur.schema].enum.push(cur);
-        } else if (cur.type.composite && cur.type.composite.schema !== schema) {
-          // only composite types of other schema should be imported
-          acc[cur.schema].composite.push(cur);
-        }
-        return acc;
-      }, {} as Record<string, Record<'enum' | 'composite', typeof importTypes>>);
+      const importTypesSorted = importTypes.reduce(
+        (acc, cur) => {
+          if (!acc[cur.schema]) acc[cur.schema] = { composite: [], enum: [] };
+          if (cur.type.enum) {
+            acc[cur.schema].enum.push(cur);
+          } else if (cur.type.composite && cur.type.composite.schema !== schema) {
+            // only composite types of other schema should be imported
+            acc[cur.schema].composite.push(cur);
+          }
+          return acc;
+        },
+        {} as Record<string, Record<'enum' | 'composite', typeof importTypes>>,
+      );
 
       Object.entries(importTypesSorted).forEach(([typeSchema, type]) => {
         if (type.enum.length) {

@@ -10,7 +10,11 @@ export class TsMorphHelper {
 
   prevSource: string | undefined;
 
-  constructor(public sourcePath: string, config: Config, source?: string) {
+  constructor(
+    public sourcePath: string,
+    config: Config,
+    source?: string,
+  ) {
     this.project = new Project({
       tsConfigFilePath: config.tsConfig,
       skipAddingFilesFromTsConfig: true,

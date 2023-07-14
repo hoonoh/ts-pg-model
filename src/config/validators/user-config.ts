@@ -283,9 +283,7 @@ export const validateUserConfig = async ({
         return;
       }
       await Promise.all(
-        (
-          await readdir(root)
-        ).map(async p => {
+        (await readdir(root)).map(async p => {
           const pPath = resolve(root, p);
           const pStat = await lstat(pPath);
           if (pStat.isDirectory()) {

@@ -229,22 +229,25 @@ export const mockCompositeColumn = ({
         composite: {
           schema,
           name: compositeTypeName,
-          attributes: attributes.reduce((acc, cur) => {
-            if (cur.type === 'ts') {
-              acc[cur.name] = cur.value;
-            } else if (cur.type === 'enum') {
-              acc[cur.name] = {
-                schema,
-                ...cur.value,
-              } as PgEnumType;
-            } else if (cur.type === 'composite') {
-              acc[cur.name] = {
-                schema,
-                ...cur.value,
-              } as PgCompositeType;
-            }
-            return acc;
-          }, {} as PgCompositeType['attributes']),
+          attributes: attributes.reduce(
+            (acc, cur) => {
+              if (cur.type === 'ts') {
+                acc[cur.name] = cur.value;
+              } else if (cur.type === 'enum') {
+                acc[cur.name] = {
+                  schema,
+                  ...cur.value,
+                } as PgEnumType;
+              } else if (cur.type === 'composite') {
+                acc[cur.name] = {
+                  schema,
+                  ...cur.value,
+                } as PgCompositeType;
+              }
+              return acc;
+            },
+            {} as PgCompositeType['attributes'],
+          ),
         },
       },
       comment,
@@ -305,64 +308,73 @@ export const mockTable = ({
   indexSpecs?: Omit<PgIndexBare, 'schema' | 'tableName'>[];
   constraintSpecs?: Omit<PgConstraintsBare, 'schema' | 'tableName'>[];
 }) => {
-  const columns = pgColumns?.reduce((acc, c) => {
-    acc = {
-      ...acc,
-      ...mockColumn({
-        schema,
-        tableName,
-        columnName: c.columnName,
-        pgType: c.pgType,
-        isNullable: c.isNullable,
-        defaults: c.defaults,
-        comment: c.comment,
-      }),
-    };
-    return acc;
-  }, {} as Record<string, ColumnTypeMap>);
-  const enums = enumColumns?.reduce((acc, c) => {
-    acc = {
-      ...acc,
-      ...mockEnumColumn({
-        schema,
-        tableName,
-        columnName: c.columnName,
-        udtSchema: c.udtSchema,
-        enumName: c.enumName,
-        enumLabels: c.enumLabels,
-        isNullable: c.isNullable,
-        defaults: c.defaults,
-        comment: c.comment,
-      }),
-    };
-    return acc;
-  }, {} as Record<string, ColumnTypeMap>);
+  const columns = pgColumns?.reduce(
+    (acc, c) => {
+      acc = {
+        ...acc,
+        ...mockColumn({
+          schema,
+          tableName,
+          columnName: c.columnName,
+          pgType: c.pgType,
+          isNullable: c.isNullable,
+          defaults: c.defaults,
+          comment: c.comment,
+        }),
+      };
+      return acc;
+    },
+    {} as Record<string, ColumnTypeMap>,
+  );
+  const enums = enumColumns?.reduce(
+    (acc, c) => {
+      acc = {
+        ...acc,
+        ...mockEnumColumn({
+          schema,
+          tableName,
+          columnName: c.columnName,
+          udtSchema: c.udtSchema,
+          enumName: c.enumName,
+          enumLabels: c.enumLabels,
+          isNullable: c.isNullable,
+          defaults: c.defaults,
+          comment: c.comment,
+        }),
+      };
+      return acc;
+    },
+    {} as Record<string, ColumnTypeMap>,
+  );
 
-  const compositeTypes = compositeTypeColumns?.reduce((acc, c) => {
-    acc = {
-      ...acc,
-      ...mockCompositeColumn({
-        schema,
-        tableName,
-        columnName: c.columnName,
-        udtSchema: c.udtSchema,
-        compositeTypeName: c.compositeTypeName,
-        attributes: c.attributes,
-        isNullable: c.isNullable,
-        defaults: c.defaults,
-        comment: c.comment,
-      }),
-    };
-    return acc;
-  }, {} as Record<string, ColumnTypeMap>);
+  const compositeTypes = compositeTypeColumns?.reduce(
+    (acc, c) => {
+      acc = {
+        ...acc,
+        ...mockCompositeColumn({
+          schema,
+          tableName,
+          columnName: c.columnName,
+          udtSchema: c.udtSchema,
+          compositeTypeName: c.compositeTypeName,
+          attributes: c.attributes,
+          isNullable: c.isNullable,
+          defaults: c.defaults,
+          comment: c.comment,
+        }),
+      };
+      return acc;
+    },
+    {} as Record<string, ColumnTypeMap>,
+  );
 
   const indexes = indexSpecs?.length
-    ? validateIndexes(indexSpecs.map(s => ({ ...s, schema, tableName } as PgIndexBare)))
+    ? validateIndexes(indexSpecs.map(s => ({ ...s, schema, tableName }) as PgIndexBare))
     : undefined;
 
   const constraints = constraintSpecs?.length
     ? validateConstratints(
-        constraintSpecs.map(s => ({ ...s, schema, tableName } as PgConstraintsBare)),
+        constraintSpecs.map(s => ({ ...s, schema, tableName }) as PgConstraintsBare),
       )
     : undefined;
 
@@ -399,21 +411,24 @@ export const mockSchema = ({
     constraintSpecs?: Omit<PgConstraintsBare, 'schema' | 'tableName'>[];
   }[];
 }) => {
-  const tables = tableSpecs.reduce((acc, t) => {
-    acc = {
-      ...acc,
-      ...mockTable({
-        schema,
-        tableName: t.tableName,
-        pgColumns: t.pgColumns,
-        enumColumns: t.enumColumns,
-        compositeTypeColumns: t.compositeTypeColumns,
-        indexSpecs: t.indexSpecs,
-        constraintSpecs: t.constraintSpecs,
-      }),
-    };
-    return acc;
-  }, {} as Record<string, Table & { columns: Record<string, ColumnTypeMap> }>);
+  const tables = tableSpecs.reduce(
+    (acc, t) => {
+      acc = {
+        ...acc,
+        ...mockTable({
+          schema,
+          tableName: t.tableName,
+          pgColumns: t.pgColumns,
+          enumColumns: t.enumColumns,
+          compositeTypeColumns: t.compositeTypeColumns,
+          indexSpecs: t.indexSpecs,
+          constraintSpecs: t.constraintSpecs,
+        }),
+      };
+      return acc;
+    },
+    {} as Record<string, Table & { columns: Record<string, ColumnTypeMap> }>,
+  );
   const rtn: Record<string, Record<string, Table & { columns: Record<string, ColumnTypeMap> }>> = {
     [schema]: {
       ...tables,
