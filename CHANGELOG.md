@@ -1,5 +1,12 @@
 # ts-pg-model changelog
 
+## [1.0.9](https://github.com/hoonoh/ts-pg-model/compare/v1.0.8...v1.0.9) (2023-07-28)
+
+
+### Bug Fixes
+
+* **deps:** update dependency ora to v7 ([#150](https://github.com/hoonoh/ts-pg-model/issues/150)) ([f7ae881](https://github.com/hoonoh/ts-pg-model/commit/f7ae881dee699aaa53be6545e4aced058fee99bf))
+
 ## [1.0.8](https://github.com/hoonoh/ts-pg-model/compare/v1.0.7...v1.0.8) (2023-07-07)
 
 
