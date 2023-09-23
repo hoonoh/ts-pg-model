@@ -1,5 +1,12 @@
 # ts-pg-model changelog
 
+## [1.0.10](https://github.com/hoonoh/ts-pg-model/compare/v1.0.9...v1.0.10) (2023-09-23)
+
+
+### Bug Fixes
+
+* **deps:** update dependency ts-morph to v20 ([#169](https://github.com/hoonoh/ts-pg-model/issues/169)) ([8b02de3](https://github.com/hoonoh/ts-pg-model/commit/8b02de3a49408878f3e4804836daac96e716531a))
+
 ## [1.0.9](https://github.com/hoonoh/ts-pg-model/compare/v1.0.8...v1.0.9) (2023-07-28)
 
 
