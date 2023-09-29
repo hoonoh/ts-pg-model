@@ -1,5 +1,12 @@
 # ts-pg-model changelog
 
+## [1.0.11](https://github.com/hoonoh/ts-pg-model/compare/v1.0.10...v1.0.11) (2023-09-29)
+
+
+### Bug Fixes
+
+* **deps:** update dependency slonik to v37 ([#172](https://github.com/hoonoh/ts-pg-model/issues/172)) ([db47c11](https://github.com/hoonoh/ts-pg-model/commit/db47c11beae9f2755c76ec795fbaa514710dec43))
+
 ## [1.0.10](https://github.com/hoonoh/ts-pg-model/compare/v1.0.9...v1.0.10) (2023-09-23)
 
 
