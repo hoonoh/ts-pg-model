@@ -1,5 +1,12 @@
 # ts-pg-model changelog
 
+## [1.0.13](https://github.com/hoonoh/ts-pg-model/compare/v1.0.12...v1.0.13) (2023-10-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency zod to v3.22.3 [security] ([#174](https://github.com/hoonoh/ts-pg-model/issues/174)) ([87c9c30](https://github.com/hoonoh/ts-pg-model/commit/87c9c302525e140c0f97ee4c41cbfee2496344dc))
+
 ## [1.0.12](https://github.com/hoonoh/ts-pg-model/compare/v1.0.11...v1.0.12) (2023-09-29)
 
 
