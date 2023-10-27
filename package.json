@@ -68,7 +68,7 @@
     "@semantic-release/release-notes-generator": "12.0.0",
     "@types/lodash-es": "4.17.10",
     "@types/mock-fs": "4.13.3",
-    "@types/node": "18.18.7",
+    "@types/node": "20.8.9",
     "@types/sinon": "10.0.20",
     "@typescript-eslint/eslint-plugin": "6.9.0",
     "@typescript-eslint/parser": "6.9.0",
