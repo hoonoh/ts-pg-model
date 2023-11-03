@@ -52,7 +52,7 @@
     "lodash-es": "4.17.21",
     "meow": "12.1.1",
     "ora": "7.0.1",
-    "read-pkg-up": "10.1.0",
+    "read-pkg-up": "11.0.0",
     "slonik": "37.2.0",
     "strip-json-comments": "5.0.1",
     "ts-morph": "20.0.0",
