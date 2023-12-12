@@ -308,7 +308,7 @@ export const validateUserConfig = async ({
       schemas: changeCaseMap[conventions?.schemas || 'camelCase'],
       columns: changeCaseMap[conventions?.columns || 'keep'],
       types: changeCaseMap[conventions?.types || 'camelCase'],
-      paths: changeCaseMap[conventions?.paths || 'paramCase'],
+      paths: changeCaseMap[conventions?.paths || 'kebabCase'],
     },
     schemas: Object.keys(renderTargets),
     renderTargets,

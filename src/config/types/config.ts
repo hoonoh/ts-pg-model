@@ -3,13 +3,13 @@ import {
   capitalCase,
   constantCase,
   dotCase,
-  headerCase,
+  kebabCase,
   noCase,
-  paramCase,
   pascalCase,
   pathCase,
   sentenceCase,
   snakeCase,
+  trainCase,
 } from 'change-case';
 import { DeepRequired } from 'ts-essentials';
 import z from 'zod';
@@ -31,27 +31,27 @@ export type ChangeCase =
   | 'capitalCase'
   | 'constantCase'
   | 'dotCase'
-  | 'headerCase'
+  | 'kebabCase'
   | 'noCase'
-  | 'paramCase'
   | 'pascalCase'
   | 'pathCase'
   | 'sentenceCase'
   | 'snakeCase'
+  | 'trainCase'
   | 'keep';
 
 export const changeCaseMap: Record<ChangeCase, (input: string) => string> = {
-  camelCase: camelCase,
-  capitalCase: capitalCase,
-  constantCase: constantCase,
-  dotCase: dotCase,
-  headerCase: headerCase,
-  noCase: noCase,
-  paramCase: paramCase,
-  pascalCase: pascalCase,
-  pathCase: pathCase,
-  sentenceCase: sentenceCase,
-  snakeCase: snakeCase,
+  camelCase,
+  capitalCase,
+  constantCase,
+  dotCase,
+  kebabCase,
+  noCase,
+  pascalCase,
+  pathCase,
+  sentenceCase,
+  snakeCase,
+  trainCase,
   keep: (input: string) => input,
 } as const;
 
