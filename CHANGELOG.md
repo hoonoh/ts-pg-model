@@ -1,5 +1,12 @@
 # ts-pg-model changelog
 
+## [1.0.16](https://github.com/hoonoh/ts-pg-model/compare/v1.0.15...v1.0.16) (2023-12-12)
+
+
+### Bug Fixes
+
+* **deps:** update dependency change-case to v5 ([#176](https://github.com/hoonoh/ts-pg-model/issues/176)) ([63a3bcb](https://github.com/hoonoh/ts-pg-model/commit/63a3bcbf8f47c3cd74ba2bbbb64effb15ce4ed43))
+
 ## [1.0.15](https://github.com/hoonoh/ts-pg-model/compare/v1.0.14...v1.0.15) (2023-12-12)
 
 
