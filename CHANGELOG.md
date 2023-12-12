@@ -1,5 +1,17 @@
 # ts-pg-model changelog
 
+# [2.0.0](https://github.com/hoonoh/ts-pg-model/compare/v1.0.16...v2.0.0) (2023-12-12)
+
+
+### Bug Fixes
+
+* major release bump ([#200](https://github.com/hoonoh/ts-pg-model/issues/200)) ([b66d53a](https://github.com/hoonoh/ts-pg-model/commit/b66d53a8c6ca5e82f509f643f8bda3d0d59c2b9c))
+
+
+### BREAKING CHANGES
+
+* configuration changed due to change-case v5
+
 ## [1.0.16](https://github.com/hoonoh/ts-pg-model/compare/v1.0.15...v1.0.16) (2023-12-12)
 
 
