@@ -56,13 +56,13 @@ export type ChangeCase =
   | 'capitalCase'
   | 'constantCase'
   | 'dotCase'
-  | 'headerCase'
+  | 'kebabCase'
   | 'noCase'
-  | 'paramCase'
   | 'pascalCase'
   | 'pathCase'
   | 'sentenceCase'
   | 'snakeCase'
+  | 'trainCase'
   | 'keep';
 
 const config: UserConfig = {
@@ -70,7 +70,7 @@ const config: UserConfig = {
     schemas: 'camelCase',
     columns: 'keep',
     types: 'camelCase',
-    paths: 'paramCase',
+    paths: 'kebabCase',
   },
 };
 ```
@@ -95,7 +95,7 @@ Enum type code conventions are applied to Enum member names. Defaults to `camelC
 
 #### Paths and filename conventions
 
-Generated file paths and filename conventions. Defaults to `paramCase`.
+Generated file paths and filename conventions. Defaults to `kebabCase`.
 
 ### Selecting targets
 

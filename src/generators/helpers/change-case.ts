@@ -3,13 +3,13 @@ import {
   capitalCase,
   constantCase,
   dotCase,
-  headerCase,
+  kebabCase,
   noCase,
-  paramCase,
   pascalCase,
   pathCase,
   sentenceCase,
   snakeCase,
+  trainCase,
 } from 'change-case';
 
 import { ChangeCase } from '../../config/types/config.js';
@@ -29,14 +29,11 @@ export const changeCase = (input: string, caseType?: ChangeCase) => {
     case 'dotCase':
       rtn = dotCase(input);
       break;
-    case 'headerCase':
-      rtn = headerCase(input);
+    case 'kebabCase':
+      rtn = kebabCase(input);
       break;
     case 'noCase':
       rtn = noCase(input);
-      break;
-    case 'paramCase':
-      rtn = paramCase(input);
       break;
     case 'pascalCase':
       rtn = pascalCase(input);
@@ -49,6 +46,9 @@ export const changeCase = (input: string, caseType?: ChangeCase) => {
       break;
     case 'snakeCase':
       rtn = snakeCase(input);
+      break;
+    case 'trainCase':
+      rtn = trainCase(input);
       break;
     default:
       break;

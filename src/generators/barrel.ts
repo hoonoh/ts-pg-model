@@ -1,4 +1,4 @@
-import { paramCase, pascalCase } from 'change-case';
+import { kebabCase, pascalCase } from 'change-case';
 import { lstatSync } from 'fs';
 import { readdir } from 'fs/promises';
 import { resolve } from 'path';
@@ -25,7 +25,7 @@ export const generateBarrel: FileGenerator = async (config: Config) => {
 
       await Promise.all(
         files.map(async filename => {
-          const filenameNormalize = paramCase(filename.split('.').shift() || '');
+          const filenameNormalize = kebabCase(filename.split('.').shift() || '');
           if (
             // enum type file
             filenameNormalize === 'enum-types' &&
