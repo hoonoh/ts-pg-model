@@ -1763,9 +1763,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@semantic-release/github@npm:9.2.5":
-  version: 9.2.5
-  resolution: "@semantic-release/github@npm:9.2.5"
+"@semantic-release/github@npm:9.2.6":
+  version: 9.2.6
+  resolution: "@semantic-release/github@npm:9.2.6"
   dependencies:
     "@octokit/core": "npm:^5.0.0"
     "@octokit/plugin-paginate-rest": "npm:^9.0.0"
@@ -1781,11 +1781,11 @@ __metadata:
     issue-parser: "npm:^6.0.0"
     lodash-es: "npm:^4.17.21"
     mime: "npm:^4.0.0"
-    p-filter: "npm:^3.0.0"
+    p-filter: "npm:^4.0.0"
     url-join: "npm:^5.0.0"
   peerDependencies:
     semantic-release: ">=20.1.0"
-  checksum: b6f136afff3ad62837ab2ed235e98594d1c770a028e1432ad31e8e2d1d88873029cc82372f8d6d101de8808dd01d9e5c681f2bd703908bd7702d469b05043413
+  checksum: 1fd4777d70139c4bf05b59c8585f42df0900f1d257ca532992b317e3876df0855443b65edd9eb8cb9f08affad8a08503c7e616a712507b8310ec5c6aa47c23f7
   languageName: node
   linkType: hard
 
@@ -9333,6 +9333,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"p-filter@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "p-filter@npm:4.0.0"
+  dependencies:
+    p-map: "npm:^7.0.0"
+  checksum: d581cb434a7bc24c13719a22ed5e2b30112ece62cdcaba7cf2d5504885777ca04b9ebce0a8312006b2eb4e7ceb65dcb5c7be533d4ed7a213d7178679fcfa9e9d
+  languageName: node
+  linkType: hard
+
 "p-finally@npm:^1.0.0":
   version: 1.0.0
   resolution: "p-finally@npm:1.0.0"
@@ -9448,6 +9457,13 @@ __metadata:
   version: 6.0.0
   resolution: "p-map@npm:6.0.0"
   checksum: 3fcfccf464d0f4a9a8c8a2d48f3f0933bdbdb0628158c1fb3c240dc0bbf20c0cf8115dea57300aa82baefff7b9bd1b9daf13a11a6578f15a629fc5bda78d780d
+  languageName: node
+  linkType: hard
+
+"p-map@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "p-map@npm:7.0.0"
+  checksum: 1f3c546142bdcc711b94176f122be94d4f0ecf00dfd413cf0fc64b61d4f19cd6c5cd036d0bc5e021c022dfffbc3d8caa8c424fb29e823959bd2bced5cc0aa2b3
   languageName: node
   linkType: hard
 
@@ -11954,7 +11970,7 @@ __metadata:
     "@semantic-release/changelog": "npm:6.0.3"
     "@semantic-release/commit-analyzer": "npm:11.1.0"
     "@semantic-release/git": "npm:10.0.1"
-    "@semantic-release/github": "npm:9.2.5"
+    "@semantic-release/github": "npm:9.2.6"
     "@semantic-release/release-notes-generator": "npm:12.1.0"
     "@types/lodash-es": "npm:4.17.12"
     "@types/mock-fs": "npm:4.13.4"
