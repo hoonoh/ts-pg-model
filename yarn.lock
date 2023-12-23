@@ -8012,7 +8012,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"meow@npm:12.1.1, meow@npm:^12.0.1":
+"meow@npm:13.0.0":
+  version: 13.0.0
+  resolution: "meow@npm:13.0.0"
+  checksum: fab0f91578154c048e792a81704f3f28099ffff900f364df8a85f6e770a57e1c124859a25e186186e149dad30692c7893af0dfd71517bea343bfe5d749b1fa04
+  languageName: node
+  linkType: hard
+
+"meow@npm:^12.0.1":
   version: 12.1.1
   resolution: "meow@npm:12.1.1"
   checksum: a125ca99a32e2306e2f4cbe651a0d27f6eb67918d43a075f6e80b35e9bf372ebf0fc3a9fbc201cbbc9516444b6265fb3c9f80c5b7ebd32f548aa93eb7c28e088
@@ -11995,7 +12002,7 @@ __metadata:
     eslint-plugin-unused-imports: "npm:3.0.0"
     lerna: "npm:8.0.1"
     lodash-es: "npm:4.17.21"
-    meow: "npm:12.1.1"
+    meow: "npm:13.0.0"
     mock-fs: "npm:5.2.0"
     mockdate: "npm:3.0.5"
     node-pg-migrate: "npm:6.2.2"
