@@ -1,5 +1,12 @@
 # ts-pg-model changelog
 
+## [2.0.1](https://github.com/hoonoh/ts-pg-model/compare/v2.0.0...v2.0.1) (2023-12-23)
+
+
+### Bug Fixes
+
+* **deps:** update dependency meow to v13 ([#204](https://github.com/hoonoh/ts-pg-model/issues/204)) ([6bfe4bd](https://github.com/hoonoh/ts-pg-model/commit/6bfe4bd93cb608588b5c95d5461cf29d93171385))
+
 # [2.0.0](https://github.com/hoonoh/ts-pg-model/compare/v1.0.16...v2.0.0) (2023-12-12)
 
 
