@@ -1,5 +1,12 @@
 # ts-pg-model changelog
 
+## [2.0.2](https://github.com/hoonoh/ts-pg-model/compare/v2.0.1...v2.0.2) (2023-12-29)
+
+
+### Bug Fixes
+
+* **deps:** update dependency ora to v8 ([#206](https://github.com/hoonoh/ts-pg-model/issues/206)) ([66f8fe9](https://github.com/hoonoh/ts-pg-model/commit/66f8fe9b1109c156087bc722f739a182f6d0bc1c))
+
 ## [2.0.1](https://github.com/hoonoh/ts-pg-model/compare/v2.0.0...v2.0.1) (2023-12-23)
 
 
