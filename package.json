@@ -51,7 +51,7 @@
     "esbuild": "0.19.10",
     "lodash-es": "4.17.21",
     "meow": "13.0.0",
-    "ora": "7.0.1",
+    "ora": "8.0.1",
     "read-pkg-up": "11.0.0",
     "slonik": "37.2.0",
     "strip-json-comments": "5.0.1",
