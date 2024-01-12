@@ -87,7 +87,7 @@
     "mock-fs": "5.2.0",
     "mockdate": "3.0.5",
     "node-pg-migrate": "6.2.2",
-    "prettier": "3.2.0",
+    "prettier": "3.2.1",
     "semantic-release": "22.0.12",
     "sinon": "17.0.1",
     "ts-essentials": "9.4.1",
