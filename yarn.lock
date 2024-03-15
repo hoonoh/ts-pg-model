@@ -1980,15 +1980,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ts-morph/common@npm:~0.22.0":
-  version: 0.22.0
-  resolution: "@ts-morph/common@npm:0.22.0"
+"@ts-morph/common@npm:~0.23.0":
+  version: 0.23.0
+  resolution: "@ts-morph/common@npm:0.23.0"
   dependencies:
     fast-glob: "npm:^3.3.2"
     minimatch: "npm:^9.0.3"
     mkdirp: "npm:^3.0.1"
     path-browserify: "npm:^1.0.1"
-  checksum: 10c0/1f1ff7fee54414e09803b1ba559ff51881b821c19bc97cb19d06fc46c58957dea4a58e6a83e9f2e30e08c8179d6d142e45be329d9242f410323795b5c1e04806
+  checksum: 10c0/80d8f230618b022537846b515cb928c636004f216821bec7fea289fd37533b4eaa783d276cc5838b4b6be867fec60fdee5795baac3ed98f1ab7cdd6b35a85179
   languageName: node
   linkType: hard
 
@@ -3536,10 +3536,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"code-block-writer@npm:^12.0.0":
-  version: 12.0.0
-  resolution: "code-block-writer@npm:12.0.0"
-  checksum: 10c0/ced73cdc466bff968bba9e8e32340d88420d25a229b9269f7425a10a7c2c9a12ca702dcb601b2462b96472d354f021cf66e552179fcbe30c8f7ecd0173c5fa07
+"code-block-writer@npm:^13.0.1":
+  version: 13.0.1
+  resolution: "code-block-writer@npm:13.0.1"
+  checksum: 10c0/1ca0329032228aab4a8094148bc2b50fd8ff07a0e3f78c11986398951fc51c6bad24bc7236437e639ac95d4c3bb489c2f3c629dc5f21c22a3bca0daa41d64187
   languageName: node
   linkType: hard
 
@@ -11773,13 +11773,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-morph@npm:21.0.1":
-  version: 21.0.1
-  resolution: "ts-morph@npm:21.0.1"
+"ts-morph@npm:22.0.0":
+  version: 22.0.0
+  resolution: "ts-morph@npm:22.0.0"
   dependencies:
-    "@ts-morph/common": "npm:~0.22.0"
-    code-block-writer: "npm:^12.0.0"
-  checksum: 10c0/ed1d4ccdeba2300cfa236f2aaf64bb462aa386141e659a08d8a2eb96d3b4b274abc9d97b8dd06a0c13af79187b197f38f6a8baca709f99d11094a82c8abccf27
+    "@ts-morph/common": "npm:~0.23.0"
+    code-block-writer: "npm:^13.0.1"
+  checksum: 10c0/0275606effaa24f6d8ad3ee9df3bb37c0330be002682f9e9157462b38b949e00fb81e0df20f571e08a0bd06107922eb35022bad5e2fb48ca89fda4299140b5de
   languageName: node
   linkType: hard
 
@@ -11867,7 +11867,7 @@ __metadata:
     slonik: "npm:37.3.1"
     strip-json-comments: "npm:5.0.1"
     ts-essentials: "npm:9.4.1"
-    ts-morph: "npm:21.0.1"
+    ts-morph: "npm:22.0.0"
     ts-node: "npm:10.9.2"
     typescript: "npm:5.4.2"
     zod: "npm:3.22.4"
