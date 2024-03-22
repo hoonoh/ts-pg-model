@@ -11166,9 +11166,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"slonik@npm:37.3.1":
-  version: 37.3.1
-  resolution: "slonik@npm:37.3.1"
+"slonik@npm:37.4.0":
+  version: 37.4.0
+  resolution: "slonik@npm:37.4.0"
   dependencies:
     "@types/pg": "npm:^8.10.7"
     es6-error: "npm:^4.1.1"
@@ -11185,7 +11185,7 @@ __metadata:
     serialize-error: "npm:^8.0.0"
   peerDependencies:
     zod: ^3
-  checksum: 10c0/1449c70f5134b385b020f8af58c0cf1b1e37aff52fbf4cb609e2061e2c87834398c61d382b40d328a092d8f90bf8fc1d3728d7578a9b3eaadf45f42919495497
+  checksum: 10c0/d84f87038565ee3b885b5279d83bd1a23b5a91ed9548d5763e8219dde9040652d88eb64f142c521bbb167d52ecf80aa871e33502e4ffd55aed4b2ed4658bf759
   languageName: node
   linkType: hard
 
@@ -12039,7 +12039,7 @@ __metadata:
     read-pkg-up: "npm:11.0.0"
     semantic-release: "npm:23.0.5"
     sinon: "npm:17.0.1"
-    slonik: "npm:37.3.1"
+    slonik: "npm:37.4.0"
     strip-json-comments: "npm:5.0.1"
     ts-essentials: "npm:9.4.1"
     ts-morph: "npm:22.0.0"
