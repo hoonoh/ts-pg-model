@@ -88,7 +88,7 @@
     "mockdate": "3.0.5",
     "node-pg-migrate": "7.3.2",
     "prettier": "3.2.5",
-    "semantic-release": "23.0.8",
+    "semantic-release": "23.1.0",
     "sinon": "17.0.2",
     "ts-essentials": "10.0.0",
     "ts-node": "10.9.2",
