@@ -89,7 +89,7 @@
     "node-pg-migrate": "7.3.2",
     "prettier": "3.2.5",
     "semantic-release": "23.1.1",
-    "sinon": "17.0.2",
+    "sinon": "18.0.0",
     "ts-essentials": "10.0.0",
     "ts-node": "10.9.2",
     "typescript": "5.4.5"
