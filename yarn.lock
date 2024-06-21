@@ -8589,9 +8589,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-pg-migrate@npm:7.5.0":
-  version: 7.5.0
-  resolution: "node-pg-migrate@npm:7.5.0"
+"node-pg-migrate@npm:7.5.1":
+  version: 7.5.1
+  resolution: "node-pg-migrate@npm:7.5.1"
   dependencies:
     yargs: "npm:~17.7.0"
   peerDependencies:
@@ -8604,7 +8604,7 @@ __metadata:
     node-pg-migrate: bin/node-pg-migrate.js
     node-pg-migrate-cjs: bin/node-pg-migrate.js
     node-pg-migrate-esm: bin/node-pg-migrate.mjs
-  checksum: 10c0/98c546bac07bbc1b6f8327f90ce5200fb827f1cfca37ee4e89b5d44beae013a39311b415586d60907c632d1da5b1d2062f9a7c618840a5150b2b1c2e2a5e91a1
+  checksum: 10c0/b4ca96389d22e2e07fc00e550236b3cea644537d2a03875aec1e5bdacc6a01f2418eb992184c90071acb4878d7982a628f7e0293a210f9f307161d1eebafef6d
   languageName: node
   linkType: hard
 
@@ -11996,7 +11996,7 @@ __metadata:
     meow: "npm:13.2.0"
     mock-fs: "npm:5.2.0"
     mockdate: "npm:3.0.5"
-    node-pg-migrate: "npm:7.5.0"
+    node-pg-migrate: "npm:7.5.1"
     ora: "npm:8.0.1"
     prettier: "npm:3.3.2"
     read-pkg-up: "npm:11.0.0"
