@@ -64,7 +64,7 @@
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/commit-analyzer": "13.0.0",
     "@semantic-release/git": "10.0.1",
-    "@semantic-release/github": "10.1.4",
+    "@semantic-release/github": "10.1.6",
     "@semantic-release/release-notes-generator": "14.0.1",
     "@types/lodash-es": "4.17.12",
     "@types/mock-fs": "4.13.4",
@@ -90,7 +90,7 @@
     "prettier": "3.3.3",
     "semantic-release": "24.0.0",
     "sinon": "18.0.0",
-    "ts-essentials": "10.0.1",
+    "ts-essentials": "10.0.2",
     "ts-node": "10.9.2",
     "typescript": "5.5.4"
   }
