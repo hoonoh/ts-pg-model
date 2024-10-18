@@ -16,7 +16,7 @@
   "author": {
     "name": "hoonoh"
   },
-  "packageManager": "yarn@4.5.0",
+  "packageManager": "yarn@4.5.1",
   "type": "module",
   "exports": "./dist/index.js",
   "engines": {
