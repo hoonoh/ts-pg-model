@@ -55,7 +55,7 @@
     "read-pkg-up": "11.0.0",
     "slonik": "37.6.0",
     "strip-json-comments": "5.0.1",
-    "ts-morph": "24.0.0",
+    "ts-morph": "25.0.0",
     "zod": "3.24.1"
   },
   "devDependencies": {
