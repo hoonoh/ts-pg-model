@@ -5,7 +5,7 @@ import { lstat, readdir, stat } from 'fs/promises';
 import { clone } from 'lodash-es';
 import { resolve } from 'path';
 import { cwd } from 'process';
-import { readPackageUp } from 'read-pkg-up';
+import { readPackageUp } from 'read-package-up';
 import { ConnectionError, createPool, DatabasePool } from 'slonik';
 import stripJsonComments from 'strip-json-comments';
 
