@@ -59,7 +59,7 @@ test.serial(titleHelper.should('generate single schema setup & remove unused fil
     }),
   });
 
-  const pool = mockPool(
+  const pool = await mockPool(
     [
       {
         sql: tableAndColumnsQuery.sql,

@@ -61,7 +61,7 @@ test.serial(titleHelper.should('generate enum files as expected'), async t => {
 
   MockFs.mockDirectory(generateRoot);
 
-  const pool = mockPool(
+  const pool = await mockPool(
     [
       {
         sql: enumTypesBareQuery.sql,

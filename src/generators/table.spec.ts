@@ -168,7 +168,7 @@ test(titleHelper.should('render tables'), async t => {
 
   const tableAndColumns = [...tableAndColumnsFooBar, ...tableAndColumnsBar];
 
-  const pool = mockPool(
+  const pool = await mockPool(
     [
       {
         sql: enumTypesBareQuery.sql,
@@ -282,7 +282,7 @@ test.serial(titleHelper.should('ignore composite columns'), async t => {
     }),
   });
 
-  const pool = mockPool(
+  const pool = await mockPool(
     [
       {
         sql: compositeTypesBareQuery.sql,
