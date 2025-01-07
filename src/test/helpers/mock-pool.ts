@@ -1,7 +1,16 @@
-import { createMockPool, createMockQueryResult, QueryResult, QueryResultRow } from 'slonik';
+import {
+  createDriverFactory,
+  DriverQueryResult,
+  DriverStream,
+  DriverStreamResult,
+} from '@slonik/driver';
+import EventEmitter from 'events';
+import { createPool, Field, QueryResultRow } from 'slonik';
+import { ConnectionPoolClient } from 'slonik/dist/factories/createConnectionPool.js';
 
 import { searchPathQuery, tableAndColumnsQuery } from '../../config/querries.js';
 import { Table, TableAndColumn } from '../../config/types/config.js';
+import { connectionURI } from '../constants.js';
 
 const defaultTableAndColumns: TableAndColumn[] = [
   {
@@ -38,6 +47,21 @@ export const defaultMockPool = {
   }, [] as Table[]),
 };
 
+// https://github.com/gajus/slonik/blob/b9efe3b04f38911db3736b89cdc50aee04ada11a/src/factories/createMockQueryResult.ts
+export const createMockQueryResult = (rows: QueryResultRow[]): DriverQueryResult => {
+  let fields: Field[] = [];
+  if (rows.length > 0) {
+    fields = Object.keys(rows[0]).map(it => ({ dataTypeId: 0, name: it }));
+  }
+
+  return {
+    command: 'SELECT',
+    fields,
+    rowCount: rows.length,
+    rows,
+  } satisfies DriverQueryResult;
+};
+
 type Override = {
   sql: string;
   rows: QueryResultRow[];
@@ -45,41 +69,74 @@ type Override = {
 
 /**
  * by default mocks schemas `foo` & `bar` & tables `foo.bar` & `bar.baz`
+ * ref: https://github.com/gajus/slonik/blob/e93befde71eb5acca6e773f7a5b7ea7e459b8b5d/packages/slonik/src/helpers.test/createPoolWithSpy.ts#L7
  */
 export const mockPool = (
   overrides?: Override[],
   tableAndColumns: TableAndColumn[] = defaultTableAndColumns,
-) =>
-  createMockPool({
-    query: async (sql /*, values*/) => {
-      // trim line whitespaces
-      const normalize = (query: string) =>
-        query
-          .split('\n')
-          .map(line => line.trim())
-          .join('\n')
-          .trim();
+) => {
+  let connection: ConnectionPoolClient;
 
-      let overriden: QueryResult<QueryResultRow> | undefined;
-      if (overrides) {
-        overrides.forEach(({ sql: sqlOverride, rows }) => {
-          if (normalize(sql) === normalize(sqlOverride)) {
-            overriden = createMockQueryResult(rows);
-          }
-        });
-      }
-      if (overriden) return overriden;
+  return createPool(connectionURI, {
+    driverFactory: async (...args) => {
+      const factory = createDriverFactory(async ({}) => {
+        return {
+          createPoolClient: async ({}) => {
+            return {
+              // connect, end & stream methods are dummies
+              connect: async () => {},
+              end: async () => {},
+              stream: () => ({}) as DriverStream<DriverStreamResult>,
+              query: async sql => {
+                const normalize = (q: string) =>
+                  q
+                    .split('\n')
+                    .map(line => line.trim())
+                    .join('\n')
+                    .trim();
 
-      if (normalize(sql) === normalize(searchPathQuery.sql)) {
-        const searchPaths = tableAndColumns.reduce((acc, cur) => {
-          if (!acc.includes(cur.schema)) acc.push(cur.schema);
-          return acc;
-        }, [] as string[]);
-        return createMockQueryResult([{ search_path: searchPaths.join(',') }]);
-      }
-      if (normalize(sql) === normalize(tableAndColumnsQuery.sql)) {
-        return createMockQueryResult(tableAndColumns);
-      }
-      return createMockQueryResult([]);
+                let overriden: DriverQueryResult | undefined;
+                if (overrides) {
+                  overrides.forEach(({ sql: sqlOverride, rows }) => {
+                    if (normalize(sql) === normalize(sqlOverride)) {
+                      overriden = createMockQueryResult(rows);
+                    }
+                  });
+                }
+                if (overriden) return overriden;
+
+                if (normalize(sql) === normalize(searchPathQuery.sql)) {
+                  const searchPaths = tableAndColumns.reduce((acc, cur) => {
+                    if (!acc.includes(cur.schema)) acc.push(cur.schema);
+                    return acc;
+                  }, [] as string[]);
+                  return createMockQueryResult([{ search_path: searchPaths.join(',') }]);
+                }
+                if (normalize(sql) === normalize(tableAndColumnsQuery.sql)) {
+                  return createMockQueryResult(tableAndColumns);
+                }
+                return createMockQueryResult([]);
+              },
+            };
+          },
+        };
+      });
+      const driver = await factory(...args);
+
+      return {
+        createClient: async () => {
+          if (connection) return connection;
+
+          connection = await driver.createClient().then(nextConnection => {
+            return {
+              ...nextConnection,
+              events: new EventEmitter(),
+            };
+          });
+
+          return connection;
+        },
+      };
     },
   });
+};

@@ -17,7 +17,7 @@
   "editor.formatOnType": true,
   "editor.formatOnSaveMode": "file",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   "eslint.run": "onType",
   "eslint.options": { "ignorePath": ".eslintignore" },

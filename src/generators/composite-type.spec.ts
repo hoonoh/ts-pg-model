@@ -80,7 +80,7 @@ test.serial(titleHelper.should('generate composite types'), async t => {
     }),
   });
 
-  const pool = mockPool(
+  const pool = await mockPool(
     [
       {
         sql: enumTypesBareQuery.sql,

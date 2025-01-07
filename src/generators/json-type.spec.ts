@@ -102,7 +102,7 @@ test.serial(titleHelper.should('parse named exports'), async t => {
     }),
   });
 
-  const pool = mockPool(
+  const pool = await mockPool(
     [
       {
         sql: tableAndColumnsQuery.sql,
