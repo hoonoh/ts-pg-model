@@ -29,7 +29,7 @@ const addTmpPath = async () => {
 test.serial.after(async () => {
   try {
     await rmdir(tmpRoot, { recursive: true });
-  } catch (error) {
+  } catch {
     //
   }
 });

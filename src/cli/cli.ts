@@ -32,12 +32,12 @@ const cli = {
     try {
       if (configTranspilePath) await rm(configTranspilePath);
       /* c8 ignore start */
-    } catch (error) {
+    } catch {
       spinner?.warn(`failed to delete temp file ${configTranspilePath}`);
     }
     try {
       await rm(cli.tmpRoot, { recursive: true });
-    } catch (error) {
+    } catch {
       //
     }
     if (!skipProcessExit) process.exit(code || 0);
@@ -63,7 +63,7 @@ const cli = {
 
     try {
       await stat(configPath);
-    } catch (error) {
+    } catch {
       /* c8 ignore next */
       spinner?.fail(`invalid config file path ${configPath}`);
       return cli.exit({ code: 1, skipProcessExit });

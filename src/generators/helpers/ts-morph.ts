@@ -26,7 +26,7 @@ export class TsMorphHelper {
 
     try {
       this.prevSource = readFileSync(sourcePath, { encoding: 'utf-8' });
-    } catch (error) {
+    } catch {
       //
     }
 
