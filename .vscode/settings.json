@@ -20,7 +20,6 @@
     "source.fixAll.eslint": "explicit"
   },
   "eslint.run": "onType",
-  "eslint.options": { "ignorePath": ".eslintignore" },
 
   // search exclude
   "search.exclude": {

@@ -43,7 +43,7 @@ const defaultConfig: Pick<Config, 'output' | 'tsConfig'> = {
           JSON.parse(
             stripJsonComments(readFileSync(resolve(cwd(), 'tsconfig.json'), { encoding: 'utf-8' })),
           )?.compilerOptions?.sourceRoot || 'src';
-      } catch (error) {
+      } catch {
         sourceRoot = 'src';
       }
       return resolve(cwd(), sourceRoot, 'generated');
@@ -73,7 +73,7 @@ export const validateUserConfig = async ({
     if (dotEnvPath) {
       try {
         await stat(dotEnvPath);
-      } catch (error) {
+      } catch {
         throw new Error(`dotEnvPath ${dotEnvPath} file path not found`);
       }
     }
@@ -94,7 +94,7 @@ export const validateUserConfig = async ({
   tsConfig = tsConfig ? resolve(cwd(), tsConfig) : defaultConfig.tsConfig;
   try {
     await stat(tsConfig);
-  } catch (error) {
+  } catch {
     throw new Error(`tsConfig path "${tsConfig}" is invalid`);
   }
 
@@ -279,7 +279,7 @@ export const validateUserConfig = async ({
       try {
         // skip if stat fails (noexist)
         await stat(root);
-      } catch (error) {
+      } catch {
         return;
       }
       await Promise.all(

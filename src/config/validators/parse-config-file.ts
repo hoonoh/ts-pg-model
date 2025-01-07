@@ -14,7 +14,6 @@ export const parseConfigFile = (sourceFilePath: string) => {
   const defaultExportSymbol = sourceFile.getDefaultExportSymbol();
   const namedExport = sourceFile.getExportedDeclarations().get('userConfig')?.pop();
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
   const parseUserConfig = (userConfig?: Symbol) => {
     const jsonTypeMapName = userConfig
       ?.getDeclarations()[0]
