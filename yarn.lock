@@ -2190,84 +2190,84 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@slonik/driver@npm:^47.3.0":
-  version: 47.3.0
-  resolution: "@slonik/driver@npm:47.3.0"
+"@slonik/driver@npm:^47.3.2":
+  version: 47.3.2
+  resolution: "@slonik/driver@npm:47.3.2"
   dependencies:
-    "@slonik/types": "npm:^47.3.0"
-    "@slonik/utilities": "npm:^47.3.0"
+    "@slonik/types": "npm:^47.3.2"
+    "@slonik/utilities": "npm:^47.3.2"
     roarr: "npm:^7.21.1"
     serialize-error: "npm:^8.0.0"
     strict-event-emitter-types: "npm:^2.0.0"
   peerDependencies:
     zod: ^3
-  checksum: 10c0/f397770ccff270add56081ffece1fc7c78b458c43d09ddcd3862a11312709316a8e7c7d4ccbe43c2a47e9e25201821b14658fa930b356ed90d099dde2514714c
+  checksum: 10c0/d576ea11c3edbb52ea2b761b467c69e0f5d6877c34e079176c2355b0033356f1b90e099a026b106477b93d94e43cd53bba32b039b42f021fb54e99ab3c8d32cf
   languageName: node
   linkType: hard
 
-"@slonik/errors@npm:^47.3.0":
-  version: 47.3.0
-  resolution: "@slonik/errors@npm:47.3.0"
+"@slonik/errors@npm:^47.3.2":
+  version: 47.3.2
+  resolution: "@slonik/errors@npm:47.3.2"
   dependencies:
-    "@slonik/types": "npm:^47.3.0"
+    "@slonik/types": "npm:^47.3.2"
   peerDependencies:
     zod: ^3
-  checksum: 10c0/3875e664b98c5aae738c1bedfc5d803e3924a32ba92069161b993d8998805d1a4a0d8b3d2e5abf5dc10198e3636116c7b5210e61c5a43bcf6cfbfad8d5bb6701
+  checksum: 10c0/7a6c01332488a4e1c46d60ee0eeca9affa00d2c0e364d4f2f7688ff112cf552dd0ceca0983d1fca45d69c1a12951aaa949c5fabc5ba9e529cae906b116f482e1
   languageName: node
   linkType: hard
 
-"@slonik/pg-driver@npm:^47.3.0":
-  version: 47.3.0
-  resolution: "@slonik/pg-driver@npm:47.3.0"
+"@slonik/pg-driver@npm:^47.3.2":
+  version: 47.3.2
+  resolution: "@slonik/pg-driver@npm:47.3.2"
   dependencies:
-    "@slonik/driver": "npm:^47.3.0"
-    "@slonik/errors": "npm:^47.3.0"
-    "@slonik/sql-tag": "npm:^47.3.0"
-    "@slonik/types": "npm:^47.3.0"
-    "@slonik/utilities": "npm:^47.3.0"
+    "@slonik/driver": "npm:^47.3.2"
+    "@slonik/errors": "npm:^47.3.2"
+    "@slonik/sql-tag": "npm:^47.3.2"
+    "@slonik/types": "npm:^47.3.2"
+    "@slonik/utilities": "npm:^47.3.2"
     pg: "npm:^8.13.1"
     pg-query-stream: "npm:^4.9.6"
     pg-types: "npm:^4.0.2"
     postgres-array: "npm:^3.0.4"
   peerDependencies:
     zod: ^3
-  checksum: 10c0/0f2026ef7ff12a5b43dd60c72b0d662ce00fabae714af299c27a6f7e76cf76bdb0205bc82b130384fb1f2402d192bedc864c0a0536c996ab9ed742cabb598fac
+  checksum: 10c0/b1fcfb47500651c434aedccaa6aea0a7672fd295c79077cb50e175ec32151630095a9f33b50f1d2cae3c4e64fdcd737ce011a99dd5934d73c2b07e32323f7d40
   languageName: node
   linkType: hard
 
-"@slonik/sql-tag@npm:^47.3.0":
-  version: 47.3.0
-  resolution: "@slonik/sql-tag@npm:47.3.0"
+"@slonik/sql-tag@npm:^47.3.2":
+  version: 47.3.2
+  resolution: "@slonik/sql-tag@npm:47.3.2"
   dependencies:
-    "@slonik/errors": "npm:^47.3.0"
-    "@slonik/types": "npm:^47.3.0"
+    "@slonik/errors": "npm:^47.3.2"
+    "@slonik/types": "npm:^47.3.2"
     roarr: "npm:^7.21.1"
     safe-stable-stringify: "npm:^2.5.0"
     serialize-error: "npm:^8.0.0"
   peerDependencies:
     zod: ^3
-  checksum: 10c0/e126f9971f54fda1f01216308af090a0659f9ebfe2b1187969d63d4b869de61351d5b47dd5f1588e08fdf0b561dc0f3629c8a803e40ba32e1764a775886431e8
+  checksum: 10c0/1bdaea63586c71927b7ef24ac060bd1d2f5ef2892d6c16844121469a11ad5039546762a3defd1a0de21f7bbbda88d7ce79677f905cacf746b6176911f6f6edf2
   languageName: node
   linkType: hard
 
-"@slonik/types@npm:^47.3.0":
-  version: 47.3.0
-  resolution: "@slonik/types@npm:47.3.0"
+"@slonik/types@npm:^47.3.2":
+  version: 47.3.2
+  resolution: "@slonik/types@npm:47.3.2"
   peerDependencies:
     zod: ^3
-  checksum: 10c0/1461be3ee01680b5f56029256ceb9e6d216ebe4363e83ca1d392c106942caa9e082709eb53b9d446019ddb8c3e6d24d7cb3a5313191a766f678b63856c1c6087
+  checksum: 10c0/5e618507812d43904025d8ffd62462041011cba03110ef0ede9bd386b03f9df8c537b36f0a7c81fa678cf853d3ccd0a7f2f986404300104ce8326e932cec6636
   languageName: node
   linkType: hard
 
-"@slonik/utilities@npm:^47.3.0":
-  version: 47.3.0
-  resolution: "@slonik/utilities@npm:47.3.0"
+"@slonik/utilities@npm:^47.3.2":
+  version: 47.3.2
+  resolution: "@slonik/utilities@npm:47.3.2"
   dependencies:
-    "@slonik/errors": "npm:^47.3.0"
-    "@slonik/types": "npm:^47.3.0"
+    "@slonik/errors": "npm:^47.3.2"
+    "@slonik/types": "npm:^47.3.2"
   peerDependencies:
     zod: ^3
-  checksum: 10c0/b1c20e2df5db16fb94ea4c050b368467e127a27d6452a0b1f2525cb22c52f955d7a3df6374f549f0811b4b9057efc1ec90ba9fa0ce27e2f59793beb59e91ff22
+  checksum: 10c0/fdee0412bc84b1b6e12bb652e0cd0130fb2b78bcd917d8be3563c454a454a4a8d38e6ed4677e9ff1bba4b7588bceaadc9874ce963bbf8afc405f9f5d4725585e
   languageName: node
   linkType: hard
 
@@ -2424,12 +2424,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:22.15.18":
-  version: 22.15.18
-  resolution: "@types/node@npm:22.15.18"
+"@types/node@npm:22.15.21":
+  version: 22.15.21
+  resolution: "@types/node@npm:22.15.21"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10c0/e23178c568e2dc6b93b6aa3b8dfb45f9556e527918c947fe7406a4c92d2184c7396558912400c3b1b8d0fa952ec63819aca2b8e4d3545455fc6f1e9623e09ca6
+  checksum: 10c0/f092bbccda2131c2b2c8f720338080aa0ef1d928f5f1062c03954a4f7dafa7ee3ed29bc3e51bd4e2584473b3d943c637a2b39ad7174898970818270187cf10c1
   languageName: node
   linkType: hard
 
@@ -5246,9 +5246,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-import-resolver-typescript@npm:4.3.4":
-  version: 4.3.4
-  resolution: "eslint-import-resolver-typescript@npm:4.3.4"
+"eslint-import-resolver-typescript@npm:4.3.5":
+  version: 4.3.5
+  resolution: "eslint-import-resolver-typescript@npm:4.3.5"
   dependencies:
     debug: "npm:^4.4.0"
     get-tsconfig: "npm:^4.10.0"
@@ -5265,7 +5265,7 @@ __metadata:
       optional: true
     eslint-plugin-import-x:
       optional: true
-  checksum: 10c0/dba14e699855a7c32756e5c5258075e787a6e7938123ace553d69e8f84cefb4e6364fb1935d6d5500f96de82cee79662fee1e826fa45c0672a83841c27cf6abe
+  checksum: 10c0/cc8f6e858b45d3a261dce4fec250a82f07c7356784ac8234cda9706386408a96c767599f2d0b9b84492bc79bed0eb24f6f376825662b8c4c66397738b5acba67
   languageName: node
   linkType: hard
 
@@ -11853,16 +11853,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"slonik@npm:47.3.0":
-  version: 47.3.0
-  resolution: "slonik@npm:47.3.0"
+"slonik@npm:47.3.2":
+  version: 47.3.2
+  resolution: "slonik@npm:47.3.2"
   dependencies:
     "@opentelemetry/api": "npm:^1.9.0"
-    "@slonik/driver": "npm:^47.3.0"
-    "@slonik/errors": "npm:^47.3.0"
-    "@slonik/pg-driver": "npm:^47.3.0"
-    "@slonik/sql-tag": "npm:^47.3.0"
-    "@slonik/utilities": "npm:^47.3.0"
+    "@slonik/driver": "npm:^47.3.2"
+    "@slonik/errors": "npm:^47.3.2"
+    "@slonik/pg-driver": "npm:^47.3.2"
+    "@slonik/sql-tag": "npm:^47.3.2"
+    "@slonik/utilities": "npm:^47.3.2"
     get-stack-trace: "npm:^3.1.1"
     iso8601-duration: "npm:^1.3.0"
     p-limit: "npm:^6.2.0"
@@ -11872,7 +11872,7 @@ __metadata:
     strict-event-emitter-types: "npm:^2.0.0"
   peerDependencies:
     zod: ^3
-  checksum: 10c0/14773ec5f000a54e809d7f3dcafe20b562fa04972a4548c92e856b4c41ad499c3476585edabe31d34e82f3cf1d8173fef452d8e4231d791dd9c16ea0afc4727e
+  checksum: 10c0/8e1c673dfb3c678bfaf9b9fc81034a473e05f9a715efac633c04c8af80df90fa439be462b9d12026e9f1a41f7f2ed1b5926b6cb2474f11a30e00a832e8005067
   languageName: node
   linkType: hard
 
@@ -12767,7 +12767,7 @@ __metadata:
     "@semantic-release/release-notes-generator": "npm:14.0.3"
     "@types/lodash-es": "npm:4.17.12"
     "@types/mock-fs": "npm:4.13.4"
-    "@types/node": "npm:22.15.18"
+    "@types/node": "npm:22.15.21"
     "@types/sinon": "npm:17.0.4"
     "@typescript-eslint/eslint-plugin": "npm:8.32.1"
     "@typescript-eslint/parser": "npm:8.32.1"
@@ -12779,7 +12779,7 @@ __metadata:
     esbuild: "npm:0.25.4"
     eslint: "npm:9.27.0"
     eslint-config-prettier: "npm:10.1.5"
-    eslint-import-resolver-typescript: "npm:4.3.4"
+    eslint-import-resolver-typescript: "npm:4.3.5"
     eslint-plugin-import: "npm:2.31.0"
     eslint-plugin-prettier: "npm:5.4.0"
     eslint-plugin-simple-import-sort: "npm:12.1.1"
@@ -12795,13 +12795,13 @@ __metadata:
     read-package-up: "npm:11.0.0"
     semantic-release: "npm:24.2.4"
     sinon: "npm:20.0.0"
-    slonik: "npm:47.3.0"
+    slonik: "npm:47.3.2"
     strip-json-comments: "npm:5.0.2"
     ts-essentials: "npm:10.0.4"
     ts-morph: "npm:25.0.1"
     ts-node: "npm:10.9.2"
     typescript: "npm:5.8.3"
-    zod: "npm:3.24.4"
+    zod: "npm:3.25.23"
   bin:
     ts-pg-model: ./bin/cli.mjs
   languageName: unknown
@@ -13735,9 +13735,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:3.24.4":
-  version: 3.24.4
-  resolution: "zod@npm:3.24.4"
-  checksum: 10c0/ab3112f017562180a41a0f83d870b333677f7d6b77f106696c56894567051b91154714a088149d8387a4f50806a2520efcb666f108cd384a35c236a191186d91
+"zod@npm:3.25.23":
+  version: 3.25.23
+  resolution: "zod@npm:3.25.23"
+  checksum: 10c0/c0a9d1b215ead64fdd1f3be47bc7376be6016472ae5bd1ef56d0a579d544b785b5e266dbd30947172e5b92873b7a8bed123625eeb00aea4e5d7526d86a5a31f6
   languageName: node
   linkType: hard
