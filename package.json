@@ -85,7 +85,7 @@
     "lerna": "8.2.2",
     "mock-fs": "5.5.0",
     "mockdate": "3.0.5",
-    "node-pg-migrate": "7.9.1",
+    "node-pg-migrate": "8.0.3",
     "prettier": "3.5.3",
     "semantic-release": "24.2.5",
     "sinon": "21.0.0",
