@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
     "target": "ES5",
-    "module": "CommonJS",
+    "module": "nodenext",
     "lib": ["DOM", "ES5", "ESNext"],
     "sourceMap": true,
     "downlevelIteration": true,
     "strict": true,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "esModuleInterop": true,
     "sourceRoot": "src",
     "experimentalDecorators": true,
