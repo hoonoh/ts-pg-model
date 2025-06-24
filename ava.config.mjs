@@ -1,16 +1,16 @@
 import { resolve } from 'path';
 
 export default function factory({ projectDir }) {
+  process.env.TSIMP_DIAG = 'ignore';
   return {
     extensions: { ts: 'module' },
     nodeArguments: [
       //
-      '--loader=ts-node/esm',
-      '--experimental-specifier-resolution=node',
+      '--import=tsimp',
     ],
     files: ['src/**/*.spec.ts'],
     snapshotDir: resolve('./src/test/snapshots'),
-    require: ['ts-node/register/transpile-only', './src/test/init.ts'],
+    require: ['./src/test/init.ts'],
     timeout: '30s',
   };
 }

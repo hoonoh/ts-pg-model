@@ -12,3 +12,5 @@ generated
 node_modules
 yarn-error.log
 zz-test*.*
+.tsimp
+tsconfig.tsbuildinfo
