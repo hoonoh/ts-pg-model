@@ -33,7 +33,7 @@
     "test": "NODE_NO_WARNINGS=1 ava",
     "test:coverage": "NODE_NO_WARNINGS=1 c8 -r lcov ava",
     "test:types": "tsc --noEmit",
-    "test:db:migrate": "DATABASE_URL=postgresql://postgres:secretpassword@localhost:54321/postgres yarn node-pg-migrate -m ./src/test/migrations --tsconfig ./src/test/migrations/tsconfig.json --ignore-pattern .+\\.json",
+    "test:db:migrate": "DATABASE_URL=postgresql://postgres:secretpassword@localhost:54321/postgres yarn node-pg-migrate -m ./src/test/migrations --tsconfig ./tsconfig.json --ignore-pattern .+\\.json",
     "test:db:migrate:up": "yarn test:db:migrate up",
     "test:db:migrate:down": "yarn test:db:migrate down",
     "test:db:up": "docker run -d --rm --name ts-pg-model -p 54321:5432 -e POSTGRES_PASSWORD=secretpassword postgres:alpine",
@@ -85,12 +85,13 @@
     "lerna": "8.2.2",
     "mock-fs": "5.5.0",
     "mockdate": "3.0.5",
-    "node-pg-migrate": "7.9.1",
+    "node-pg-migrate": "8.0.3",
     "prettier": "3.5.3",
     "semantic-release": "24.2.5",
     "sinon": "21.0.0",
     "ts-essentials": "10.1.1",
     "ts-node": "10.9.2",
+    "tsimp": "2.0.12",
     "typescript": "5.8.3"
   }
 }
