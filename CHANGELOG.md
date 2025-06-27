@@ -1,5 +1,12 @@
 # ts-pg-model changelog
 
+## [2.0.25](https://github.com/hoonoh/ts-pg-model/compare/v2.0.24...v2.0.25) (2025-06-27)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([#369](https://github.com/hoonoh/ts-pg-model/issues/369)) ([f6133df](https://github.com/hoonoh/ts-pg-model/commit/f6133dfb4f08f36cba8b344468d4aef5aa2d9503))
+
 ## [2.0.24](https://github.com/hoonoh/ts-pg-model/compare/v2.0.23...v2.0.24) (2025-06-24)
 
 
