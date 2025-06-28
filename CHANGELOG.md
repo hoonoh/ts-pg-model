@@ -1,5 +1,12 @@
 # ts-pg-model changelog
 
+## [2.0.27](https://github.com/hoonoh/ts-pg-model/compare/v2.0.26...v2.0.27) (2025-06-28)
+
+
+### Bug Fixes
+
+* **deps:** update dependency dotenv to v17 ([#372](https://github.com/hoonoh/ts-pg-model/issues/372)) ([1876e9d](https://github.com/hoonoh/ts-pg-model/commit/1876e9d4ecfbe99bb0ea488fabe732713ac95cea))
+
 ## [2.0.26](https://github.com/hoonoh/ts-pg-model/compare/v2.0.25...v2.0.26) (2025-06-27)
 
 
