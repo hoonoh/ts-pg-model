@@ -11452,7 +11452,7 @@ __metadata:
     ts-node: "npm:10.9.2"
     tsimp: "npm:2.0.12"
     typescript: "npm:5.8.3"
-    zod: "npm:3.25.67"
+    zod: "npm:4.0.17"
   bin:
     ts-pg-model: ./bin/cli.mjs
   languageName: unknown
@@ -12364,7 +12364,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:3.25.67, zod@npm:^3.25.46":
+"zod@npm:4.0.17":
+  version: 4.0.17
+  resolution: "zod@npm:4.0.17"
+  checksum: 10c0/c56ef4cc02f8f52be8724c5a8b338266202d68477c7606bee9b7299818b75c9adc27f16f4b6704a372f3e7578bd016f389de19bfec766564b7c39d0d327c540a
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.25.46":
   version: 3.25.67
   resolution: "zod@npm:3.25.67"
   checksum: 10c0/80a0cab3033272c4ab9312198081f0c4ea88e9673c059aa36dc32024906363729db54bdb78f3dc9d5529bd1601f74974d5a56c0a23e40c6f04a9270c9ff22336
