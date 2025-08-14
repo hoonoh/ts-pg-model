@@ -88,6 +88,11 @@ export const mockPool = (
               end: async () => {},
               stream: () => ({}) as DriverStream<DriverStreamResult>,
               query: async sql => {
+                // slonik internal function `validateConnection()` will query `SELECT 1` to validate connections.
+                // https://github.com/gajus/slonik/blob/12dd253db08d8d6b94f184f6840f72111829ca15/packages/slonik/src/factories/createConnectionPool.ts#L114-L131
+                // https://github.com/gajus/slonik/releases/tag/slonik%4048.4.0
+                if (sql === 'SELECT 1') return createMockQueryResult([{ '1': 1 }]);
+
                 const normalize = (q: string) =>
                   q
                     .split('\n')
