@@ -1,5 +1,12 @@
 # ts-pg-model changelog
 
+## [2.0.28](https://github.com/hoonoh/ts-pg-model/compare/v2.0.27...v2.0.28) (2025-08-14)
+
+
+### Bug Fixes
+
+* **deps:** update dependency zod to v4 ([#374](https://github.com/hoonoh/ts-pg-model/issues/374)) ([dd7e178](https://github.com/hoonoh/ts-pg-model/commit/dd7e178015e4387965c50798a286d6bda575fbe2))
+
 ## [2.0.27](https://github.com/hoonoh/ts-pg-model/compare/v2.0.26...v2.0.27) (2025-06-28)
 
 
