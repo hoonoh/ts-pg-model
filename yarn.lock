@@ -2023,6 +2023,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@slonik/driver@npm:48.4.1":
+  version: 48.4.1
+  resolution: "@slonik/driver@npm:48.4.1"
+  dependencies:
+    "@slonik/types": "npm:^48.4.1"
+    "@slonik/utilities": "npm:^48.4.1"
+    roarr: "npm:^7.21.1"
+    serialize-error: "npm:^12.0.0"
+    strict-event-emitter-types: "npm:^2.0.0"
+  peerDependencies:
+    zod: ^3
+  checksum: 10c0/85dd8f9c56f507330ed56e2cba98f8dc77f86f0ae34cf466cdc4ca807bc7cf06c82caba9c8a7abae0b62f4153b5037c508978673c9cfdf363d39e85b1ccea2a9
+  languageName: node
+  linkType: hard
+
 "@slonik/driver@npm:^48.1.2":
   version: 48.1.2
   resolution: "@slonik/driver@npm:48.1.2"
@@ -2044,6 +2059,15 @@ __metadata:
   dependencies:
     "@slonik/types": "npm:^48.1.2"
   checksum: 10c0/1dcb0c178e95e081549a26a86e20f1beab61c3f2c571223a4094daefe82bc008b255c0f920e22bf9f32a05ee9fd58a4e44a0c6ee8d7a839d079b40caf48229e4
+  languageName: node
+  linkType: hard
+
+"@slonik/errors@npm:^48.4.1":
+  version: 48.4.1
+  resolution: "@slonik/errors@npm:48.4.1"
+  dependencies:
+    "@slonik/types": "npm:^48.4.1"
+  checksum: 10c0/b1446e0fbc4c418ab96851209e487e42040653eaf10d0a5711686a8d79c4aac36d6ba600f92feb840d2ae4e6b85aab8d1172375e04c353b29c8a7da81988c3af
   languageName: node
   linkType: hard
 
@@ -2089,6 +2113,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@slonik/types@npm:^48.4.1":
+  version: 48.4.1
+  resolution: "@slonik/types@npm:48.4.1"
+  peerDependencies:
+    zod: ^3
+  checksum: 10c0/ec291752aa5461dea0a07ba5e13bd251416e4a896de81e8c25ffd1a52c752ac3ed0d817a4c34d8b0cca907290bfda189338e8a590d699a320a06fa2e1b10a87a
+  languageName: node
+  linkType: hard
+
 "@slonik/utilities@npm:^48.1.2":
   version: 48.1.2
   resolution: "@slonik/utilities@npm:48.1.2"
@@ -2098,6 +2131,18 @@ __metadata:
   peerDependencies:
     zod: ^3
   checksum: 10c0/c15dba2dc569b78d8a6904753699db41c406a4f00b55e12a61303bd22bfe91bb5600ef9e426c05e20a9f568a209f35c1bb8e7aa53bb5fba45b3081bbcadd69af
+  languageName: node
+  linkType: hard
+
+"@slonik/utilities@npm:^48.4.1":
+  version: 48.4.1
+  resolution: "@slonik/utilities@npm:48.4.1"
+  dependencies:
+    "@slonik/errors": "npm:^48.4.1"
+    "@slonik/types": "npm:^48.4.1"
+  peerDependencies:
+    zod: ^3
+  checksum: 10c0/dad00803aa64c13f30aba7a4fa0b99e1e6415b4aa7265ac1858074c50f81f1e4d91160d4d4babeb04df8a8ce5519290402c57af361c809f2fe6e7ef3a5bf50c6
   languageName: node
   linkType: hard
 
@@ -11415,6 +11460,7 @@ __metadata:
     "@semantic-release/git": "npm:10.0.1"
     "@semantic-release/github": "npm:11.0.3"
     "@semantic-release/release-notes-generator": "npm:14.0.3"
+    "@slonik/driver": "npm:48.4.1"
     "@types/lodash-es": "npm:4.17.12"
     "@types/mock-fs": "npm:4.13.4"
     "@types/node": "npm:22.15.33"
