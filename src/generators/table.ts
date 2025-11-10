@@ -63,6 +63,9 @@ export const generateTableFile: FileGenerator = async (config: Config) => {
       tableDocs.push(
         ...(tableSpec.constraints?.filter(c => c.type === 'Exclude').map(c => c.docs) || []),
       );
+      tableDocs.push(
+        ...(tableSpec.constraints?.filter(c => c.type === 'NotNull').map(c => c.docs) || []),
+      );
       tableDocs.push(...(tableSpec.indexes?.map(c => c.docs) || []));
 
       sourceFile.addInterface({

@@ -139,7 +139,7 @@ export type Constraint = {
   schema: string;
   tableName: string;
   name: string;
-  type: 'PrimaryKey' | 'ForeignKey' | 'Unique' | 'Check' | 'Exclude';
+  type: 'PrimaryKey' | 'ForeignKey' | 'Unique' | 'Check' | 'Exclude' | 'NotNull';
   definition: string;
   columnNames: string[];
   docs: string;
