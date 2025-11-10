@@ -1,5 +1,12 @@
 # ts-pg-model changelog
 
+## [2.0.34](https://github.com/hoonoh/ts-pg-model/compare/v2.0.33...v2.0.34) (2025-11-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency read-package-up to v12 ([#391](https://github.com/hoonoh/ts-pg-model/issues/391)) ([165f91f](https://github.com/hoonoh/ts-pg-model/commit/165f91f62931a4de5958686f952179b679edf774))
+
 ## [2.0.33](https://github.com/hoonoh/ts-pg-model/compare/v2.0.32...v2.0.33) (2025-11-10)
 
 
