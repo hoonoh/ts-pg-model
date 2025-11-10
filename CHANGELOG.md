@@ -1,5 +1,12 @@
 # ts-pg-model changelog
 
+## [2.0.35](https://github.com/hoonoh/ts-pg-model/compare/v2.0.34...v2.0.35) (2025-11-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency ora to v9 ([#386](https://github.com/hoonoh/ts-pg-model/issues/386)) ([23ba680](https://github.com/hoonoh/ts-pg-model/commit/23ba680d7fa12f63226363d3ac56423ab2ee00bd))
+
 ## [2.0.34](https://github.com/hoonoh/ts-pg-model/compare/v2.0.33...v2.0.34) (2025-11-10)
 
 
