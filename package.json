@@ -83,7 +83,7 @@
     "eslint-plugin-prettier": "5.5.4",
     "eslint-plugin-simple-import-sort": "12.1.1",
     "eslint-plugin-unused-imports": "4.3.0",
-    "lerna": "8.2.4",
+    "lerna": "9.0.0",
     "mock-fs": "5.5.0",
     "mockdate": "3.0.5",
     "node-pg-migrate": "8.0.3",
