@@ -57,6 +57,9 @@ export const renderTargetsToQueryRes = (renderTargets: RenderTargets) => {
               case 'Exclude':
                 type = 'x';
                 break;
+              case 'NotNull':
+                type = 'n';
+                break;
               default:
                 break;
             }
@@ -306,6 +309,7 @@ export const mockTable = ({
   enumColumns?: Omit<Parameters<typeof mockEnumColumn>[0], 'schema' | 'tableName'>[];
   compositeTypeColumns?: Omit<Parameters<typeof mockCompositeColumn>[0], 'schema' | 'tableName'>[];
   indexSpecs?: Omit<PgIndexBare, 'schema' | 'tableName'>[];
+  /** not null constraints will be automatically added */
   constraintSpecs?: Omit<PgConstraintsBare, 'schema' | 'tableName'>[];
 }) => {
   const columns = pgColumns?.reduce(
@@ -372,11 +376,29 @@ export const mockTable = ({
     ? validateIndexes(indexSpecs.map(s => ({ ...s, schema, tableName }) as PgIndexBare))
     : undefined;
 
-  const constraints = constraintSpecs?.length
+  let constraints = constraintSpecs?.length
     ? validateConstratints(
         constraintSpecs.map(s => ({ ...s, schema, tableName }) as PgConstraintsBare),
       )
     : undefined;
+
+  // add NOT NULL constraints (pg 18)
+  Object.values(columns || {})
+    .filter(column => column !== undefined)
+    .forEach(column => {
+      if (!column.isNullable) {
+        if (!constraints) constraints = [];
+        constraints.push({
+          schema,
+          tableName,
+          name: `${column.columnName}_not_null`,
+          type: 'NotNull',
+          definition: `NOT NULL ${column.columnName}`,
+          columnNames: [column.columnName],
+          docs: `@notNull ${column.columnName}`,
+        });
+      }
+    });
 
   const rtn: Record<string, Table & { columns: Record<string, ColumnTypeMap> }> = {
     [tableName]: {
@@ -408,6 +430,7 @@ export const mockSchema = ({
       'schema' | 'tableName'
     >[];
     indexSpecs?: Omit<PgIndexBare, 'schema' | 'tableName'>[];
+    /** not null constraints will be automatically added */
     constraintSpecs?: Omit<PgConstraintsBare, 'schema' | 'tableName'>[];
   }[];
 }) => {

@@ -117,6 +117,12 @@ export const pgConstraintsBareZod = z
           val => typeof val === 'string' && /^EXCLUDE USING (\w+) \((\w+)\)$/.test(val),
         ),
       }),
+      z.object({
+        type: z.literal('n'),
+        definition: z.custom<`NOT NULL ${string}`>(
+          val => typeof val === 'string' && /^NOT NULL \((\w+)\)$/.test(val),
+        ),
+      }),
     ]),
   );
 
