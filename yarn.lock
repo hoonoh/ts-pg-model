@@ -10067,18 +10067,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"read-package-up@npm:11.0.0, read-package-up@npm:^11.0.0":
-  version: 11.0.0
-  resolution: "read-package-up@npm:11.0.0"
-  dependencies:
-    find-up-simple: "npm:^1.0.0"
-    read-pkg: "npm:^9.0.0"
-    type-fest: "npm:^4.6.0"
-  checksum: 10c0/ffee09613c2b3c3ff7e7b5e838aa01f33cba5c6dfa14f87bf6f64ed27e32678e5550e712fd7e3f3105a05c43aa774d084af04ee86d3044978edb69f30ee4505a
-  languageName: node
-  linkType: hard
-
-"read-package-up@npm:^12.0.0":
+"read-package-up@npm:12.0.0, read-package-up@npm:^12.0.0":
   version: 12.0.0
   resolution: "read-package-up@npm:12.0.0"
   dependencies:
@@ -10086,6 +10075,17 @@ __metadata:
     read-pkg: "npm:^10.0.0"
     type-fest: "npm:^5.2.0"
   checksum: 10c0/aa0aa280e7adc00edef9c157b475262f64df3ba3bdd3c27f59f5b28225d3522c2e354bb823d5df08079bfbd863466a1512255c92a9776a93e3bdc49b9d90fc2d
+  languageName: node
+  linkType: hard
+
+"read-package-up@npm:^11.0.0":
+  version: 11.0.0
+  resolution: "read-package-up@npm:11.0.0"
+  dependencies:
+    find-up-simple: "npm:^1.0.0"
+    read-pkg: "npm:^9.0.0"
+    type-fest: "npm:^4.6.0"
+  checksum: 10c0/ffee09613c2b3c3ff7e7b5e838aa01f33cba5c6dfa14f87bf6f64ed27e32678e5550e712fd7e3f3105a05c43aa774d084af04ee86d3044978edb69f30ee4505a
   languageName: node
   linkType: hard
 
@@ -11658,7 +11658,7 @@ __metadata:
     node-pg-migrate: "npm:8.0.3"
     ora: "npm:8.2.0"
     prettier: "npm:3.6.2"
-    read-package-up: "npm:11.0.0"
+    read-package-up: "npm:12.0.0"
     semantic-release: "npm:25.0.2"
     sinon: "npm:21.0.0"
     slonik: "npm:48.7.0"
