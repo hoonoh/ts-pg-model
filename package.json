@@ -53,7 +53,7 @@
     "meow": "14.0.0",
     "ora": "9.0.0",
     "read-package-up": "12.0.0",
-    "slonik": "48.8.0",
+    "slonik": "48.8.4",
     "strip-json-comments": "5.0.3",
     "ts-morph": "27.0.2",
     "zod": "4.1.12"
@@ -67,7 +67,7 @@
     "@semantic-release/git": "10.0.1",
     "@semantic-release/github": "12.0.2",
     "@semantic-release/release-notes-generator": "14.1.0",
-    "@slonik/driver": "48.8.0",
+    "@slonik/driver": "48.8.4",
     "@types/lodash-es": "4.17.12",
     "@types/mock-fs": "4.13.4",
     "@types/node": "24.10.1",
